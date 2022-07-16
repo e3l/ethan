@@ -34,7 +34,7 @@ function MyApp({ Component, pageProps, router }) {
         }}
         >
           <motion.main
-            key={router.route}
+            // key={router.route}
             variants={container}
             initial="hidden"
             animate="show"
@@ -44,7 +44,7 @@ function MyApp({ Component, pageProps, router }) {
                 duration: 0.5
             }}
             className="content">
-              <Component {...pageProps} />
+              <Component {...pageProps} key={router.route} />
           </motion.main>
       </AnimatePresence>
       <Footer />
