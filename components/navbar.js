@@ -5,7 +5,7 @@ import * as style from '../styles/navbar.module.css'
 
 function HoverLink(props) {
     return (
-        <Link href={props.href}>
+        <Link href={props.href} scroll={false}>
             <motion.a
                 className={props.className}
                 whileHover={{ color: 'var(--red)' }}
