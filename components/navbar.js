@@ -30,7 +30,7 @@ export default function Navbar() {
                 <HoverLink href='/' className={style.home}>Ethan Liang</HoverLink>
                 <div className={style.links}>
                     <NavLink href='/resume'>[Under Construction]</NavLink>
-                    <NavLink href='/credits'>[Under Construction]</NavLink>
+                    <NavLink href='/credits'>Credits</NavLink>
                     <NavLink href='/blog'>[Under Construction]</NavLink>
                 </div>
             </div>
