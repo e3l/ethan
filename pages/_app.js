@@ -34,7 +34,7 @@ function MyApp({ Component, pageProps, router }) {
         }}
         >
           <motion.main
-            // key={router.route}
+            key={router.route + 'yet'}
             variants={container}
             initial="hidden"
             animate="show"
