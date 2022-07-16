@@ -1,3 +1,5 @@
+import Link from 'next/link'
+
 import * as style from '../styles/footer.module.css'
 
 function Spacer() {
@@ -11,10 +13,12 @@ export default function Footer() {
         <div className={style.container}>
             <div className={style.footer}>
                 <div>
-                    <a href='/palette'>about this site</a>
-                    <Spacer/>
+                    <Link href='/palette'>
+                        <a >about this site</a>
+                    </Link>
+                    <Spacer />
                     <a href='https://open.spotify.com/user/n0tjyxgsgs?si=d3217a5cd07842f1' target="_blank" rel="noopener noreferrer">my spotify</a>
-                    <Spacer/>
+                    <Spacer />
                     <a href='mailto:e3lcool@gmail.com'>e3lcool@gmail.com</a>
                 </div>
                 <div>© 2022</div>

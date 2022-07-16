@@ -1,14 +1,17 @@
 import { motion } from 'framer-motion'
+import Link from 'next/link'
 
 import * as style from '../styles/navbar.module.css'
 
 function HoverLink(props) {
     return (
-        <motion.a
-            className={props.className}
-            whileHover={{ color: 'var(--red)' }}
-            transition={{ duration: 0.3 }}
-            href={props.href}>{props.children}</motion.a>
+        <Link href={props.href}>
+            <motion.a
+                className={props.className}
+                whileHover={{ color: 'var(--red)' }}
+                transition={{ duration: 0.3 }}
+            >{props.children}</motion.a>
+        </Link>
     )
 }
 
