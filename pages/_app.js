@@ -1,9 +1,33 @@
 import Layout from '../components/layout'
 import '../styles/globals.css'
 
-import { motion, AnimatePresence } from 'framer-motion'
 import Navbar from '../components/navbar'
 import Footer from '../components/footer'
+
+import { motion, AnimatePresence } from 'framer-motion'
+import Router from "next/router";
+
+import { fixTimeoutTransition } from '../util/fixTimeoutTransition'
+
+fixTimeoutTransition(750)
+
+const routeChange = () => {
+  // Temporary fix to avoid flash of unstyled content
+  // during route transitions. Keep an eye on this
+  // issue and remove this code when resolved:
+  // https://github.com/vercel/next.js/issues/17464
+
+  const tempFix = () => {
+    const allStyleElems = document.querySelectorAll('style[media="x"]');
+    allStyleElems.forEach((elem) => {
+      elem.removeAttribute("media");
+    });
+  };
+  tempFix();
+};
+
+Router.events.on("routeChangeComplete", routeChange );
+Router.events.on("routeChangeStart", routeChange );
 
 const container = {
   hidden: {
