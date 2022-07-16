@@ -14,7 +14,7 @@ export default function Footer() {
             <div className={style.footer}>
                 <div>
                     <Link href='/palette'>
-                        <a >about this site</a>
+                        <a>about this site</a>
                     </Link>
                     <Spacer />
                     <a href='https://open.spotify.com/user/n0tjyxgsgs?si=d3217a5cd07842f1' target="_blank" rel="noopener noreferrer">my spotify</a>

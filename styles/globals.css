@@ -5,6 +5,8 @@
 
   --borders: #262626;
   --red: #f00000;
+
+  --headlines: 'Bebas Neue', sans-serif;
 }
 
 html,
@@ -21,6 +23,7 @@ body {
 a {
   color: inherit;
   text-decoration: none;
+  cursor: pointer;
 }
 
 * {
