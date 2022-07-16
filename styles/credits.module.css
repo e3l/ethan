@@ -6,11 +6,13 @@
     align-items: center;
 
     width: 100%;
+
+    margin-top: 80vh;
 }
 
 .credits > div {
     width: 100%;
-    padding: 3em;
+    padding: 2em;
 }
 
 .split {

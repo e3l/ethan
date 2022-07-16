@@ -1,6 +1,7 @@
 .container {
     position: fixed;
     top: 0;
+    z-index: 99;
     
     height: 5rem;
     width: 100%;

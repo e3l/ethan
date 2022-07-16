@@ -1,3 +1,4 @@
+import React from 'react';
 import * as style from '../styles/credits.module.css'
 
 function ListDecomposed(props) {
@@ -23,8 +24,31 @@ function ListDecomposed(props) {
     )
 }
 
-export default function Credits() {
-    return (
+export default class Credits extends React.Component {
+
+    componentDidMount() {
+        var lastscroll = 0;
+        var scrolled = false;
+
+        function scrollLogic() {
+            if ((new Date()).getTime() - lastscroll > 1000) {
+                scrolled = true;
+                window.scrollBy(0, 1);
+            }
+            console.log(scrolled);
+        }
+
+        addEventListener('scroll', (event) => {
+            if (!scrolled) {
+                lastscroll = (new Date()).getTime()
+            }
+            scrolled = false;
+        });
+
+        setInterval(scrollLogic, 10);
+    }
+
+    render() {return (
         <div className={style.credits}>
             {/* <div>
                 THANK YOU TO...
@@ -318,4 +342,5 @@ export default function Credits() {
             </div>
         </div>
     )
+    }
 }
