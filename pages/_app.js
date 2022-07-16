@@ -41,7 +41,7 @@ function MyApp({ Component, pageProps, router }) {
             exit="exit"
             transition={{
                 type: 'linear',
-                duration: 0.75
+                duration: 0.5
             }}
             className="content">
               <Component {...pageProps} />
