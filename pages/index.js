@@ -21,14 +21,15 @@ export default function Home() {
         <motion.p
           animate={headlineAnimation}
           transition={{
-            duration: 2
+            duration: 2.25,
+            delay: 0
           }}>
             Go Big
         </motion.p>
         <motion.p
           animate={headlineAnimation}
           transition={{
-            duration: 2,
+            duration: 2.5,
             delay: 1
           }}>
             or Go Home

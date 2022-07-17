@@ -71,6 +71,8 @@
     z-index: 0;
 
     padding: calc(var(--navbarheight) + 1vh) 5vw calc(7em + 1vh) 5vw;
+
+    pointer-events: none;
 }
 
 .bg > div {

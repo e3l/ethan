@@ -26,18 +26,18 @@ const routeChange = () => {
   tempFix();
 };
 
-Router.events.on("routeChangeComplete", routeChange );
-Router.events.on("routeChangeStart", routeChange );
+Router.events.on("routeChangeComplete", routeChange);
+Router.events.on("routeChangeStart", routeChange);
 
 const container = {
   hidden: {
-      opacity: 0
+    opacity: 0
   },
   show: {
-      opacity: 1
+    opacity: 1
   },
   exit: {
-      opacity: 0
+    opacity: 0
   }
 }
 
@@ -50,28 +50,30 @@ function MyApp({ Component, pageProps, router }) {
     // </AnimatePresence>
     <div>
       <Navbar />
-      <AnimatePresence exitBeforeEnter 
+      <AnimatePresence exitBeforeEnter
         onExitComplete={() => {
           if (typeof window !== 'undefined') {
             window.scrollTo({ top: 0 })
           }
         }}
-        >
-          <motion.main
-            key={router.route + 'yet'}
-            variants={container}
-            initial="hidden"
-            animate="show"
-            exit="exit"
-            transition={{
-                type: 'linear',
-                duration: 0.5
-            }}
+      >
+        <motion.div
+          key={router.route + 'yet'}
+          variants={container}
+          initial="hidden"
+          animate="show"
+          exit="exit"
+          transition={{
+            type: 'linear',
+            duration: 0.5
+          }}>
+          <main
             className="content">
-              <Component {...pageProps} key={router.route} />
-          </motion.main>
+            <Component {...pageProps} key={router.route} />
+          </main>
+          <Footer />
+        </motion.div>
       </AnimatePresence>
-      <Footer />
     </div>
   )
 }

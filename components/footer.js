@@ -13,7 +13,7 @@ export default function Footer() {
         <div className={style.container}>
             <div className={style.footer}>
                 <div>
-                    <Link href='/palette'>
+                    <Link href='/palette' scroll={false}>
                         <a>about this site</a>
                     </Link>
                     <Spacer />
