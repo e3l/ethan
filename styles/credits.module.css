@@ -1,3 +1,7 @@
+.container {
+    width: 100%;
+}
+
 .credits {
     font-size: 1em;
 
@@ -37,6 +41,10 @@
     padding: 0.5em;
 }
 
+.section * {
+    z-index: 1;
+}
+
 .newsection {
     padding-top: 1em;
 }
@@ -52,4 +60,36 @@
     font-weight: 500;
 
     width: 50%;
+}
+
+.bg {
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    top: 0;
+    left: 0;
+    z-index: 0;
+
+    padding: calc(var(--navbarheight) + 1vh) 5vw calc(7em + 1vh) 5vw;
+}
+
+.bg > div {
+    height: 100%;
+    width: 100%;
+
+    position: relative;
+}
+
+.bg img {
+    height: 100%;
+    width: 100%;
+
+    object-fit: contain;
+
+    box-shadow: 0 0 2vw var(--back) inset;
+}
+
+.splashplaceholder {
+    margin-top: 80vh;
+    height: 20vh;
 }
