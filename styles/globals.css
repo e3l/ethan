@@ -7,6 +7,8 @@
   --red: #f00000;
 
   --headlines: 'Bebas Neue', sans-serif;
+
+  --navbarheight: 5rem;
 }
 
 html {
@@ -35,6 +37,8 @@ a {
 }
 
 .content {
+  /* z-index: -1; */
+
   margin-top: 5rem;
   padding: 4em;
 

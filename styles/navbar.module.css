@@ -3,7 +3,7 @@
     top: 0;
     z-index: 99;
     
-    height: 5rem;
+    height: var(--navbarheight);
     width: 100%;
 
     display: flex;
