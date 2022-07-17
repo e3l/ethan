@@ -90,5 +90,6 @@
 }
 
 .splashplaceholder {
-    height: 100vh;
+    margin-top: 80vh;
+    height: 20vh;
 }

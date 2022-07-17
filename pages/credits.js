@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import Image from 'next/future/image';
 
 import * as style from '../styles/credits.module.css'
 import yourname from '../public/credits.png'
+import { useScroll, motion } from 'framer-motion';
 
 function ListDecomposed(props) {
     return (
@@ -27,9 +28,14 @@ function ListDecomposed(props) {
     )
 }
 
-export default class Credits extends React.Component {
+export default function Credits() {
+    const placeholderref = useRef(null);
+    const { scrollYProgress } = useScroll({
+        target: placeholderref,
+        offset: ["start end", "end end"]
+    });
 
-    componentDidMount() {
+    useEffect(() => {
         var lastscroll = 0;
         var scrolled = false;
 
@@ -47,14 +53,14 @@ export default class Credits extends React.Component {
             scrolled = false;
         });
 
-        this.intervalID = setInterval(scrollLogic, 10);
-    }
+        var intervalID = setInterval(scrollLogic, 10);
 
-    componentWillUnmount() {
-        clearInterval(this.intervalID);
-    }
+        return () => {
+            clearInterval(intervalID);
+        }
+    }, []);
 
-    render() {return (
+    return (
         <div className={style.container}>
             <div className={style.credits}>
                 {/* <div>
@@ -63,7 +69,7 @@ export default class Credits extends React.Component {
                 <div>
                     <ListDecomposed
                         label='ALPACA'
-                        names = {`RYAN CHA.
+                        names={`RYAN CHA.
                             LUCY M
                             JEROME W
                             JACK P
@@ -77,13 +83,13 @@ export default class Credits extends React.Component {
                             DANIEL P
                             AIDAN G
                             `}
-                        />
+                    />
                 </div>
                 <div className={style.split}>
                     <div>
                         <ListDecomposed
                             label='KURIO'
-                            names = {`SAM D
+                            names={`SAM D
                             ALBERT C
                             AIDAN L
                             AUSTIN X
@@ -162,7 +168,7 @@ export default class Credits extends React.Component {
                             `}
                         />
                         <ListDecomposed
-                            names = {`AKSHAY P
+                            names={`AKSHAY P
                             ALANA F
                             ETHAN L
                             ADITYA S
@@ -211,8 +217,8 @@ export default class Credits extends React.Component {
                 <div className={style.split}>
                     <div>
                         <ListDecomposed
-                                label='SEC'
-                                names={`JUNO K
+                            label='SEC'
+                            names={`JUNO K
                                 KAYLEE W
                                 SCOTT L
                                 SUNNY P
@@ -223,7 +229,7 @@ export default class Credits extends React.Component {
                                 ADELE D
                                 MAYA P
                                 CHLOE W`}
-                            />
+                        />
                         <ListDecomposed
                             names={`IRENE K
                             CLARINE K
@@ -347,16 +353,17 @@ export default class Credits extends React.Component {
                         />
                     </div>
                 </div>
-                <div className={style.splashplaceholder}>
+                <div ref={placeholderref} className={style.splashplaceholder}>
 
                 </div>
             </div>
             <div className={style.bg}>
-                <div>
+                <motion.div
+                    style={{ opacity: scrollYProgress }}>
                     <Image src={yourname} />
-                </div>
+                </motion.div>
             </div>
         </div>
     )
-    }
+
 }
