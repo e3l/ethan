@@ -46,12 +46,11 @@ export default function Credits() {
             }
         }
 
-        addEventListener('scroll', (event) => {
-            if (!scrolled) {
-                lastscroll = (new Date()).getTime()
-            }
-            scrolled = false;
-        });
+        function scrollListener() {
+            lastscroll = (new Date()).getTime();
+        }
+
+        window.addEventListener('wheel', scrollListener);
 
         var intervalID = setInterval(scrollLogic, 10);
 
