@@ -1,5 +1,5 @@
 .container {
-    width: 100%;
+    width: 70%;
 }
 
 .credits {
@@ -8,6 +8,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    text-align: center;
 
     width: 100%;
 
@@ -17,6 +18,10 @@
 .credits > div {
     width: 100%;
     padding: 2em;
+}
+
+.credits p {
+    margin: 0.5em;
 }
 
 .split {
@@ -43,6 +48,9 @@
 
 .section * {
     z-index: 1;
+
+    word-wrap: break-word;
+    word-break: normal;
 }
 
 .newsection {
@@ -51,8 +59,11 @@
 
 .sectionlabel {
     padding-right: 1em;
+    width: 50%;
 
     font-weight: 600;
+
+    text-align: right;
 }
 
 .sectionlist {

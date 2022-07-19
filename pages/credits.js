@@ -40,7 +40,7 @@ export default function Credits() {
 
         function scrollLogic() {
             if ((new Date()).getTime() - lastscroll > 1000) {
-                // window.scrollBy(0, 1);
+                window.scrollBy(0, 1);
             }
         }
 
@@ -210,6 +210,12 @@ export default function Credits() {
                             ZACH`}
                         />
                     </div>
+                </div>
+                <div>
+                    <ListDecomposed
+                        label='PIANO'
+                        names={`XIAOXIAO J`}
+                    />
                 </div>
                 <div className={style.split}>
                     <div>
@@ -381,20 +387,17 @@ export default function Credits() {
                             MAX G
                             ALEC T
                             GRAYDEN D
-                            NARISSA 
+                            NARISSA M
                             ROCKY L
-                            ALEC P
-                            ANIRUDH 
+                            ANIRUDH P
                             STEPHANIE G
                             ARATI P
-                            KATHERINE
                             EMMA L
                             DALIA A
                             CAROLINE Z
                             IDDO B
                             JONAS P
                             JAMES K
-                            NICO 
                             AMITA G
                             KIMI S
                             ETHAN K
@@ -402,16 +405,39 @@ export default function Credits() {
                             ANJALI B
                             JERRY X
                             JANET M
-                            ARUN
                             ARYAN G
                             CALE A
                             KATHERINE L
                             MATTHEW G
                             JACK F
                             GRACE L
-                            KIMI S
-                            TEJAS 
-                            ... and those I forgot :(`}
+                            TEJAS T
+                            ANTHONY S
+                            GRACE L
+                            KENZA A
+                            GAVIN C
+                            NICO
+                            ARUN
+                            SIENNA`}
+                        />
+                        <ListDecomposed
+                            label='TEACHERS'
+                            names={`MS. LUU
+                            MRS. BETTENCOURT
+                            MRS. LOHSE
+                            MR. PARSONS
+                            MRS. MELNICK
+                            MRS. DUFFEK
+                            MS. FEE
+                            MRS. NYGAARD
+                            MR. LACAYO
+                            MS. LUO
+                            MRS. DARBY
+                            MR. SHIRLEY
+                            MR. WEINER
+                            MR. BOOTH
+                            MR. MISKE
+                            MS. MCKINLAY`}
                         />
                     </div>
                     <div>
@@ -423,7 +449,7 @@ export default function Credits() {
                             NATHAN P`}
                         />
                         <ListDecomposed
-                            label='HEMIDEMISEMIQUAVERS'
+                            label={`HEMIDEMI SEMIQUAVERS`}
                             names={`HANNA P
                             AJIN J
                             SERENA N
@@ -449,6 +475,7 @@ export default function Credits() {
                         />
                         <ListDecomposed
                             names={`ALMA C
+                            VIVIAN T
                             AUDRY D
                             JENNIE F
                             BOGIE K
@@ -463,7 +490,51 @@ export default function Credits() {
                         <ListDecomposed
                             names={`MS. MCGUIRE`}
                         />
+                        <ListDecomposed
+                            label='STAGE TECH'
+                            names={`DANIELLE M
+                            ANNA T
+                            EBRU H
+                            HILA L
+                            ALISHA B
+                            DIANA
+                            AMELIA
+                            ABIGAIL F
+                            KRISHNA
+                            JENNY M`}
+                        />
+                        <ListDecomposed
+                            names={`BANKS H
+                            KATEL F
+                            OCTAVIUS D
+                            EMMA E
+                            EMMA G
+                            SOFIA H
+                            MIKE K
+                            PALINA K
+                            ATHYA P
+                            JOHANNAH S
+                            YUNA S
+                            SAFINA S
+                            PHOEBE B
+                            OREN S
+                            ZINA Z
+                            GEORGIA G`}
+                        />
+                        <ListDecomposed
+                            names={`MR. MAHLE
+                            DAN N
+                            KEN`}
+                        />
                     </div>
+                </div>
+                <div>
+                    <p>my parents, my sister, my family, and family friends</p>
+                    <br></br>
+                    <p>and all those I&apos;m sorry I forgot,<br></br>lost to time,<br></br>but have made me who I am in the same way as everyone else.</p>
+                    <br></br>
+                    <br></br>
+                    <p>... thank you for everything</p>
                 </div>
                 <div ref={placeholderref} className={style.splashplaceholder}>
 
@@ -472,7 +543,8 @@ export default function Credits() {
             <div className={style.bg}>
                 <motion.div
                     style={{ opacity: scrollYProgress }}>
-                    <Image src={yourname} />
+                    <Image src={yourname}
+                        alt="The comet from Your Name blazes towards the setting sun in the horizon, its tail shining against a star-speckled night sky." />
                 </motion.div>
             </div>
         </div>
