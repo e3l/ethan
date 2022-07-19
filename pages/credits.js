@@ -37,12 +37,10 @@ export default function Credits() {
 
     useEffect(() => {
         var lastscroll = 0;
-        var scrolled = false;
 
         function scrollLogic() {
             if ((new Date()).getTime() - lastscroll > 1000) {
-                scrolled = true;
-                window.scrollBy(0, 1);
+                // window.scrollBy(0, 1);
             }
         }
 
@@ -65,7 +63,7 @@ export default function Credits() {
                 {/* <div>
                     THANK YOU TO...
                 </div> */}
-                <div>
+                <div> 
                     <ListDecomposed
                         label='ALPACA'
                         names={`RYAN CHA.
@@ -274,7 +272,9 @@ export default function Credits() {
                             ALYSSA P
                             ARLENE C
                             ETHAN S
-                            CLAIRE C`}
+                            CLAIRE C
+                            KENDRICK Y
+                            TRINITY C`}
                         />
                         <ListDecomposed
                             names={`MRS. HALL`}
@@ -317,7 +317,8 @@ export default function Credits() {
                             MAYA O
                             LILY B
                             COLIN L
-                            JACK F`}
+                            JACK F
+                            NOOR P`}
                         />
                         <ListDecomposed
                             names={`AVA B
@@ -330,7 +331,8 @@ export default function Credits() {
                             KYRA B
                             NINA L
                             BILL C
-                            ANDREW P`}
+                            ANDREW P
+                            LARRY S`}
                         />
                         <ListDecomposed
                             label='TEACHERS'
@@ -349,6 +351,117 @@ export default function Credits() {
                             MR. CREIGHTON
                             MRS. HOLDENER
                             MRS. WARD`}
+                        />
+                    </div>
+                </div>
+                <div className={style.split}>
+                    <div>
+                        <ListDecomposed
+                            label='JLS'
+                            names={`ETHAN B
+                            ETHAN T
+                            ARTHUR C
+                            VINCENT C`}
+                        />
+                        <ListDecomposed
+                            label='STUDENT COUNCIL'
+                            names={`COLIN C
+                            SAMANTHA L
+                            SOPHIA V
+                            LAUREN P
+                            LUCIAN Z
+                            NAYIM B`}
+                        />
+                        <ListDecomposed
+                            label='CONNECTIONS'
+                            names={`ZARA W
+                            AUDREY G
+                            KATHLEEN L
+                            ZEPHAN S
+                            MAX G
+                            ALEC T
+                            GRAYDEN D
+                            NARISSA 
+                            ROCKY L
+                            ALEC P
+                            ANIRUDH 
+                            STEPHANIE G
+                            ARATI P
+                            KATHERINE
+                            EMMA L
+                            DALIA A
+                            CAROLINE Z
+                            IDDO B
+                            JONAS P
+                            JAMES K
+                            NICO 
+                            AMITA G
+                            KIMI S
+                            ETHAN K
+                            MATTIA B
+                            ANJALI B
+                            JERRY X
+                            JANET M
+                            ARUN
+                            ARYAN G
+                            CALE A
+                            KATHERINE L
+                            MATTHEW G
+                            JACK F
+                            GRACE L
+                            KIMI S
+                            TEJAS 
+                            ... and those I forgot :(`}
+                        />
+                    </div>
+                    <div>
+                        <ListDecomposed
+                            label='KNIGHTS OF NIENTE'
+                            names={`PETER C
+                            LUCAS T
+                            ORION K
+                            NATHAN P`}
+                        />
+                        <ListDecomposed
+                            label='HEMIDEMISEMIQUAVERS'
+                            names={`HANNA P
+                            AJIN J
+                            SERENA N
+                            ANDY L
+                            STEPHANIE S
+                            MAHIMA Y
+                            WYETH M`}
+                        />
+                        <ListDecomposed
+                            label='JLS ORCH'
+                            names={`CLAIRE W
+                            ERIC F
+                            JOSHUA L
+                            PARKER W`}
+                        />
+                        <ListDecomposed
+                            names={`ABBY K
+                            AMITA G
+                            ASHLEY S
+                            JUSTIN Y
+                            ALBERT J
+                            REINA K`}
+                        />
+                        <ListDecomposed
+                            names={`ALMA C
+                            AUDRY D
+                            JENNIE F
+                            BOGIE K
+                            MICHELLE L
+                            STEVEN L
+                            RICHARD L
+                            MICHELLE P
+                            KEIRA P
+                            ETHAN Z
+                            ARIEL A`}
+                        />
+                        <ListDecomposed
+                            names={`MS. MCGUIRE`}
                         />
                     </div>
                 </div>
