@@ -771,7 +771,7 @@ export default function Credits() {
                 <div>
                     <p>my parents, my sister, my family, and family friends</p>
                     <br></br>
-                    <p>and all those I&apos;m sorry I forgot, but have made me who I am as much as everyone else. <br></br>Please reach out! I'd love to relive old memories.</p>
+                    <p>and all those I&apos;m sorry I forgot, but have made me who I am as much as everyone else. <br></br>Please reach out! I&apos;d love to relive old memories.</p>
                     <br></br>
                     <br></br>
                     <p>thank you all, for everything</p>
