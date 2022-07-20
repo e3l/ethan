@@ -47,18 +47,13 @@ const container = {
 function MyApp({ Component, pageProps, router }) {
   useEffect(() => {
     OverlayScrollbars(document.querySelectorAll('body'), { className : "os-theme-light deviant-scrollbars" });
+    OverlayScrollbars(document.querySelectorAll('#scrollz'), { className : "os-theme-light deviant-scrollbars" });
   }, [])
 
   return (
-    // <AnimatePresence exitBeforeEnter>
-    //     <Layout key='help'>
-    //       <Component {...pageProps} />
-    //     </Layout>
-    // </AnimatePresence>
     <div>
       <Navbar />
-      <OverlayScrollbarsComponent
-        id='scroller'>
+      <OverlayScrollbarsComponent>
         <AnimatePresence exitBeforeEnter
           onExitComplete={() => {
             if (typeof window !== 'undefined') {

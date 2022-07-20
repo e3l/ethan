@@ -42,7 +42,7 @@ a {
   /* z-index: -1; */
 
   margin-top: 5rem;
-  padding: 4em;
+  /* padding: 4em; */
 
   display: flex;
   justify-content: center;
@@ -53,8 +53,12 @@ a {
   bottom: 0 !important;
 }
 
-.os-scrollbar {
+.os-scrollbar-vertical {
   width: 8px !important;
+}
+
+.os-scrollbar-horizontal {
+  display: none;
 }
 
 .os-scrollbar-handle {

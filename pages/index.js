@@ -1,14 +1,101 @@
 import Head from 'next/head'
 import styles from '../styles/index.module.css'
+import Image from 'next/future/image'
 
 import { motion } from 'framer-motion'
+
+import { useEffect } from 'react';
+import OverlayScrollbars from 'overlayscrollbars';
+
+import grt_a from '../components/index/grt/a.png'
+import grt_b from '../components/index/grt/b.png'
+import grt_c from '../components/index/grt/c.png'
+import grt_d from '../components/index/grt/d.png'
+import grt_e from '../components/index/grt/e.png'
+import grt_f from '../components/index/grt/f.png'
+import grt_g from '../components/index/grt/g.png'
+
+import kurio_a from '../components/index/kurio/a.png'
+import kurio_b from '../components/index/kurio/b.png'
+import kurio_c from '../components/index/kurio/c.png'
+import kurio_d from '../components/index/kurio/d.png'
+import kurio_e from '../components/index/kurio/e.png'
+import kurio_f from '../components/index/kurio/f.png'
+import kurio_g from '../components/index/kurio/g.png'
 
 const headlineAnimation = {
   opacity: [0, 1, 1],
   color: ['#F00000', '#F00000', '#FFFFFF']
 };
 
+function ImageCarousel(props) {
+  return (
+    <div className={styles.imagesContainer} id="scrollz">
+        <div className={styles.images}>
+          {
+            function () {
+              let elems = []
+              for (let src of props.imgs) {
+                elems.push(
+                  <Image 
+                    key={src.src}
+                    src={src}
+                    sizes="20vw"
+                    quality={25}
+                    alt="" />
+                )
+              }
+              return elems;
+            }()
+          }
+          {/* {props.children} */}
+        </div>
+    </div>)
+}
+
 export default function Home() {
+  useEffect(() => {
+    let cleanups = [];
+
+    document.querySelectorAll("#scrollz").forEach((item) => {
+      let options = {
+        threshold: 1.0
+      }
+
+      let scrollTo = Array.from(item.querySelectorAll("img"));
+
+      let observer = new IntersectionObserver((entries, observer) => {
+          entries.forEach((entry) => {
+            if (entry.intersectionRatio == 1) {
+              let scroller = OverlayScrollbars(item);
+              // start scrolling
+              function scrollToNext() {
+                if (scroller === undefined) {
+                  scroller = OverlayScrollbars(item);
+                }
+
+                scroller.scroll({
+                  el: scrollTo[0],
+                  block: "begin"
+                }, 1000);
+                scrollTo.shift();
+              }
+
+              let intID = setInterval(scrollToNext, 3000);
+              cleanups.push(intID);
+            }
+          })
+      }, options);
+      observer.observe(item);
+    });
+
+    return () => {
+      for (let cleanup of cleanups) {
+        clearInterval(cleanup);
+      }
+    }
+  }, []);
+
   return (
     <div className={styles.container}>
       <Head>
@@ -24,23 +111,28 @@ export default function Home() {
             duration: 2.25,
             delay: 0
           }}>
-            Go Big
+          Go Big
         </motion.p>
         <motion.p
           animate={headlineAnimation}
           transition={{
             duration: 2.5,
-            delay: 1
+            delay: 1.25
           }}>
-            or Go Home
+          or Go Home
         </motion.p>
       </div>
 
-      {/* <div className={styles.banners}>
-        <div className={styles.kuriosity}>
-          KURIOSITY
+      <div className={styles.banners}>
+        <div className={styles.grt}>
+          <h1>GRT</h1>
+          <ImageCarousel imgs={[grt_b, grt_c, grt_d, grt_e, grt_f, grt_g, grt_a]} />
         </div>
-      </div> */}
+        <div className={styles.kurio}>
+          <h1>KURIOSITY</h1>
+          <ImageCarousel imgs={[kurio_a, kurio_b, kurio_c, kurio_d, kurio_e, kurio_f, kurio_g]} />
+        </div>
+      </div>
     </div>
   )
 }
