@@ -31,7 +31,6 @@ export default function Navbar() {
                 <div className={style.links}>
                     <NavLink href='/resume'>[Under Construction]</NavLink>
                     <NavLink href='/credits'>Credits</NavLink>
-                    <NavLink href='/blog'>[Under Construction]</NavLink>
                 </div>
             </div>
         </div>

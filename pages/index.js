@@ -2,9 +2,9 @@ import Head from 'next/head'
 import styles from '../styles/index.module.css'
 import Image from 'next/future/image'
 
-import { motion } from 'framer-motion'
+import { motion, useReducedMotion } from 'framer-motion'
 
-import { useEffect } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import OverlayScrollbars from 'overlayscrollbars';
 
 import grt_a from '../components/index/grt/a.png'
@@ -41,7 +41,7 @@ function ImageCarousel(props) {
                     key={src.src}
                     src={src}
                     sizes="20vw"
-                    quality={25}
+                    // quality={50}
                     alt="" />
                 )
               }
@@ -54,7 +54,13 @@ function ImageCarousel(props) {
 }
 
 export default function Home() {
+  const rendered = useRef(false);
+
   useEffect(() => {
+    if (rendered.current) {
+      return;
+    }
+
     let cleanups = [];
 
     document.querySelectorAll("#scrollz").forEach((item) => {
@@ -68,10 +74,14 @@ export default function Home() {
           entries.forEach((entry) => {
             if (entry.intersectionRatio == 1) {
               let scroller = OverlayScrollbars(item);
-              // start scrolling
+
               function scrollToNext() {
                 if (scroller === undefined) {
                   scroller = OverlayScrollbars(item);
+                }
+
+                if (scroller === undefined) {
+                  return;
                 }
 
                 scroller.scroll({
@@ -81,13 +91,16 @@ export default function Home() {
                 scrollTo.shift();
               }
 
-              let intID = setInterval(scrollToNext, 3000);
+              setTimeout(scrollToNext, 500);
+              let intID = setInterval(scrollToNext, 6000);
               cleanups.push(intID);
             }
-          })
+          });
       }, options);
       observer.observe(item);
     });
+
+    rendered.current = true;
 
     return () => {
       for (let cleanup of cleanups) {
@@ -126,11 +139,11 @@ export default function Home() {
       <div className={styles.banners}>
         <div className={styles.grt}>
           <h1>GRT</h1>
-          <ImageCarousel imgs={[grt_b, grt_c, grt_d, grt_e, grt_f, grt_g, grt_a]} />
+          <ImageCarousel imgs={[grt_c, grt_b, grt_d, grt_e, grt_f, grt_g, grt_a]} />
         </div>
         <div className={styles.kurio}>
           <h1>KURIOSITY</h1>
-          <ImageCarousel imgs={[kurio_a, kurio_b, kurio_c, kurio_d, kurio_e, kurio_f, kurio_g]} />
+          <ImageCarousel imgs={[kurio_c, kurio_a, kurio_b, kurio_d, kurio_e, kurio_f, kurio_g]} />
         </div>
       </div>
     </div>

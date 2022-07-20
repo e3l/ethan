@@ -1,5 +1,5 @@
 .container {
-    width: 70%;
+    width: min(max(35em, 70%), 55em);
 }
 
 .credits {
