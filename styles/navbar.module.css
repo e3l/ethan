@@ -4,7 +4,7 @@
     z-index: 99;
     
     height: var(--navbarheight);
-    width: 100%;
+    width: 100vw;
 
     display: flex;
     align-items: center;

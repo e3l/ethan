@@ -1,5 +1,5 @@
 import Head from 'next/head'
-import styles from '../styles/home.module.css'
+import styles from '../styles/index.module.css'
 
 import { motion } from 'framer-motion'
 
@@ -35,6 +35,12 @@ export default function Home() {
             or Go Home
         </motion.p>
       </div>
+
+      {/* <div className={styles.banners}>
+        <div className={styles.kuriosity}>
+          KURIOSITY
+        </div>
+      </div> */}
     </div>
   )
 }

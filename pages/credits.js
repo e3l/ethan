@@ -4,6 +4,7 @@ import Image from 'next/future/image';
 import * as style from '../styles/credits.module.css'
 import yourname from '../public/credits.png'
 import { useScroll, motion } from 'framer-motion';
+import OverlayScrollbars from 'overlayscrollbars';
 
 function ListDecomposed(props) {
     return (
@@ -39,9 +40,12 @@ export default function Credits() {
         var lastscroll = 0;
         var lock = false;
 
+        var scroller = OverlayScrollbars(document.querySelector("body"))
+
         function scrollLogic() {
             if ((new Date()).getTime() - lastscroll > 1000 && !lock) {
-                window.scrollBy(0, 1);
+                // window.scrollBy(0, 1);
+                scroller.scroll({y: "+=1"})
             }
         }
 
@@ -481,7 +485,6 @@ export default function Credits() {
                             VIVEK P
                             JONATHAN W
                             SEAN K
-                            SEAN U
                             JACOB P`}
                         />
                         <ListDecomposed
@@ -522,10 +525,6 @@ export default function Credits() {
                             LUCAS C
                             STAS A
                             LUKE D
-                            EMMA Z
-                            NOAH Y
-                            RAYMOND Y
-                            DEREK W
                             BRIANNA W
                             ALYNA T
                             RITAJA S
@@ -533,9 +532,7 @@ export default function Credits() {
                             ATHENA N
                             SEBASTIAN M
                             SKYLA M
-                            MINNIE L
                             ABLE L
-                            CASSIDY K
                             JONAH H
                             GRACELYNN H`}
                         />
@@ -582,7 +579,6 @@ export default function Credits() {
                             DALIA A
                             CAROLINE Z
                             IDDO B
-                            ARATI P
                             JONAS P
                             JAMES K
                             AMITA G
@@ -603,10 +599,8 @@ export default function Credits() {
                             GRACE L
                             TEJAS T
                             ANTHONY S
-                            GRACE L
                             KENZA A
                             GAVIN C
-                            CALE A
                             NICO C
                             ARJUN S
                             SIENNA S`}

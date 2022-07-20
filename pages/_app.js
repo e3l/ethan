@@ -1,5 +1,5 @@
-import Layout from '../components/layout'
 import '../styles/globals.css'
+import "overlayscrollbars/css/OverlayScrollbars.css";
 
 import Navbar from '../components/navbar'
 import Footer from '../components/footer'
@@ -8,6 +8,9 @@ import { motion, AnimatePresence } from 'framer-motion'
 import Router from "next/router";
 
 import { fixTimeoutTransition } from '../util/fixTimeoutTransition'
+import { OverlayScrollbarsComponent } from 'overlayscrollbars-react';
+import { useEffect } from 'react';
+import OverlayScrollbars from 'overlayscrollbars';
 
 fixTimeoutTransition(750)
 
@@ -42,6 +45,10 @@ const container = {
 }
 
 function MyApp({ Component, pageProps, router }) {
+  useEffect(() => {
+    OverlayScrollbars(document.querySelectorAll('body'), { className : "os-theme-light deviant-scrollbars" });
+  }, [])
+
   return (
     // <AnimatePresence exitBeforeEnter>
     //     <Layout key='help'>
@@ -50,30 +57,32 @@ function MyApp({ Component, pageProps, router }) {
     // </AnimatePresence>
     <div>
       <Navbar />
-      <AnimatePresence exitBeforeEnter
-        onExitComplete={() => {
-          if (typeof window !== 'undefined') {
-            window.scrollTo({ top: 0 })
-          }
-        }}
-      >
-        <motion.div
-          key={router.route + 'yet'}
-          variants={container}
-          initial="hidden"
-          animate="show"
-          exit="exit"
-          transition={{
-            type: 'linear',
-            duration: 0.5
+      <OverlayScrollbarsComponent
+        id='scroller'>
+        <AnimatePresence exitBeforeEnter
+          onExitComplete={() => {
+            if (typeof window !== 'undefined') {
+              OverlayScrollbars(document.querySelector("body")).scroll({y:0});
+            }
           }}>
-          <main
-            className="content">
-            <Component {...pageProps} key={router.route} />
-          </main>
-          <Footer />
-        </motion.div>
-      </AnimatePresence>
+          <motion.div
+            key={router.route + 'yet'}
+            variants={container}
+            initial="hidden"
+            animate="show"
+            exit="exit"
+            transition={{
+              type: 'linear',
+              duration: 0.5
+            }}>
+            <main
+              className="content">
+              <Component {...pageProps} key={router.route} />
+            </main>
+            <Footer />
+          </motion.div>
+        </AnimatePresence>
+      </OverlayScrollbarsComponent>
     </div>
   )
 }

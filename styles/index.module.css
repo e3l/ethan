@@ -20,3 +20,17 @@
   opacity: 0;
   color: var(--red);
 }
+
+.banners {
+  width: 100vw;
+
+  position: relative;
+  left: 50%;
+  margin-left: -50vw;
+  right: 50%;
+  margin-right: -50vw;
+}
+
+.kuriosity {
+  background-color: #e86f6f;
+}
