@@ -40,9 +40,10 @@ function ImageCarousel(props) {
                   <Image 
                     key={src.src}
                     src={src}
-                    sizes="20vw"
+                    sizes="30vw"
                     // quality={50}
-                    alt="" />
+                    alt=""
+                    placeholder='blur' />
                 )
               }
               return elems;
