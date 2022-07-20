@@ -1,9 +1,9 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 import Image from 'next/future/image';
 
 import * as style from '../styles/credits.module.css'
 import yourname from '../public/credits.png'
-import { useScroll, motion } from 'framer-motion';
+import { motion } from 'framer-motion';
 import OverlayScrollbars from 'overlayscrollbars';
 
 function ListDecomposed(props) {
@@ -30,13 +30,25 @@ function ListDecomposed(props) {
 }
 
 export default function Credits() {
-    const placeholderref = useRef(null);
-    const { scrollYProgress } = useScroll({
-        target: placeholderref,
-        offset: ["start end", "end end"]
-    });
+    const [opacity, setOpacity] = useState(0);
+
+    function splashlogic() {
+        let options = {
+            threshold: Array.from({length: 101}, (x, i) => i/100)
+        }
+          
+        let observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach((entry) => {
+                console.log(entry.intersectionRatio);
+                setOpacity(entry.intersectionRatio);
+            })
+        }, options);
+        observer.observe(document.querySelector("#splashplaceholder"))
+    }
 
     useEffect(() => {
+        splashlogic();
+
         var lastscroll = 0;
         var lock = false;
 
@@ -770,13 +782,13 @@ export default function Credits() {
                     <br></br>
                     <p>thank you all, for everything</p>
                 </div>
-                <div ref={placeholderref} className={style.splashplaceholder}>
+                <div className={style.splashplaceholder} id="splashplaceholder">
 
                 </div>
             </div>
             <div className={style.bg}>
                 <motion.div
-                    style={{ opacity: scrollYProgress }}>
+                    style={{ opacity: opacity }}>
                     <Image src={yourname}
                         alt="The comet from Your Name blazes towards the setting sun in the horizon, its tail shining against a star-speckled night sky." />
                 </motion.div>
