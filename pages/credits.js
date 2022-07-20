@@ -37,11 +37,10 @@ export default function Credits() {
 
     useEffect(() => {
         var lastscroll = 0;
-        var scrolled = false;
+        var lock = false;
 
         function scrollLogic() {
-            if ((new Date()).getTime() - lastscroll > 1000) {
-                scrolled = true;
+            if ((new Date()).getTime() - lastscroll > 1000 && !lock) {
                 window.scrollBy(0, 1);
             }
         }
@@ -49,8 +48,16 @@ export default function Credits() {
         function scrollListener() {
             lastscroll = (new Date()).getTime();
         }
+        function mousedown() {
+            lock = true;
+        }
 
         window.addEventListener('wheel', scrollListener);
+        window.addEventListener('mousedown', mousedown);
+        window.addEventListener('mouseup', () => {
+            lock = false;
+            scrollListener();
+        });
 
         var intervalID = setInterval(scrollLogic, 10);
 
@@ -65,7 +72,7 @@ export default function Credits() {
                 {/* <div>
                     THANK YOU TO...
                 </div> */}
-                <div>
+                <div> 
                     <ListDecomposed
                         label='ALPACA'
                         names={`RYAN CHA.
@@ -213,6 +220,64 @@ export default function Credits() {
                         />
                     </div>
                 </div>
+                <div>
+                    <ListDecomposed
+                        label='PIANO'
+                        names={`XIAOXIAO J`}
+                    />
+                </div>
+                <div className={style.split}>
+                    <div>
+                        <ListDecomposed
+                            label='MITRE'
+                            names={`MARISSA D
+                            MICHAEL D
+                            MICHAEL T
+                            NICK M
+                            KERRIANNE M
+                            ISHA G
+                            TIARA C
+                            ATIENA B
+                            CHRIS W
+                            DR. MIKE T
+                            KEITH M
+                            MELANIE J`}
+                        />
+                        <ListDecomposed
+                            names={`BRYANT J
+                            SANDRA S
+                            DIVYA S
+                            JOYCE G`}
+                        />
+                    </div>
+                    <div>
+                        <ListDecomposed
+                            label='OPPLANE'
+                            names={`FRANCISCO C
+                            ALEXEI N
+                            JEREMY
+                            HITESH C`}
+                        />
+                        <ListDecomposed
+                            label='QOOM'
+                            names={`MR. LERA
+                            KIAE`}
+                        />
+                        <ListDecomposed
+                            label='UNO'
+                            names={`DR. ZHONG
+                            NISHAN K
+                            TRAVIS M
+                            AGNIBH D
+                            DANIEL S
+                            AIDEN`}
+                        />
+                        <ListDecomposed
+                            label='WCEO and CMT'
+                            names={`...`}
+                        />
+                    </div>
+                </div>
                 <div className={style.split}>
                     <div>
                         <ListDecomposed
@@ -274,10 +339,32 @@ export default function Credits() {
                             ALYSSA P
                             ARLENE C
                             ETHAN S
-                            CLAIRE C`}
+                            CLAIRE C
+                            KENDRICK Y
+                            TRINITY C`}
                         />
                         <ListDecomposed
                             names={`MRS. HALL`}
+                        />
+                        <ListDecomposed
+                            label='DEBATE'
+                            names={`MALLIKA P
+                            JOSHUA Y
+                            BESS O
+                            JARED S
+                            NIKKI S
+                            WILLIAM X
+                            VIKRAM V
+                            EZRA K
+                            NICOLAS M
+                            ELIJAH S
+                            ICHIRO T
+                            EVAN A
+                            CHRIS L
+                            JACOB L
+                            ANDY W
+                            ISHAN B
+                            SARAH S`}
                         />
                         <ListDecomposed
                             label='GEC/BAHSEL'
@@ -317,7 +404,9 @@ export default function Credits() {
                             MAYA O
                             LILY B
                             COLIN L
-                            JACK F`}
+                            JACK F
+                            NOOR P
+                            EMILIA R`}
                         />
                         <ListDecomposed
                             names={`AVA B
@@ -330,7 +419,36 @@ export default function Credits() {
                             KYRA B
                             NINA L
                             BILL C
-                            ANDREW P`}
+                            ANDREW P
+                            LARRY S`}
+                        />
+                        <ListDecomposed
+                            label='BADMINTON'
+                            names={`BENNY G
+                            EDRIC W
+                            ISSEY S
+                            VIVAN S
+                            MAE S
+                            ROBIN L
+                            SHARAD P
+                            KIMI S
+                            HANNA P
+                            ASHLEY S
+                            AMITA G
+                            WILLIAM L
+                            CORNNELL C
+                            EDLYN H
+                            MICHAEL X
+                            CLAIRE L
+                            EDWARD C
+                            MARGARIS B
+                            JUSTIN Z
+                            HAYDEN Z
+                            DASHA B
+                            KAILEE K
+                            JULIA Z
+                            PAU Z
+                            WILSON J`}
                         />
                         <ListDecomposed
                             label='TEACHERS'
@@ -352,6 +470,312 @@ export default function Credits() {
                         />
                     </div>
                 </div>
+                <div className={style.split}>
+                    <div>
+                        <ListDecomposed
+                            label='MATHPATH'
+                            names={`ISAAC L
+                            DHRUV R
+                            SEAN U
+                            SAKET R
+                            VIVEK P
+                            JONATHAN W
+                            SEAN K
+                            SEAN U
+                            JACOB P`}
+                        />
+                        <ListDecomposed
+                            names={`APRIL
+                            DR. T
+                            PROF. B
+                            PROF. CLARK
+                            PROF. D
+                            PROF. PUDWELL
+                            GLEN
+                            DR. V
+                            MR. M
+                            SILAS J
+                            MADDY
+                            CONOR
+                            ANNA
+                            JACK`}
+                        />
+                    </div>
+                    <div>
+                        <ListDecomposed
+                            names={`LUCAS C
+                            RICHARD S
+                            RYAN C
+                            ANDY Z
+                            ANNIE W
+                            CAROL L
+                            TIMOTHY L
+                            CASSIDY K
+                            COLIN J
+                            DEREK W
+                            ETHAN H
+                            MINNIE L
+                            NOAH Y
+                            RAYMOND Y
+                            RICHARD D
+                            EMMA Z
+                            LUCAS C
+                            STAS A
+                            LUKE D
+                            EMMA Z
+                            NOAH Y
+                            RAYMOND Y
+                            DEREK W
+                            BRIANNA W
+                            ALYNA T
+                            RITAJA S
+                            ANNA P
+                            ATHENA N
+                            SEBASTIAN M
+                            SKYLA M
+                            MINNIE L
+                            ABLE L
+                            CASSIDY K
+                            JONAH H
+                            GRACELYNN H`}
+                        />
+                    </div>
+                </div>
+                <div className={style.split}>
+                    <div>
+                        <ListDecomposed
+                            label='JLS'
+                            names={`ETHAN B
+                            ETHAN T
+                            ARTHUR C
+                            VINCENT C`}
+                        />
+                        <ListDecomposed
+                            names={`KIERA P
+                            EMERSON A
+                            ALEX A
+                            ARIEL A
+                            JACK B
+                            YAMM E
+                            LIAM L
+                            LARRY S
+                            PETER Z`}
+                        />
+                        <ListDecomposed
+                            label='CONNECTIONS'
+                            names={`ZARA W
+                            AUDREY G
+                            KATHLEEN L
+                            ZEPHAN S
+                            EVA A
+                            ALEC T
+                            GRAYDEN D
+                            NARISSA M
+                            ROCKY L
+                            ANIRUDH P
+                            STEPHANIE G
+                            ARATI P
+                            EMMA L
+                            PAUL G
+                            NATHANIEL G
+                            TAJ G
+                            DALIA A
+                            CAROLINE Z
+                            IDDO B
+                            ARATI P
+                            JONAS P
+                            JAMES K
+                            AMITA G
+                            KIMI S
+                            ETHAN K
+                            MATTIA B
+                            ANJALI B
+                            JERRY X
+                            JANET M
+                            ARYAN G
+                            CALE A
+                            KATHERINE L
+                            MATTHEW G
+                            ARYANA B
+                            CAMERON B
+                            GRIFFIN S
+                            JACK F
+                            GRACE L
+                            TEJAS T
+                            ANTHONY S
+                            GRACE L
+                            KENZA A
+                            GAVIN C
+                            CALE A
+                            NICO C
+                            ARJUN S
+                            SIENNA S`}
+                        />
+                        <ListDecomposed
+                            label='TEACHERS'
+                            names={`MS. LUU
+                            MRS. BETTENCOURT
+                            MRS. LOHSE
+                            MR. PARSONS
+                            MRS. MELNICK
+                            MRS. DUFFEK
+                            MS. FEE
+                            MRS. NYGAARD
+                            MR. LACAYO
+                            MS. LUO
+                            MRS. DARBY
+                            MR. SHIRLEY
+                            MR. WEINER
+                            MR. BOOTH
+                            MR. MISKE
+                            MS. MCKINLAY`}
+                        />
+                    </div>
+                    <div>
+                        <ListDecomposed
+                            label='KNIGHTS OF NIENTE'
+                            names={`PETER C
+                            LUCAS T
+                            ORION K
+                            NATHAN P`}
+                        />
+                        <ListDecomposed
+                            label='STUDENT COUNCIL'
+                            names={`COLIN C
+                            SAMANTHA L
+                            SOPHIA V
+                            LAUREN P
+                            LUCIAN Z
+                            NAYIM B`}
+                        />
+                        <ListDecomposed
+                            label={`HEMIDEMI SEMIQUAVERS`}
+                            names={`HANNA P
+                            AJIN J
+                            SERENA N
+                            ANDY L
+                            STEPHANIE S
+                            MAHIMA Y
+                            WYETH M`}
+                        />
+                        <ListDecomposed
+                            label='JLS ORCH'
+                            names={`CLAIRE W
+                            ERIC F
+                            JOSHUA L
+                            PARKER W`}
+                        />
+                        <ListDecomposed
+                            names={`ABBY K
+                            AMITA G
+                            ASHLEY S
+                            JUSTIN Y
+                            ALBERT J
+                            REINA K`}
+                        />
+                        <ListDecomposed
+                            names={`ALMA C
+                            VIVIAN T
+                            AUDRY D
+                            JENNIE F
+                            BOGIE K
+                            MICHELLE L
+                            STEVEN L
+                            RICHARD L
+                            MICHELLE P
+                            KEIRA P
+                            ETHAN Z
+                            ARIEL A`}
+                        />
+                        <ListDecomposed
+                            names={`MS. MCGUIRE`}
+                        />
+                        <ListDecomposed
+                            label='STAGE TECH'
+                            names={`DANIELLE M
+                            ANNA T
+                            EBRU H
+                            HILA L
+                            ALISHA B
+                            DIANA
+                            AMELIA
+                            ABIGAIL F
+                            KRISHNA
+                            JENNY M`}
+                        />
+                        <ListDecomposed
+                            names={`BANKS H
+                            KATEL F
+                            OCTAVIUS D
+                            EMMA E
+                            EMMA G
+                            SOFIA H
+                            MIKE K
+                            PALINA K
+                            ATHYA P
+                            JOHANNAH S
+                            YUNA S
+                            SAFINA S
+                            PHOEBE B
+                            OREN S
+                            ZINA Z
+                            GEORGIA G`}
+                        />
+                        <ListDecomposed
+                            names={`MR. MAHLE
+                            DAN N
+                            KEN`}
+                        />
+                    </div>
+                </div>
+                <div>
+                    <ListDecomposed
+                        label='EL CARMELO'
+                        names={`MEGAN C
+                        LUCIAN Z
+                        BRETT H
+                        DORA P
+                        ETHAN G
+                        LUKAS J
+                        ELENA B
+                        EMMA M
+                        FRANKLIN T
+                        MITCHELL K
+                        NICHOLAS S
+                        CARTER S
+                        LAURA C
+                        NATALIE T
+                        DAMIEN S
+                        JACK N
+                        KEIRA P
+                        TYLER M
+                        CAROLINE M
+                        AARON N
+                        ARWYN L
+                        CHRISTIAN S
+                        DANIEL G
+                        EMILIE Y
+                        JASMINE F
+                        KAYLEY S
+                        LINCOLN T
+                        THETA T
+                        ALEEZA G
+                        COWEN M
+                        DIVYA M
+                        ELIA B
+                        KIMI S
+                        LUCA M
+                        JERRY`}
+                    />
+                </div>
+                <div>
+                    <p>my parents, my sister, my family, and family friends</p>
+                    <br></br>
+                    <p>and all those I&apos;m sorry I forgot, but have made me who I am as much as everyone else. <br></br>Please reach out! I&apos;d love to relive old memories.</p>
+                    <br></br>
+                    <br></br>
+                    <p>thank you all, for everything</p>
+                </div>
                 <div ref={placeholderref} className={style.splashplaceholder}>
 
                 </div>
@@ -359,7 +783,8 @@ export default function Credits() {
             <div className={style.bg}>
                 <motion.div
                     style={{ opacity: scrollYProgress }}>
-                    <Image src={yourname} />
+                    <Image src={yourname}
+                        alt="The comet from Your Name blazes towards the setting sun in the horizon, its tail shining against a star-speckled night sky." />
                 </motion.div>
             </div>
         </div>
