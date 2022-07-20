@@ -39,7 +39,6 @@ export default function Credits() {
           
         let observer = new IntersectionObserver((entries, observer) => {
             entries.forEach((entry) => {
-                console.log(entry.intersectionRatio);
                 setOpacity(entry.intersectionRatio);
             })
         }, options);
@@ -57,6 +56,9 @@ export default function Credits() {
         function scrollLogic() {
             if ((new Date()).getTime() - lastscroll > 1000 && !lock) {
                 // window.scrollBy(0, 1);
+                if (scroller === undefined) {
+                    scroller = OverlayScrollbars(document.querySelector("body"))
+                }
                 scroller.scroll({y: "+=1"})
             }
         }
