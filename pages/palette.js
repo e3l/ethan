@@ -19,9 +19,12 @@ export default function Palette() {
                     }
                 </div>
                 <p>
-                    <span style={{ fontFamily: 'Bebas Neue', paddingRight: '0.2em' }}>Bebas Neueu</span> and Open Sans hosted by Google Fonts.
+                    <span style={{ fontFamily: 'Bebas Neue' }}>Bebas Neueu</span>, <span style={{ fontFamily: 'Montserrat' }}>MONTSERRAT</span>, and Open Sans hosted by Google Fonts.
                 </p>
             </div>
+            <p>
+                Featuring framer-motion, Overlay Scrollbars, and a lot of IntersectionObserver :&apos;)
+            </p>
         </div>
     )
 }
