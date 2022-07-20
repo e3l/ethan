@@ -387,6 +387,10 @@ export default function Credits() {
                         <ListDecomposed
                             label='GEC/BAHSEL'
                             names={`STEPHEN L
+                            TRAVIS C
+                            DANIEL C
+                            HUBERT L
+                            ANGUS
                             WHAMS`}
                         />
                     </div>
