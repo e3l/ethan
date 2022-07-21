@@ -30,28 +30,31 @@ const headlineAnimation = {
 
 function ImageCarousel(props) {
   return (
-    <div className={styles.imagesContainer} id="scrollz">
-        <div className={styles.images}>
-          {
-            function () {
-              let elems = []
-              for (let src of props.imgs) {
-                elems.push(
-                  <Image 
-                    key={src.src}
-                    src={src}
-                    sizes="30vw"
-                    // quality={50}
-                    alt=""
-                    placeholder='blur' />
-                )
-              }
-              return elems;
-            }()
-          }
-          {/* {props.children} */}
-        </div>
-    </div>)
+    <motion.div className={styles.imagesContainer} id="scrollz"
+      initial={{ paddingLeft: "100vw" }}
+      whileInView={{ paddingLeft: "0vw", transition: {duration: 1.5, type:'tween'} }}
+      viewport={{ once: true }}>
+      <div className={styles.images}>
+        {
+          function () {
+            let elems = []
+            for (let src of props.imgs) {
+              elems.push(
+                <Image
+                  key={src.src}
+                  src={src}
+                  sizes="30vw"
+                  // quality={50}
+                  alt=""
+                  placeholder='blur' />
+              )
+            }
+            return elems;
+          }()
+        }
+        {/* {props.children} */}
+      </div>
+    </motion.div>)
 }
 
 export default function Home() {
@@ -62,52 +65,62 @@ export default function Home() {
       return;
     }
 
-    let cleanups = [];
+    let threshold = 0.8;
+    let observer_options = {
+      threshold: threshold
+    }
 
+    let intervals = [];
     document.querySelectorAll("#scrollz").forEach((item) => {
-      let options = {
-        threshold: 1.0
-      }
+      let scrollTo = null;
+      let visible = false;
 
-      let scrollTo = Array.from(item.querySelectorAll("img"));
+      let scroller = undefined;
 
       let observer = new IntersectionObserver((entries, observer) => {
-          entries.forEach((entry) => {
-            if (entry.intersectionRatio == 1) {
-              let scroller = OverlayScrollbars(item);
+        entries.forEach((entry) => {
+          if (entry.intersectionRatio > threshold) {
+            visible = true;
+          } else {
+            visible = false;
+          }
 
-              function scrollToNext() {
-                if (scroller === undefined) {
-                  scroller = OverlayScrollbars(item);
-                }
+          if (visible && scrollTo == null) {
+            scrollTo = Array.from(item.querySelectorAll("img"));
+            scrollTo.shift(); // the first element is already scrolled to
 
-                if (scroller === undefined) {
-                  return;
-                }
+            function scrollNext() {
+              if (!visible) {
+                return;
+              }
 
+              if (scroller === undefined) {
+                scroller = OverlayScrollbars(item);
+              }
+              if (scroller !== undefined) {
+                console.log('scroll');
                 scroller.scroll({
                   el: scrollTo[0],
                   block: "begin"
                 }, 1000);
                 scrollTo.shift();
               }
-
-              setTimeout(scrollToNext, 500);
-              let intID = setInterval(scrollToNext, 6000);
-              cleanups.push(intID);
             }
-          });
-      }, options);
+
+            intervals.push(setInterval(scrollNext, 6000));
+          }
+        });
+      }, observer_options);
       observer.observe(item);
     });
 
     rendered.current = true;
 
     return () => {
-      for (let cleanup of cleanups) {
-        clearInterval(cleanup);
-      }
-    }
+      intervals.forEach((intvl) => {
+        clearInterval(intvl);
+      });
+    };
   }, []);
 
   return (
