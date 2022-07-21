@@ -27,7 +27,7 @@ export default function Navbar() {
     return (
         <div className={style.container}>
             <div className={style.navbar}>
-                <HoverLink href='/' className={style.home}>Ethan Liang</HoverLink>
+                <HoverLink href='/' className={style.home}>ETHAN LIANG</HoverLink>
                 <div className={style.links}>
                     <NavLink href='/resume'>[Under Construction]</NavLink>
                     <NavLink href='/credits'>Credits</NavLink>

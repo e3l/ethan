@@ -65,3 +65,14 @@ a {
   background-color: var(--primary) !important;
   /* cursor: pointer; */
 }
+
+/* ===== Scrollbar CSS ===== */
+  /* Firefox */
+  * {
+    scrollbar-width: none;
+  }
+
+  /* Chrome, Edge, and Safari */
+  *::-webkit-scrollbar {
+    display: none;
+  }
