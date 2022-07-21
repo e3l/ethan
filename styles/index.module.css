@@ -19,7 +19,6 @@
 .headline * {
   margin: -0.12em 0;
 
-  opacity: 0;
   color: var(--red);
 }
 

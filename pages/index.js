@@ -24,8 +24,7 @@ import kurio_f from '../components/index/kurio/f.png'
 import kurio_g from '../components/index/kurio/g.png'
 
 const headlineAnimation = {
-  opacity: [0, 1, 1],
-  color: ['#F00000', '#F00000', '#FFFFFF']
+  color: ['#000000', '#F00000', '#FFFFFF']
 };
 
 function ImageCarousel(props) {
@@ -134,7 +133,7 @@ export default function Home() {
         <motion.p
           animate={headlineAnimation}
           transition={{
-            duration: 2.25,
+            duration: 2.5,
             delay: 0
           }}>
           Go Big
@@ -142,8 +141,8 @@ export default function Home() {
         <motion.p
           animate={headlineAnimation}
           transition={{
-            duration: 2.5,
-            delay: 1.25
+            duration: 2.25,
+            delay: 1.4
           }}>
           or Go Home
         </motion.p>
