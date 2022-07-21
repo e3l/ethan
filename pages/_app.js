@@ -48,7 +48,7 @@ function MyApp({ Component, pageProps, router }) {
   useEffect(() => {
     OverlayScrollbars(document.querySelectorAll('body'), { className : "os-theme-light deviant-scrollbars" });
     OverlayScrollbars(document.querySelectorAll('#scrollz'), { className : "os-theme-light deviant-scrollbars" });
-  }, [])
+  }, []);
 
   return (
     <div>

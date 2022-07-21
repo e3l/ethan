@@ -95,10 +95,9 @@ export default function Home() {
               }
 
               if (scroller === undefined) {
-                scroller = OverlayScrollbars(item);
+                scroller = OverlayScrollbars(item, { className : "os-theme-light deviant-scrollbars" });
               }
               if (scroller !== undefined) {
-                console.log('scroll');
                 scroller.scroll({
                   el: scrollTo[0],
                   block: "begin"

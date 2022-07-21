@@ -469,7 +469,7 @@ export default function Credits() {
                             DASHA B
                             KAILEE K
                             JULIA Z
-                            PAU Z
+                            PAUL Z
                             WILSON J`}
                         />
                         <ListDecomposed
