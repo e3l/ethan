@@ -53,7 +53,8 @@ function MyApp({ Component, pageProps, router }) {
   return (
     <div>
       <Navbar />
-      <OverlayScrollbarsComponent>
+      <OverlayScrollbarsComponent
+        options={{overflowBehavior:{x:"hidden"}}}>
         <AnimatePresence exitBeforeEnter
           onExitComplete={() => {
             if (typeof window !== 'undefined') {
