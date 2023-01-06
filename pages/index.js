@@ -2,6 +2,8 @@ import Head from 'next/head'
 import styles from '../styles/index.module.css'
 import Image from 'next/future/image'
 
+import Spacer from '../components/spacer.js'
+
 import { motion, useReducedMotion } from 'framer-motion'
 
 import { useEffect, useRef, useState } from 'react';
@@ -31,7 +33,7 @@ function ImageCarousel(props) {
   return (
     <motion.div className={styles.imagesContainer} id="scrollz"
       initial={{ paddingLeft: "100vw" }}
-      whileInView={{ paddingLeft: "0vw", transition: {duration: 1.5, type:'tween'} }}
+      whileInView={{ paddingLeft: "0vw", transition: { duration: 1.5, type: 'tween' } }}
       viewport={{ once: true }}>
       <div className={styles.images}>
         {
@@ -94,7 +96,7 @@ export default function Home() {
               }
 
               if (scroller === undefined) {
-                scroller = OverlayScrollbars(item, { className : "os-theme-light deviant-scrollbars" });
+                scroller = OverlayScrollbars(item, { className: "os-theme-light deviant-scrollbars" });
               }
               if (scroller !== undefined) {
                 scroller.scroll({
@@ -146,6 +148,22 @@ export default function Home() {
           }}>
           or Go Home
         </motion.p>
+        <motion.div 
+          className={styles.headlineLinks}
+          animate={{ opacity: [0, 1] }}
+            transition={{
+              delay: 2.5
+            }}>
+          <a
+            href="https://github.com/e3l">
+            github ↗
+          </a>
+          <Spacer />
+          <a
+            href="https://www.linkedin.com/in/e3lcool/">
+            linkedin ↗
+          </a>
+        </motion.div>
       </div>
 
       <div className={styles.banners}>

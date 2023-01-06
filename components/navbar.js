@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion'
 import Link from 'next/link'
 
-import * as style from '../styles/navbar.module.css'
+import * as style from './navbar.module.css'
 
 function HoverLink(props) {
     return (

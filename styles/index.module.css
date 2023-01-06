@@ -22,6 +22,20 @@
   color: var(--red);
 }
 
+.headlineLinks * {
+  font-family: "Open Sans", sans-serif;
+  font-size: 2vh;
+  color: var(--primary);
+}
+
+.headline a {
+  padding: 2vh;
+}
+
+.headline a:hover {
+  color: var(--red);
+}
+
 .banners {
   width: 100vw;
 

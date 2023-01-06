@@ -1,12 +1,8 @@
 import Link from 'next/link'
 
-import * as style from '../styles/footer.module.css'
+import Spacer from './spacer.js'
 
-function Spacer() {
-    return (
-        <span className={style.spacer}>-</span>
-    )
-}
+import * as style from './footer.module.css'
 
 export default function Footer() {
     return (
