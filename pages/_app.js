@@ -6,13 +6,14 @@ import Footer from '../components/footer'
 
 import { motion, AnimatePresence } from 'framer-motion'
 import Router from "next/router";
+import {Analytics} from "@vercel/analytics/react"
 
 import { fixTimeoutTransition } from '../util/fixTimeoutTransition'
 import { OverlayScrollbarsComponent } from 'overlayscrollbars-react';
 import { useEffect } from 'react';
 import OverlayScrollbars from 'overlayscrollbars';
 
-fixTimeoutTransition(750)
+fixTimeoutTransition(750);
 
 const routeChange = () => {
   // Temporary fix to avoid flash of unstyled content
@@ -79,6 +80,7 @@ function MyApp({ Component, pageProps, router }) {
           </motion.div>
         </AnimatePresence>
       </OverlayScrollbarsComponent>
+      <Analytics />
     </div>
   )
 }
