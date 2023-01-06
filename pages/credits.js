@@ -34,9 +34,9 @@ export default function Credits() {
 
     function splashlogic() {
         let options = {
-            threshold: Array.from({length: 101}, (x, i) => i/100)
+            threshold: Array.from({ length: 101 }, (x, i) => i / 100)
         }
-          
+
         let observer = new IntersectionObserver((entries, observer) => {
             entries.forEach((entry) => {
                 setOpacity(entry.intersectionRatio);
@@ -59,7 +59,7 @@ export default function Credits() {
                 if (scroller === undefined) {
                     scroller = OverlayScrollbars(document.querySelector("body"))
                 }
-                scroller.scroll({y: "+=1"})
+                scroller.scroll({ y: "+=1" })
             }
         }
 
@@ -90,7 +90,7 @@ export default function Credits() {
                 {/* <div>
                     THANK YOU TO...
                 </div> */}
-                <div> 
+                <div>
                     <ListDecomposed
                         label='ALPACA'
                         names={`RYAN CHA.
@@ -740,45 +740,53 @@ export default function Credits() {
                         />
                     </div>
                 </div>
-                <div>
-                    <ListDecomposed
-                        label='EL CARMELO'
-                        names={`MEGAN C
-                        LUCIAN Z
-                        BRETT H
-                        DORA P
-                        ETHAN G
-                        LUKAS J
-                        ELENA B
-                        EMMA M
-                        FRANKLIN T
-                        MITCHELL K
-                        NICHOLAS S
-                        CARTER S
-                        LAURA C
-                        NATALIE T
-                        DAMIEN S
-                        JACK N
-                        KEIRA P
-                        TYLER M
-                        CAROLINE M
-                        AARON N
-                        ARWYN L
-                        CHRISTIAN S
-                        DANIEL G
-                        EMILIE Y
-                        JASMINE F
-                        KAYLEY S
-                        LINCOLN T
-                        THETA T
-                        ALEEZA G
-                        COWEN M
-                        DIVYA M
-                        ELIA B
-                        KIMI S
-                        LUCA M
-                        JERRY`}
-                    />
+                <div className={style.split}>
+                    <div>
+                        <ListDecomposed
+                            label='EL CARMELO'
+                            names={`MEGAN C
+                            LUCIAN Z
+                            BRETT H
+                            DORA P
+                            ETHAN G
+                            LUKAS J
+                            ELENA B
+                            EMMA M
+                            FRANKLIN T
+                            MITCHELL K
+                            NICHOLAS S
+                            CARTER S
+                            LAURA C
+                            NATALIE T
+                            DAMIEN S
+                            JACK N
+                            KEIRA P
+                            TYLER M
+                            CAROLINE M
+                            AARON N
+                            ARWYN L
+                            CHRISTIAN S
+                            DANIEL G
+                            EMILIE Y
+                            JASMINE F
+                            KAYLEY S
+                            LINCOLN T
+                            THETA T
+                            ALEEZA G
+                            COWEN M
+                            DIVYA M
+                            ELIA B
+                            KIMI S
+                            LUCA M
+                            JERRY`}
+                        />
+                    </div>
+                    <div>
+                        <ListDecomposed
+                            label="ACME"
+                            names="..."
+                        />
+                    </div>
                 </div>
                 <div>
                     <p>my parents, my sister, my family, and family friends</p>
