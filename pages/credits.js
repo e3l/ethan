@@ -106,6 +106,8 @@ export default function Credits() {
                             MYLIE R
                             DANIEL P
                             AIDAN G
+                            SHIRA G
+                            KEVIN Y
                             `}
                     />
                 </div>
@@ -173,11 +175,9 @@ export default function Credits() {
                         <ListDecomposed
                             label='GRT'
                             names={`ANSHU J
-                            SHIRA G
                             ROSHELLE B
                             OLIVIA V
                             MATTHEW M
-                            KEVIN Y
                             KEPLER B
                             HENRY B
                             GEOFFREY N
