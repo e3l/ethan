@@ -104,11 +104,12 @@
 
 .splashCredit {
     position: absolute;
-    width: 100%;
+    max-width: 100%;
     max-height: 100%;
     aspect-ratio: 1920 / 1234;
 
     left: 0;
+    right: 0;
     top: 0;
     bottom: 0;
 
@@ -118,7 +119,7 @@
 .splashCredit a {
     position: absolute;
     bottom: 2.5%;
-    right: 8%;
+    right: 7.2%;
 
     font-size: .65em;
     color: #686868;
