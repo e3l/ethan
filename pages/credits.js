@@ -805,6 +805,9 @@ export default function Credits() {
                     style={{ opacity: opacity }}>
                     <Image src={yourname}
                         alt="The comet from Your Name blazes towards the setting sun in the horizon, its tail shining against a star-speckled night sky." />
+                    <div className={style.splashCredit}>
+                        <a href="https://www.pixiv.net/artworks/59397171" target="_blank">さとう枕 | pixiv</a>
+                    </div>
                 </motion.div>
             </div>
         </div>
