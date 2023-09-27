@@ -4,7 +4,7 @@ export default function Palette() {
     return (
         <div className={style.container}>
             <p>
-                Made by hand with Next.js, hosted by Vercel.
+                Made by hand with Next.js, hosted on Vercel.
             </p>
             <div>
                 <div className={style.palette}>

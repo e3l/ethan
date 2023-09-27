@@ -17,7 +17,7 @@ export default function Footer() {
                     <Spacer />
                     <a href='mailto:e3lcool@gmail.com'>e3lcool@gmail.com</a>
                 </div>
-                <div>© 2022</div>
+                <div>© 2023</div>
             </div>
         </div>
     )
