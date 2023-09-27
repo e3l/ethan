@@ -39,17 +39,18 @@ function ImageCarousel(props) {
         {
           function () {
             let elems = []
-            for (let src of props.imgs) {
-              elems.push(
-                <Image
-                  key={src.src}
-                  src={src}
-                  sizes="30vw"
-                  // quality={50}
-                  alt=""
-                  placeholder='blur' />
-              )
-            }
+            props.imgs.forEach(function (src, i) {
+                elems.push(
+                  <Image
+                    key={src.src}
+                    src={src}
+                    sizes="30vw"
+                    // quality={50}
+                    priority={i < 3 ? true : false}
+                    alt=""
+                    placeholder='blur' />
+                )
+            })
             return elems;
           }()
         }
