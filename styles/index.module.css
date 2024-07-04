@@ -2,33 +2,48 @@
   width: 100%;
 }
 
-.headline {
-  font-family: var(--headlines);
-  font-size: 12vh;
-
+.headlineContainer {
   height: calc(100vh - var(--navbarheight));
   width: 100%;
-  padding: 16vh;
+  padding: max(10vw, 12vh);
 
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   justify-content: center;
-}
-
-.headline * {
-  margin: -0.12em 0;
 
   color: var(--red);
+}
+
+.headlineContainer > * {
+  margin: 2vh 0;
+}
+
+.headlines {
+  font-family: var(--headlines);
+  font-size: max(9vw, 10vh);
+  line-height: max(8vw, 9vh);
+
+  display: block;
+}
+
+.headlines > * {
+  margin: 2vh 0;
+}
+
+.headlineLinks {
+  margin-left: 0.4vh;
 }
 
 .headlineLinks * {
   font-family: "Open Sans", sans-serif;
   font-size: 2vh;
   color: var(--primary);
+
+  padding: 0 0.2em;
 }
 
-.headline a {
+.headline span {
   padding: 2vh;
 }
 

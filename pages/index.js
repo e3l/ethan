@@ -132,23 +132,25 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <div className={styles.headline}>
-        <motion.p
-          animate={headlineAnimation}
-          transition={{
-            duration: 2.5,
-            delay: 0
-          }}>
-          Go Big
-        </motion.p>
-        <motion.p
-          animate={headlineAnimation}
-          transition={{
-            duration: 2.25,
-            delay: 1.4
-          }}>
-          or Go Home
-        </motion.p>
+      <div className={styles.headlineContainer}>
+        <div className={styles.headlines}>
+          <motion.p
+            animate={headlineAnimation}
+            transition={{
+              duration: 2.5,
+              delay: 0
+            }}>
+            Go Big
+          </motion.p>
+          <motion.p
+            animate={headlineAnimation}
+            transition={{
+              duration: 2.25,
+              delay: 1.4
+            }}>
+            or Go Home
+          </motion.p>
+        </div>
         <motion.div 
           className={styles.headlineLinks}
           animate={{ opacity: [0, 1] }}
@@ -156,12 +158,12 @@ export default function Home() {
               delay: 2.5
             }}>
           <a
-            href="https://github.com/e3l">
+            href="https://github.com/e3l" target="_blank" rel="noopener noreferrer">
             github ↗
           </a>
           <Spacer />
           <a
-            href="https://www.linkedin.com/in/e3lcool/">
+            href="https://www.linkedin.com/in/e3l/" target="_blank" rel="noopener noreferrer">
             linkedin ↗
           </a>
         </motion.div>
