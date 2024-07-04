@@ -454,7 +454,6 @@ export default function Credits() {
                             ROBIN L
                             SHARAD P
                             KIMI S
-                            HANNA P
                             ASHLEY S
                             AMITA G
                             WILLIAM L
@@ -784,7 +783,13 @@ export default function Credits() {
                     <div>
                         <ListDecomposed
                             label="ACME"
-                            names="..."
+                            names={`JASON Y
+                                WENDY L
+                                ARTURO
+                                DYLAN W
+                                ARTHUR W
+                                RAMONA C
+                                ...`}
                         />
                     </div>
                 </div>
