@@ -1,29 +1,14 @@
+import Image from 'next/future/image'
 import Head from 'next/head'
 import styles from '../styles/index.module.css'
-import Image from 'next/future/image'
 
 import Spacer from '../components/spacer.js'
 
-import { motion, useReducedMotion } from 'framer-motion'
+import { motion } from 'framer-motion'
 
-import { useEffect, useRef, useState } from 'react';
-import OverlayScrollbars from 'overlayscrollbars';
-
-import grt_a from '../components/index/grt/a.png'
-import grt_b from '../components/index/grt/b.png'
-import grt_c from '../components/index/grt/c.png'
-import grt_d from '../components/index/grt/d.png'
-import grt_e from '../components/index/grt/e.png'
-import grt_f from '../components/index/grt/f.png'
-import grt_g from '../components/index/grt/g.png'
-
-import kurio_a from '../components/index/kurio/a.png'
-import kurio_b from '../components/index/kurio/b.png'
-import kurio_c from '../components/index/kurio/c.png'
-import kurio_d from '../components/index/kurio/d.png'
-import kurio_e from '../components/index/kurio/e.png'
-import kurio_f from '../components/index/kurio/f.png'
-import kurio_g from '../components/index/kurio/g.png'
+import OverlayScrollbars from 'overlayscrollbars'
+import { useEffect, useRef } from 'react'
+import { grt_imgs, kurio_imgs } from '../components/gallery/gallery_collection.js'
 
 const headlineAnimation = {
   color: ['#000000', '#F00000', '#FFFFFF']
@@ -128,7 +113,7 @@ export default function Home() {
     <div className={styles.container}>
       <Head>
         <title>Ethan Liang</title>
-        <meta name="description" content="Ethan Liang: senior and site council representative at Gunn High School, member of FRC team 192 'GRT', alumni of FTC team 12635 'Kuriosity Robotics'." />
+        <meta name="description" content="Ethan Liang: BS CS @ GT '26. Alumni Gunn High School, FRC team 192 'GRT', FTC team 12635 'Kuriosity Robotics'." />
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
@@ -172,11 +157,11 @@ export default function Home() {
       <div className={styles.banners}>
         <div className={styles.grt}>
           <h1>GRT</h1>
-          <ImageCarousel imgs={[grt_c, grt_b, grt_d, grt_e, grt_f, grt_g, grt_a]} />
+          <ImageCarousel imgs={grt_imgs} />
         </div>
         <div className={styles.kurio}>
           <h1>KURIOSITY</h1>
-          <ImageCarousel imgs={[kurio_c, kurio_a, kurio_b, kurio_d, kurio_e, kurio_f, kurio_g]} />
+          <ImageCarousel imgs={kurio_imgs} />
         </div>
       </div>
     </div>
