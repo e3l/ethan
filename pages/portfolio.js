@@ -14,14 +14,13 @@ export default function Portfolio() {
                     <Image
                         src={headshot}
                         alt="headshot of ethan"
-                        sizes="30vh"
-                        fill={true} />
+                        sizes="30vh" />
                 </div>
                 <div>
-                    <h2>BS CS @ Georgia Tech, '26</h2>
+                    <h2>BS CS @ Georgia Tech, &apos;26</h2>
                     <p>I love working on robots, but have experience throughout the modern tech stack. </p>
-                    <p>I learn quickly and ask good questions that dig at 'why'.</p>
-                    <p>I've architected tons of software solutions, led many development teams, and prototyped many robots.</p>
+                    <p>I learn quickly and ask good questions that dig at &apos;why&apos;.</p>
+                    <p>I&apos;ve architected tons of software solutions, led many development teams, and prototyped many robots.</p>
                 </div>
             </div>
 
