@@ -111,6 +111,64 @@ export default function Credits() {
                             `}
                     />
                 </div>
+
+                <div className={style.split}>
+                    <div>
+                        <ListDecomposed
+                            label='RAPYUTA'
+                            names={`MIEKALE S
+                            MARCUS H
+                            MARK D
+                            CERA W
+                            EDWARD S
+                            THEO Z
+                            ANDRE V
+                            ARDAVAN A
+                            GRAHAM M
+                            XIN X
+                            HASAN K
+                            JACK M
+                            SRIRAM R`} />
+                        <ListDecomposed
+                            names={`FILIPPO S
+                                DAMIEN D
+                                VATAN T
+                                ROSS W
+                                DIO L
+                                JAIYAM S
+                                RICKY S
+                                NAREK M
+                                QUENTIN K
+                                MELIH P
+                                CHRISTOF D
+                                MOSTAFA F
+                                CHEN W
+                                DAVID S
+                                BHUVAN C
+                                JACK A`} />
+                        <ListDecomposed
+                            names={`YAMAUCHI-SAN
+                                MAEKAWA-SAN`} />
+                    </div>
+                    <div>
+                        <ListDecomposed
+                            label='TESLA'
+                            names='JENNA K' />
+                        <ListDecomposed
+                            names={`EDWARD P
+                                ROGER P
+                                SIAVASH Y
+                                SAM M
+                                SPARSH G
+                                NATHAN J`} />
+                        <ListDecomposed
+                            names={`ADITYA K
+                                SUPRIT S
+                                TIFFANY N
+                                AARON H`} />
+                    </div>
+                </div>
+
                 <div className={style.split}>
                     <div>
                         <ListDecomposed
