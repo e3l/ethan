@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion'
 import Link from 'next/link'
 
-import * as style from './navbar.module.css'
+import style from './navbar.module.css'
 
 function HoverLink(props) {
     return (
@@ -29,7 +29,8 @@ export default function Navbar() {
             <div className={style.navbar}>
                 <HoverLink href='/' className={style.home}>ETHAN LIANG</HoverLink>
                 <div className={style.links}>
-                    <NavLink href='/resume'>[Under Construction]</NavLink>
+                    <NavLink href='/'>[under construction]</NavLink>
+                    <NavLink href='/portfolio'>Portfolio</NavLink>
                     <NavLink href='/credits'>Credits</NavLink>
                 </div>
             </div>
