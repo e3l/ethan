@@ -3,7 +3,7 @@
 }
 
 .headlineContainer {
-  height: calc(100vh - var(--navbarheight));
+  /* height: calc(100vh - var(--navbarheight)); */
   width: 100%;
   padding: max(10vw, 12vh);
 

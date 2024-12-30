@@ -25,16 +25,16 @@ function ImageCarousel(props) {
           function () {
             let elems = []
             props.imgs.forEach(function (src, i) {
-                elems.push(
-                  <Image
-                    key={src.src}
-                    src={src}
-                    sizes="30vw"
-                    // quality={50}
-                    priority={i < 3 ? true : false}
-                    alt=""
-                    placeholder='blur' />
-                )
+              elems.push(
+                <Image
+                  key={src.src}
+                  src={src}
+                  sizes="30vw"
+                  // quality={50}
+                  priority={i < 3 ? true : false}
+                  alt=""
+                  placeholder='blur' />
+              )
             })
             return elems;
           }()
@@ -136,12 +136,12 @@ export default function Home() {
             or Go Home
           </motion.p>
         </div>
-        <motion.div 
+        <motion.div
           className={styles.headlineLinks}
           animate={{ opacity: [0, 1] }}
-            transition={{
-              delay: 2.5
-            }}>
+          transition={{
+            delay: 2
+          }}>
           <a
             href="https://github.com/e3l" target="_blank" rel="noopener noreferrer">
             github ↗
@@ -154,7 +154,9 @@ export default function Home() {
         </motion.div>
       </div>
 
-      <div className={styles.banners}>
+      <motion.div className={styles.banners}
+        animate={{ opacity: [0, 1] }}
+        transition={{ delay: 2.5 }}>
         <div className={styles.grt}>
           <h1>GRT</h1>
           <ImageCarousel imgs={grt_imgs} />
@@ -163,7 +165,7 @@ export default function Home() {
           <h1>KURIOSITY</h1>
           <ImageCarousel imgs={kurio_imgs} />
         </div>
-      </div>
+      </motion.div>
     </div>
   )
 }
