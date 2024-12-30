@@ -843,7 +843,6 @@ export default function Credits() {
                             label="ACME"
                             names={`JASON Y
                                 WENDY L
-                                ARTURO
                                 DYLAN W
                                 ARTHUR W
                                 RAMONA C

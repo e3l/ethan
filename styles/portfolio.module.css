@@ -1,0 +1,22 @@
+#intro {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10vh;
+
+    margin: 5vh 15vw;
+}
+
+#headshot {
+    width: 30vh;
+    margin: auto;
+    flex-shrink: 0;
+}
+
+#resources {
+    text-align: center;
+}
+
+#banners {
+    margin-block: 5vh;
+}

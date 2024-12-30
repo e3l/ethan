@@ -32,6 +32,16 @@ a {
   color: inherit;
   text-decoration: none;
   cursor: pointer;
+  
+  -o-transition:.4s;
+  -ms-transition:.4s;
+  -moz-transition:.4s;
+  -webkit-transition:.4s;
+  transition:.4s;
+}
+
+a:hover {
+  color: var(--red);
 }
 
 * {
