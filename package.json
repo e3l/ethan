@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@vercel/analytics": "^0.1.6",
+    "@vercel/speed-insights": "^1.1.0",
     "framer-motion": "^6.5.1",
     "next": "^13.5.8",
     "overlayscrollbars": "^1.13.2",

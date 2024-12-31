@@ -6,7 +6,9 @@ import Footer from '../components/footer'
 
 import { motion, AnimatePresence } from 'framer-motion'
 import Router from "next/router";
-import {Analytics} from "@vercel/analytics/react"
+
+import { SpeedInsights } from "@vercel/speed-insights/next"
+import { Analytics } from "@vercel/analytics/react"
 
 import { fixTimeoutTransition } from '../util/fixTimeoutTransition'
 import { OverlayScrollbarsComponent } from 'overlayscrollbars-react';
@@ -47,19 +49,20 @@ const container = {
 
 function MyApp({ Component, pageProps, router }) {
   useEffect(() => {
-    OverlayScrollbars(document.querySelectorAll('body'), { className : "os-theme-light deviant-scrollbars", overflowBehavior: {x:"hidden"} });
-    OverlayScrollbars(document.querySelectorAll('#scrollz'), { className : "os-theme-light deviant-scrollbars" });
+    OverlayScrollbars(document.querySelectorAll('body'), { className: "os-theme-light deviant-scrollbars", overflowBehavior: { x: "hidden" } });
+    OverlayScrollbars(document.querySelectorAll('#scrollz'), { className: "os-theme-light deviant-scrollbars" });
   }, []);
 
   return (
     <div>
       <Navbar />
+      
       <OverlayScrollbarsComponent
-        options={{overflowBehavior:{x:"hidden"}}}>
+        options={{ overflowBehavior: { x: "hidden" } }}>
         <AnimatePresence exitBeforeEnter
           onExitComplete={() => {
             if (typeof window !== 'undefined') {
-              OverlayScrollbars(document.querySelector("body")).scroll({y:0});
+              OverlayScrollbars(document.querySelector("body")).scroll({ y: 0 });
             }
           }}>
           <motion.div
@@ -80,7 +83,9 @@ function MyApp({ Component, pageProps, router }) {
           </motion.div>
         </AnimatePresence>
       </OverlayScrollbarsComponent>
+
       <Analytics />
+      <SpeedInsights />
     </div>
   )
 }
