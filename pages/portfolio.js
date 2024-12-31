@@ -48,7 +48,7 @@ export default function Portfolio() {
             <div id={styles.banners}>
                 <div id={styles.tesla}>
                     <div className={styles.logo}>
-                        <Image src={tesla} />
+                        <Image src={tesla} alt="" />
                     </div>
                     <h1>Tesla</h1>
                     <h2>Computer Vision & Data</h2>
@@ -57,7 +57,7 @@ export default function Portfolio() {
 
                 <div id={styles.rapyuta}>
                     <div className={styles.logo}>
-                        <Image src={rapyuta} />
+                        <Image src={rapyuta} alt="" />
                     </div>
                     <h1>Rapyuta Robotics</h1>
                     <h2>Robotics Perception & Systems</h2>
@@ -66,7 +66,7 @@ export default function Portfolio() {
 
                 <div id={styles.gtri}>
                     <div className={styles.logo}>
-                        <Image src={gtri} />
+                        <Image src={gtri} alt="" />
                     </div>
                     <h1>Georgia Tech Research Institute</h1>
                     <h2>Robotics Simulation</h2>
@@ -75,7 +75,7 @@ export default function Portfolio() {
 
                 <div id={styles.mitre}>
                     <div className={styles.logo}>
-                        <Image src={mitre} />
+                        <Image src={mitre} alt="" />
                     </div>
                     <h1>MITRE Corporation</h1>
                     <h2>Deep Learning Research</h2>
@@ -84,7 +84,7 @@ export default function Portfolio() {
 
                 <div id={styles.grt}>
                     <div className={styles.logo}>
-                        <Image src={grt} />
+                        <Image src={grt} alt="" />
                     </div>
                     <h1>Gunn Robotics Team</h1>
                     <h2>Controls Team Lead</h2>
@@ -93,7 +93,7 @@ export default function Portfolio() {
 
                 <div id={styles.kurio}>
                     <div className={styles.logo}>
-                        <Image src={kurio} />
+                        <Image src={kurio} alt="" />
                     </div>
                     <h1>Kuriosity Robotics</h1>
                     <h2>Software Team Lead</h2>
