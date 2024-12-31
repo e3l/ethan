@@ -19,7 +19,8 @@ export default function Palette() {
                     }
                 </div>
                 <p>
-                    <span style={{ fontFamily: 'Bebas Neue' }}>Bebas Neueu</span>, <span style={{ fontFamily: 'Montserrat' }}>MONTSERRAT</span>, and Open Sans hosted by Google Fonts.
+                    <span style={{ fontFamily: 'Bebas Neue' }}>Bebas Neueu</span>, <span style={{ fontFamily: 'Montserrat' }}>MONTSERRAT</span>, <span style={{ fontFamily: 'Open Sans' }}>Open Sans</span>, 
+                    and Roboto hosted by Google Fonts.
                 </p>
             </div>
             <p>
