@@ -5,7 +5,7 @@ class MyDocument extends Document {
         return (
             <Html>
                 <Head>
-                    <link rel='preconnect' href='https://fonts.gstatic.com' crossorigin />
+                    <link rel='preconnect' href='https://fonts.gstatic.com' crossOrigin />
 
                     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@700&family=Open+Sans&display=swap" rel="preload" as="style" />
                     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@700&family=Open+Sans&display=swap" rel="stylesheet" />
