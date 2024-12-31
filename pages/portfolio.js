@@ -27,7 +27,7 @@ export default function Portfolio() {
                     <h2>BS CS @ Georgia Tech, &apos;26</h2>
                     <p>I love working on robots, but have experience throughout the modern tech stack. </p>
                     <p>I learn quickly and ask good questions that dig at &apos;why&apos;.</p>
-                    <p>I&apos;ve architected tons of software solutions, led many development teams, and prototyped many robots.</p>
+                    <p>I&apos;ve architected tons of software solutions, led many teams, and prototyped many robots.</p>
                 </div>
             </div>
 

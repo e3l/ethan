@@ -8,13 +8,18 @@
     align-items: center;
     gap: 10vh;
 
-    margin: 5vh 15vw;
+    width: fit-content;
+    padding: 5vh 15vw;
+    margin: 0 auto;
 }
 
 #headshot {
     width: 30vh;
-    margin: auto;
+    margin: auto 0;
     flex-shrink: 0;
+
+    border-radius: 0.3em;
+    overflow: hidden;
 }
 
 #resources {
@@ -64,7 +69,7 @@
 }
 
 #tesla {
-    background: rgb(70, 9, 9);
+    background: rgb(46, 4, 4);
 }
 
 #rapyuta {
