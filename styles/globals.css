@@ -6,7 +6,7 @@
   --borders: #262626;
   --red: #f00000;
 
-  --headlines: 'Bebas Neue', sans-serif;
+  --headlines: var(--font-bebas-neue), sans-serif;
 
   --navbarheight: 5rem;
 }
@@ -25,7 +25,7 @@ body {
   color: var(--primary);
   background-color: var(--back);
 
-  font-family: 'Roboto', sans-serif;
+  font-family: var(--font-roboto-flex), sans-serif;
 }
 
 img {

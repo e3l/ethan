@@ -15,6 +15,8 @@ import { OverlayScrollbarsComponent } from 'overlayscrollbars-react';
 import { useEffect } from 'react';
 import OverlayScrollbars from 'overlayscrollbars';
 
+import { roboto, bebas } from '../util/fonts';
+
 fixTimeoutTransition(750);
 
 const routeChange = () => {
