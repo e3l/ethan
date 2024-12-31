@@ -1,3 +1,7 @@
+#container {
+    width: 100%;
+}
+
 #intro {
     display: flex;
     flex-direction: row;
@@ -19,4 +23,74 @@
 
 #banners {
     margin-block: 5vh;
+}
+
+#banners h1 {
+    margin-top: 0;
+    margin-bottom: 0.33em;
+}
+
+#banners p,
+#banners h2 {
+    margin: 0.25em 0;
+}
+
+#banners p {
+    font-size: smaller;
+}
+
+#banners>div {
+    padding: 3em 10em;
+    position: relative;
+}
+
+#banners>div h1,
+#banners>div h2,
+#banners>div p {
+    position: relative;
+    z-index: 2;
+}
+
+.logo {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 3em;
+    right: 0;
+
+    margin: 1.5em;
+
+    opacity: 32%;
+}
+
+#tesla {
+    background: rgb(70, 9, 9);
+}
+
+#rapyuta {
+    background: rgb(65, 65, 65);
+}
+
+#gtri {
+    background: rgb(0, 26, 48);
+}
+
+#gtri .logo {
+    opacity: 40%;
+}
+
+#mitre {
+    background: rgb(0, 12, 23);
+}
+
+#grt {
+    background: rgb(12, 0, 0);
+}
+
+#kurio {
+    background: rgb(25, 0, 0);
+}
+
+#kurio .logo {
+    opacity: 43%;
 }
