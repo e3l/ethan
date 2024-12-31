@@ -68,6 +68,11 @@
     opacity: 32%;
 }
 
+.logo img {
+    object-fit: contain;
+    object-position: left;
+}
+
 #tesla {
     background: rgb(46, 4, 4);
 }

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import Image from 'next/future/image';
+import Image from 'next/image';
 
 import * as style from '../styles/credits.module.css'
 import yourname from '../public/credits.png'

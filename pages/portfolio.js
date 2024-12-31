@@ -48,10 +48,7 @@ export default function Portfolio() {
             <div id={styles.banners}>
                 <div id={styles.tesla}>
                     <div className={styles.logo}>
-                        <Image src={tesla}
-                            layout="fill"
-                            objectFit="contain"
-                            objectPosition="left" />
+                        <Image src={tesla} />
                     </div>
                     <h1>Tesla</h1>
                     <h2>Computer Vision & Data</h2>
@@ -60,10 +57,7 @@ export default function Portfolio() {
 
                 <div id={styles.rapyuta}>
                     <div className={styles.logo}>
-                        <Image src={rapyuta}
-                            layout="fill"
-                            objectFit="contain"
-                            objectPosition="left" />
+                        <Image src={rapyuta} />
                     </div>
                     <h1>Rapyuta Robotics</h1>
                     <h2>Robotics Perception & Systems</h2>
@@ -72,10 +66,7 @@ export default function Portfolio() {
 
                 <div id={styles.gtri}>
                     <div className={styles.logo}>
-                        <Image src={gtri}
-                            layout="fill"
-                            objectFit="contain"
-                            objectPosition="left" />
+                        <Image src={gtri} />
                     </div>
                     <h1>Georgia Tech Research Institute</h1>
                     <h2>Robotics Simulation</h2>
@@ -84,10 +75,7 @@ export default function Portfolio() {
 
                 <div id={styles.mitre}>
                     <div className={styles.logo}>
-                        <Image src={mitre}
-                            layout="fill"
-                            objectFit="contain"
-                            objectPosition="left" />
+                        <Image src={mitre} />
                     </div>
                     <h1>MITRE Corporation</h1>
                     <h2>Deep Learning Research</h2>
@@ -96,10 +84,7 @@ export default function Portfolio() {
 
                 <div id={styles.grt}>
                     <div className={styles.logo}>
-                        <Image src={grt}
-                            layout="fill"
-                            objectFit="contain"
-                            objectPosition="left" />
+                        <Image src={grt} />
                     </div>
                     <h1>Gunn Robotics Team</h1>
                     <h2>Controls Team Lead</h2>
@@ -108,10 +93,7 @@ export default function Portfolio() {
 
                 <div id={styles.kurio}>
                     <div className={styles.logo}>
-                        <Image src={kurio}
-                            layout="fill"
-                            objectFit="contain"
-                            objectPosition="left" />
+                        <Image src={kurio} />
                     </div>
                     <h1>Kuriosity Robotics</h1>
                     <h2>Software Team Lead</h2>
