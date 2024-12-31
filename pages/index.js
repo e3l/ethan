@@ -122,7 +122,7 @@ export default function Home() {
           <motion.p
             animate={headlineAnimation}
             transition={{
-              duration: 2.5,
+              duration: 2,
               delay: 0
             }}>
             Go Big
@@ -131,7 +131,7 @@ export default function Home() {
             animate={headlineAnimation}
             transition={{
               duration: 2.25,
-              delay: 1.4
+              delay: 1.2
             }}>
             or Go Home
           </motion.p>
@@ -140,7 +140,7 @@ export default function Home() {
           className={styles.headlineLinks}
           animate={{ opacity: [0, 1] }}
           transition={{
-            delay: 2
+            delay: 1.85
           }}>
           <a
             href="https://github.com/e3l" target="_blank" rel="noopener noreferrer">
@@ -156,7 +156,7 @@ export default function Home() {
 
       <motion.div className={styles.banners}
         animate={{ opacity: [0, 1] }}
-        transition={{ delay: 2.5 }}>
+        transition={{ delay: 1.85 }}>
 
         <div className={styles.tesla}>
           <h1>TESLA</h1>
