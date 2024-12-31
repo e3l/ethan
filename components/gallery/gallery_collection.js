@@ -17,3 +17,14 @@ import kurio_f from './kurio/f.png'
 import kurio_g from './kurio/g.png'
 
 export var kurio_imgs = [kurio_a, kurio_b, kurio_c, kurio_d, kurio_e, kurio_f, kurio_g]
+
+import tesla_a from './tesla/a.png'
+import tesla_b from './tesla/b.png'
+import tesla_c from './tesla/c.png'
+import tesla_d from './tesla/d.png'
+import tesla_e from './tesla/e.png'
+import tesla_f from './tesla/f.jpg'
+import tesla_g from './tesla/g.jpg'
+import tesla_h from './tesla/h.png'
+
+export var tesla_imgs = [tesla_a, tesla_b, tesla_c, tesla_d, tesla_e, tesla_f, tesla_g, tesla_h]

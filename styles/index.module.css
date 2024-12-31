@@ -109,6 +109,11 @@
   padding: 0
 }
 
+.tesla {
+  background-color: #b9142d;
+  text-shadow: 3px 3px black;
+}
+
 .grt {
   background-color: #a90000;
 
