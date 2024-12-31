@@ -114,6 +114,12 @@
   text-shadow: 3px 3px black;
 }
 
+.rapyuta {
+  background-color: black;
+  color: white;
+  text-shadow: 3px 3px #c81a26;
+}
+
 .grt {
   background-color: #a90000;
 
