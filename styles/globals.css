@@ -6,8 +6,6 @@
   --borders: #262626;
   --red: #f00000;
 
-  --headlines: var(--font-bebas-neue), sans-serif;
-
   --navbarheight: 5rem;
 }
 
@@ -24,6 +22,11 @@ body {
 
   color: var(--primary);
   background-color: var(--back);
+}
+
+/* FONTS */
+.parent {
+  --headlines: var(--font-bebas-neue), sans-serif;
 
   font-family: var(--font-roboto-flex), sans-serif;
 }

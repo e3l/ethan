@@ -1,21 +1,21 @@
-import '../styles/globals.css'
 import "overlayscrollbars/css/OverlayScrollbars.css";
+import '../styles/globals.css';
 
-import Navbar from '../components/navbar'
-import Footer from '../components/footer'
+import Footer from '../components/footer';
+import Navbar from '../components/navbar';
 
-import { motion, AnimatePresence } from 'framer-motion'
+import { AnimatePresence, motion } from 'framer-motion';
 import Router from "next/router";
 
-import { SpeedInsights } from "@vercel/speed-insights/next"
-import { Analytics } from "@vercel/analytics/react"
+import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
-import { fixTimeoutTransition } from '../util/fixTimeoutTransition'
+import OverlayScrollbars from 'overlayscrollbars';
 import { OverlayScrollbarsComponent } from 'overlayscrollbars-react';
 import { useEffect } from 'react';
-import OverlayScrollbars from 'overlayscrollbars';
+import { fixTimeoutTransition } from '../util/fixTimeoutTransition';
 
-import { roboto, bebas } from '../util/fonts';
+import { bebas, roboto } from '../util/fonts';
 
 fixTimeoutTransition(750);
 
@@ -56,9 +56,9 @@ function MyApp({ Component, pageProps, router }) {
   }, []);
 
   return (
-    <div>
+    <div className={`parent ${bebas.variable} ${roboto.variable}`}>
       <Navbar />
-      
+
       <OverlayScrollbarsComponent
         options={{ overflowBehavior: { x: "hidden" } }}>
         <AnimatePresence exitBeforeEnter
