@@ -19,7 +19,7 @@ export default function Palette() {
                     }
                 </div>
                 <p>
-                    <span style={{ fontFamily: 'Bebas Neue' }}>Bebas Neueu</span>, <span style={{ fontFamily: 'Montserrat' }}>MONTSERRAT</span>, <span style={{ fontFamily: 'Open Sans' }}>Open Sans</span>, 
+                    <span style={{ fontFamily: 'var(--font-bebas-neue)' }}>Bebas Neueu</span>, <span style={{ fontFamily: 'var(--font-open-sans)' }}>Open Sans</span>, 
                     and Roboto hosted by Google Fonts.
                 </p>
             </div>

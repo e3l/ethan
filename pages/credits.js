@@ -5,6 +5,7 @@ import * as style from '../styles/credits.module.css'
 import yourname from '../public/credits.png'
 import { motion } from 'framer-motion';
 import OverlayScrollbars from 'overlayscrollbars';
+import { opensans } from '../util/fonts';
 
 function ListDecomposed(props) {
     return (
@@ -85,7 +86,7 @@ export default function Credits() {
     }, []);
 
     return (
-        <div className={style.container}>
+        <div className={`${style.container} ${opensans.variable}`}>
             <div className={style.credits}>
                 {/* <div>
                     THANK YOU TO...

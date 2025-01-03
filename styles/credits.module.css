@@ -3,7 +3,7 @@
 }
 
 .credits {
-    font-family: 'Open Sans', sans-serif;
+    font-family: var(--font-open-sans), sans-serif;
     font-size: 1em;
 
     display: flex;

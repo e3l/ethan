@@ -36,7 +36,6 @@
 }
 
 .headlineLinks * {
-  font-family: "Open Sans", sans-serif;
   font-size: 2vh;
   color: var(--primary);
 
@@ -69,7 +68,6 @@
 }
 
 .banners h1 {
-  font-family: 'Montserrat';
   font-size: 4rem;
   
   position: absolute;
