@@ -36,13 +36,13 @@ export default function Portfolio() {
                     href="https://www.linkedin.com/in/e3l/" target="_blank" rel="noopener noreferrer">
                     linkedin ↗
                 </a>
-                <Spacer />
+                {/* <Spacer />
                 <Link
                     href="/resume">
                     resume
-                </Link>
+                </Link> */}
                 <Spacer />
-                <a href='mailto:e3lcool@gmail.com'>e3lcool@gmail.com</a>
+                <span>eliang [at] gatech [dot] edu</span>
             </div>
 
             <div id={styles.banners}>
