@@ -1,7 +1,8 @@
 export default function Resume() {
     const style = {
         height: 'calc(100vh - var(--navbarheight))',
-        width: '70vw',
+        // width: '70vw',
+        'aspect-ratio': '1.1',
         'max-width': '100%',
         'padding': '2vh'
     }
