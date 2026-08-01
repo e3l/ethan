@@ -5,7 +5,7 @@ import styles from "../styles/portfolio.module.css"
 
 import Spacer from "../components/spacer"
 
-import headshot from '../components/gallery/headshot.JPEG'
+import headshot from '../components/gallery/headshot.jpeg'
 import tesla from '../components/portfolio/tesla.png'
 import rapyuta from '../components/portfolio/rapyuta.png'
 import gtri from '../components/portfolio/gtri.png'
