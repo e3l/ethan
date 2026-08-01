@@ -42,7 +42,7 @@ export default function Portfolio() {
                     resume
                 </Link> */}
                 <Spacer />
-                <span>eliang [at] gatech [dot] edu</span>
+                <span>e3liang [at] stanford [dot] edu</span>
             </div>
 
             <div id={styles.banners}>

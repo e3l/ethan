@@ -15,7 +15,7 @@ export default function Footer() {
                     <Spacer />
                     <a href='https://open.spotify.com/user/n0tjyxgsgs?si=d3217a5cd07842f1' target="_blank" rel="noopener noreferrer">my spotify</a>
                     <Spacer />
-                    <span>eliang [at] gatech [dot] edu</span>
+                    <span>e3liang [at] stanford [dot] edu</span>
                 </div>
                 <div>c 2025</div>
             </div>
