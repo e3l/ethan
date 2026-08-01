@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 
-import * as style from '../styles/credits.module.css'
+import style from '../styles/credits.module.css'
 import yourname from '../public/credits.png'
 import { motion } from 'framer-motion';
 import OverlayScrollbars from 'overlayscrollbars';
@@ -44,45 +44,81 @@ export default function Credits() {
             })
         }, options);
         observer.observe(document.querySelector("#splashplaceholder"))
+        return observer;
     }
 
     useEffect(() => {
-        splashlogic();
+        const splashObserver = splashlogic();
 
-        var lastscroll = 0;
-        var lock = false;
+        // The credits crawl upward on their own, pausing for a second after any
+        // user scroll and for as long as a mouse button is held.
+        //
+        // Driven off the frame clock, with each step derived from elapsed time:
+        // that keeps the on-screen speed independent of frame rate, costs one
+        // callback per painted frame, and stops the crawl automatically while
+        // the tab is backgrounded.
+        const PIXELS_PER_SECOND = 100;
 
-        var scroller = OverlayScrollbars(document.querySelector("body"))
+        let lastScrollAt = Number.NEGATIVE_INFINITY; // so the crawl starts at once
+        let locked = false;
+        let carry = 0;
+        let previousFrame = null;
+        let frameId;
 
-        function scrollLogic() {
-            if ((new Date()).getTime() - lastscroll > 1000 && !lock) {
-                // window.scrollBy(0, 1);
-                if (scroller === undefined) {
-                    scroller = OverlayScrollbars(document.querySelector("body"))
-                }
-                scroller.scroll({ y: "+=1" })
+        let scroller = OverlayScrollbars(document.querySelector("body"));
+
+        function step(now) {
+            frameId = requestAnimationFrame(step);
+
+            const previous = previousFrame;
+            previousFrame = now;
+            if (previous === null) return;
+
+            if (locked || now - lastScrollAt <= 1000) {
+                carry = 0;
+                return;
+            }
+
+            if (scroller === undefined) {
+                scroller = OverlayScrollbars(document.querySelector("body"));
+            }
+
+            // Accumulate fractional pixels so speed does not depend on frame
+            // rate, and scroll only whole ones.
+            carry += ((now - previous) / 1000) * PIXELS_PER_SECOND;
+            const pixels = Math.floor(carry);
+            if (pixels >= 1) {
+                carry -= pixels;
+                scroller.scroll({ y: `+=${pixels}` });
             }
         }
 
-        function scrollListener() {
-            lastscroll = (new Date()).getTime();
+        function noteUserScroll() {
+            lastScrollAt = performance.now();
         }
-        function mousedown() {
-            lock = true;
+        function onMouseDown() {
+            locked = true;
+        }
+        function onMouseUp() {
+            locked = false;
+            noteUserScroll();
         }
 
-        window.addEventListener('wheel', scrollListener);
-        window.addEventListener('mousedown', mousedown);
-        window.addEventListener('mouseup', () => {
-            lock = false;
-            scrollListener();
-        });
+        window.addEventListener('wheel', noteUserScroll);
+        window.addEventListener('mousedown', onMouseDown);
+        window.addEventListener('mouseup', onMouseUp);
 
-        var intervalID = setInterval(scrollLogic, 10);
+        frameId = requestAnimationFrame(step);
 
+        // This route unmounts on every navigation away, so everything attached
+        // to window or observing a node has to come back off here.
         return () => {
-            clearInterval(intervalID);
-        }
+            cancelAnimationFrame(frameId);
+            window.removeEventListener('wheel', noteUserScroll);
+            window.removeEventListener('mousedown', onMouseDown);
+            window.removeEventListener('mouseup', onMouseUp);
+            splashObserver.disconnect();
+        };
     }, []);
 
     return (

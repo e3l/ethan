@@ -1,4 +1,4 @@
-import * as style from '../styles/palette.module.css'
+import style from '../styles/palette.module.css'
 
 export default function Palette() {
     return (

@@ -2,7 +2,7 @@ import Link from 'next/link'
 
 import Spacer from './spacer.js'
 
-import * as style from './footer.module.css'
+import style from './footer.module.css'
 
 export default function Footer() {
     return (
