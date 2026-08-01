@@ -5,7 +5,6 @@ import Footer from '../components/footer';
 import Navbar from '../components/navbar';
 
 import { AnimatePresence, motion } from 'framer-motion';
-import Router from "next/router";
 
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
@@ -13,29 +12,8 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 import OverlayScrollbars from 'overlayscrollbars';
 import { OverlayScrollbarsComponent } from 'overlayscrollbars-react';
 import { useEffect } from 'react';
-import { fixTimeoutTransition } from '../util/fixTimeoutTransition';
 
 import { bebas, roboto } from '../util/fonts';
-
-fixTimeoutTransition(750);
-
-const routeChange = () => {
-  // Temporary fix to avoid flash of unstyled content
-  // during route transitions. Keep an eye on this
-  // issue and remove this code when resolved:
-  // https://github.com/vercel/next.js/issues/17464
-
-  const tempFix = () => {
-    const allStyleElems = document.querySelectorAll('style[media="x"]');
-    allStyleElems.forEach((elem) => {
-      elem.removeAttribute("media");
-    });
-  };
-  tempFix();
-};
-
-Router.events.on("routeChangeComplete", routeChange);
-Router.events.on("routeChangeStart", routeChange);
 
 const container = {
   hidden: {
