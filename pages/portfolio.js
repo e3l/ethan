@@ -1,3 +1,4 @@
+import Head from "next/head"
 import Image from "next/image"
 import Link from "next/link"
 
@@ -6,32 +7,54 @@ import styles from "../styles/portfolio.module.css"
 import Spacer from "../components/spacer"
 
 import headshot from '../components/gallery/headshot.jpeg'
-import tesla from '../components/portfolio/tesla.png'
-import rapyuta from '../components/portfolio/rapyuta.png'
-import gtri from '../components/portfolio/gtri.png'
-import mitre from '../components/portfolio/mitre.png'
-import grt from '../components/portfolio/grt.png'
-import kurio from '../components/portfolio/kurio.png'
+import { experiences } from '../data/portfolio'
+
+// One experience. The accent rides down as a custom property so that the rule
+// on the leading edge and the wash the row takes on hover both draw from the
+// same colour, and the row needs no per-organisation rule of its own.
+function Experience({ name, role, logo, accent, years, stack }) {
+    return (
+        <li className={styles.experience} style={{ '--accent': accent }}>
+            <div className={styles.chip}>
+                <Image src={logo} alt="" sizes="64px" />
+            </div>
+
+            <div className={styles.detail}>
+                <h2 className={styles.name}>{name}</h2>
+                <p className={styles.role}>{role}</p>
+                <ul className={styles.stack}>
+                    {stack.map((item) => <li key={item}>{item}</li>)}
+                </ul>
+            </div>
+
+            {years && <div className={styles.years}>{years}</div>}
+        </li>
+    )
+}
 
 export default function Portfolio() {
     return (
-        <div id={styles.container}>
-            <div id={styles.intro}>
-                <div id={styles.headshot}>
+        <div className={styles.container}>
+            <Head>
+                <title>Portfolio | Ethan Liang</title>
+            </Head>
+
+            <div className={styles.intro}>
+                <div className={styles.headshot}>
                     <Image
                         src={headshot}
                         alt="headshot of ethan"
-                        sizes="30vh" />
+                        sizes="224px" />
                 </div>
                 <div>
-                    <h2>BS CS @ Georgia Tech, &apos;26</h2>
+                    <h1 className={styles.headline}>BS CS @ Georgia Tech, &apos;26</h1>
                     <p>I love working on robots, but have experience throughout the modern tech stack. </p>
                     <p>I learn quickly and ask good questions that dig at &apos;why&apos;.</p>
                     <p>I&apos;ve architected tons of software solutions, led many teams, and prototyped many robots.</p>
                 </div>
             </div>
 
-            <div id={styles.resources}>
+            <div className={styles.resources}>
                 <a
                     href="https://www.linkedin.com/in/e3l/" target="_blank" rel="noopener noreferrer">
                     linkedin ↗
@@ -45,61 +68,11 @@ export default function Portfolio() {
                 <span>e3liang [at] stanford [dot] edu</span>
             </div>
 
-            <div id={styles.banners}>
-                <div id={styles.tesla}>
-                    <div className={styles.logo}>
-                        <Image src={tesla} alt="" />
-                    </div>
-                    <h1>Tesla</h1>
-                    <h2>Computer Vision & Data</h2>
-                    <p>AWS S3, SQL, Kakfa, Kubernetes, C#/.NET</p>
-                </div>
-
-                <div id={styles.rapyuta}>
-                    <div className={styles.logo}>
-                        <Image src={rapyuta} alt="" />
-                    </div>
-                    <h1>Rapyuta Robotics</h1>
-                    <h2>Robotics Perception & Systems</h2>
-                    <p>Python, PyTorch, GStreamer, OpenCV, TensorRT, Transformer Object Detection, ROS/ROS 2, C++, Docker Compose, Linux, Networking, Ansible, Grafana</p>
-                </div>
-
-                <div id={styles.gtri}>
-                    <div className={styles.logo}>
-                        <Image src={gtri} alt="" />
-                    </div>
-                    <h1>Georgia Tech Research Institute</h1>
-                    <h2>Robotics Simulation</h2>
-                    <p>ROS, catkin, Gazebo, SLAM</p>
-                </div>
-
-                <div id={styles.mitre}>
-                    <div className={styles.logo}>
-                        <Image src={mitre} alt="" />
-                    </div>
-                    <h1>MITRE Corporation</h1>
-                    <h2>Deep Learning Research</h2>
-                    <p>Cybersecurity, Computer Vision, Generative Adversarial Networks</p>
-                </div>
-
-                <div id={styles.grt}>
-                    <div className={styles.logo}>
-                        <Image src={grt} alt="" />
-                    </div>
-                    <h1>Gunn Robotics Team</h1>
-                    <h2>Controls Team Lead</h2>
-                    <p>Jetson Nano, GStreamer H254 streaming, Electronics, Soldering, Java, Recruiting & Mentorship, Design/Systems Integration, Logistics & Purchasing & Coordination</p>
-                </div>
-
-                <div id={styles.kurio}>
-                    <div className={styles.logo}>
-                        <Image src={kurio} alt="" />
-                    </div>
-                    <h1>Kuriosity Robotics</h1>
-                    <h2>Software Team Lead</h2>
-                    <p>Multi-threaded software architecture, SLAM, Kalman Filter Sensor Fusion, Path Planning, Control Systems, TensorFlow, Java, Mentorship & Leadership</p>
-                </div>
-            </div>
+            <ul className={styles.experiences}>
+                {experiences.map((experience) => (
+                    <Experience key={experience.name} {...experience} />
+                ))}
+            </ul>
         </div>
     )
 }
