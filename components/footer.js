@@ -17,7 +17,7 @@ export default function Footer() {
                     <Spacer />
                     <span>e3liang [at] stanford [dot] edu</span>
                 </div>
-                <div>c 2025</div>
+                <div>c 2026</div>
             </div>
         </div>
     )
