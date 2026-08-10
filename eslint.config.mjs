@@ -8,7 +8,13 @@ import nextCoreWebVitals from 'eslint-config-next/core-web-vitals'
 
 const config = [
   {
-    ignores: ['.next/**', 'out/**', 'build/**', 'node_modules/**'],
+    ignores: [
+      '**/.next/**',
+      '**/out/**',
+      '**/build/**',
+      '**/node_modules/**',
+      '.claude/**',
+    ],
   },
   ...nextCoreWebVitals,
 ]
