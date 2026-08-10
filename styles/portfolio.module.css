@@ -20,9 +20,10 @@
 }
 
 .headline {
-    font-family: var(--headlines);
-    font-size: 2.5rem;
-    line-height: 1;
+    font-size: 2rem;
+    font-weight: 500;
+    line-height: 1.15;
+    letter-spacing: -0.015em;
 
     margin: 0 0 1rem;
 }
@@ -38,47 +39,48 @@
     text-align: center;
 }
 
+/* The bands run the full width of the window, breaking out of the column the
+   intro sits in. */
 .experiences {
     list-style: none;
-    margin: 0 0 6rem;
     padding: 0;
 
-    border-top: 1px solid var(--borders);
+    width: 100vw;
+    position: relative;
+    left: 50%;
+    right: 50%;
+    margin: 0 -50vw 6rem;
 }
 
 .experience {
-    position: relative;
-
-    display: grid;
-    grid-template-columns: auto 1fr auto;
-    column-gap: 1.75rem;
-    align-items: start;
-
-    padding: 2rem 1.75rem;
-    border-bottom: 1px solid var(--borders);
+    background-color: color-mix(in oklab, var(--accent) 15%, var(--back));
+    border-top: 2px solid var(--accent);
 
     transition: background-color 0.4s;
 }
 
-/* The brand rule runs the full height of the row and over its bottom border, so
-   that consecutive rows read as one unbroken rail down the leading edge. */
-.experience::before {
-    content: '';
-
-    position: absolute;
-    top: 0;
-    bottom: -1px;
-    left: 0;
-    width: 3px;
-
-    background-color: var(--accent);
+.experience:last-child {
+    border-bottom: 2px solid var(--accent);
 }
 
 .experience:hover {
-    background-color: color-mix(in oklab, var(--accent) 10%, transparent);
+    background-color: color-mix(in oklab, var(--accent) 24%, var(--back));
 }
 
-/* A light chip so that every mark stays legible on the black canvas, including
+/* The band is full width but its contents are not, so the rows line up on a
+   measure of their own, wider than the intro above them. */
+.inner {
+    width: min(84%, 72rem);
+    margin: 0 auto;
+    padding: 2.5rem 0;
+
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    column-gap: 2rem;
+    align-items: start;
+}
+
+/* A light chip so that every mark stays legible against the band, including
    the ones whose artwork is filled black. */
 .chip {
     width: 4rem;
@@ -105,15 +107,16 @@
 }
 
 .name {
-    font-family: var(--headlines);
-    font-size: 2.25rem;
-    line-height: 1;
+    font-size: 1.75rem;
+    font-weight: 500;
+    line-height: 1.1;
+    letter-spacing: -0.015em;
 
     margin: 0;
 }
 
 .role {
-    margin: 0.4rem 0 0;
+    margin: 0.35rem 0 0;
 
     font-size: 1rem;
     font-weight: normal;
@@ -136,13 +139,12 @@
     font-size: 0.75rem;
     color: var(--secondary);
 
-    border: 1px solid var(--borders);
+    border: 1px solid color-mix(in oklab, var(--accent) 40%, var(--borders));
     border-radius: 999px;
 }
 
 .years {
-    font-family: var(--headlines);
-    font-size: 1.25rem;
+    font-size: 0.95rem;
     color: var(--secondary);
 
     white-space: nowrap;
@@ -154,13 +156,15 @@
         text-align: center;
     }
 
-    .experience {
+    .inner {
+        width: 88%;
         grid-template-columns: auto 1fr;
-        padding: 1.5rem 1.25rem;
+        column-gap: 1.25rem;
+        padding: 2rem 0;
     }
 
     .name {
-        font-size: 1.75rem;
+        font-size: 1.5rem;
     }
 
     /* Without a third column the years drop under the copy rather than under
