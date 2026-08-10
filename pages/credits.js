@@ -45,7 +45,8 @@ export default function Credits() {
         splashObserver.observe(document.querySelector("#splashplaceholder"));
 
         // The credits crawl upward on their own, pausing for a second after any
-        // user scroll and for as long as a mouse button is held.
+        // user scroll, for as long as a mouse button is held, and for as long
+        // as any text stays selected.
         //
         // Driven off the frame clock, with each step derived from elapsed time:
         // that keeps the on-screen speed independent of frame rate, costs one
@@ -55,6 +56,7 @@ export default function Credits() {
 
         let lastScrollAt = Number.NEGATIVE_INFINITY; // so the crawl starts at once
         let locked = false;
+        let selecting = false;
         let carry = 0;
         let previousFrame = null;
         let frameId;
@@ -68,7 +70,7 @@ export default function Credits() {
             previousFrame = now;
             if (previous === null) return;
 
-            if (locked || now - lastScrollAt <= 1000) {
+            if (locked || selecting || now - lastScrollAt <= 1000) {
                 carry = 0;
                 return;
             }
@@ -97,10 +99,18 @@ export default function Credits() {
             locked = false;
             noteUserScroll();
         }
+        function onSelectionChange() {
+            // Ranges that render as nothing do not count as a selection.
+            const selection = document.getSelection();
+            selecting = selection !== null
+                && !selection.isCollapsed
+                && selection.toString().trim() !== '';
+        }
 
         window.addEventListener('wheel', noteUserScroll);
         window.addEventListener('mousedown', onMouseDown);
         window.addEventListener('mouseup', onMouseUp);
+        document.addEventListener('selectionchange', onSelectionChange);
 
         frameId = requestAnimationFrame(step);
 
@@ -111,6 +121,7 @@ export default function Credits() {
             window.removeEventListener('wheel', noteUserScroll);
             window.removeEventListener('mousedown', onMouseDown);
             window.removeEventListener('mouseup', onMouseUp);
+            document.removeEventListener('selectionchange', onSelectionChange);
             splashObserver.disconnect();
         };
     }, []);
