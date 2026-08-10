@@ -76,6 +76,11 @@ const AMAZON = group('AMAZON',
         'JIACHENG L',
         'WILLIAM J',
         'SREEKAR R',
+        'PRANAV N',
+        'DEEPAK S',
+        'CINDY C',
+        'ILAN N',
+        'HARDY P',
     ],
 )
 
@@ -111,11 +116,7 @@ const YANG_TANG = group('YANG TANG',
         'SOPHIA H',
         'HARRISON H',
         'LEILANI C',
-        'RAY C',
     ],
-)
-
-const DRAGON_DANCE = group('DRAGON DANCE',
     [
         'WESLEY T',
         'MAY T',
@@ -126,6 +127,7 @@ const DRAGON_DANCE = group('DRAGON DANCE',
         'ETHAN W',
     ],
     [
+        'RAY C',
         'ANGIE N',
         'ANDREW L',
         'ANUJ A',
@@ -142,7 +144,7 @@ const DRAGON_DANCE = group('DRAGON DANCE',
     ],
 )
 
-const GOONS = group('GOONS',
+const GOONS = group('??',
     [
         'EILEEN Y',
         'YIXIONG H',
@@ -167,17 +169,6 @@ const GOONS = group('GOONS',
     ],
 )
 
-const CENTENNIAL = group('CENTENNIAL',
-    [
-        'ANDREW W',
-        'SAURAV B',
-        'JOLEE B',
-        'MCKENZIE P',
-        'FLORIAN C',
-        'PRIYA S',
-    ],
-)
-
 const KEROPPI = group('KEROPPI',
     [
         'HUDSON H',
@@ -191,6 +182,17 @@ const KEROPPI = group('KEROPPI',
         'PHONG N',
         'JOANNE G',
         'KRISTINE X',
+    ],
+)
+
+const CENTENNIAL = group('CENTENNIAL',
+    [
+        'ANDREW W',
+        'SAURAV B',
+        'JOLEE B',
+        'MCKENZIE P',
+        'FLORIAN C',
+        'PRIYA S',
     ],
 )
 
@@ -941,7 +943,8 @@ const ACME = group('ACME',
 export const rows = [
     [[ALPACA]],
     [[RAPYUTA], [AMAZON, TESLA]],
-    [[YANG_TANG, DRAGON_DANCE, GOONS, CENTENNIAL], [KEROPPI, GEORGIA_TECH]],
+    [[YANG_TANG], [GOONS]],
+    [[KEROPPI, CENTENNIAL], [GEORGIA_TECH]],
     [[KURIO, POLARIS, FIRST, FLL], [GRT]],
     [[PIANO]],
     [[MITRE], [OPPLANE, QOOM, UNO, WCEO_AND_CMT]],
