@@ -1,14 +1,17 @@
 // The portfolio page is content. One entry per experience, ordered most recent
 // first.
 //
-// `accent` is the organisation's own brand colour. It draws the rule on the
-// leading edge of the row and the wash the row takes on hover, so it needs
-// enough saturation to hold up against the black canvas. Four of the six are a
-// red of some kind, so the accent alone cannot tell the rows apart: the logo
-// chip is what carries each identity, and the accent reinforces it.
+// `accent` is the organisation's own brand colour. It draws the notch beside
+// the mark, the outlines of the stack tags and the wash the row takes on hover,
+// so it needs enough saturation to hold up against the black canvas. Four of
+// the six are a red of some kind, so the accent alone cannot tell the rows
+// apart: the mark is what carries each identity, and the accent reinforces it.
+//
+// Rapyuta's mark is filled black, which is invisible here, so it is drawn from
+// a variant whose fill has been lifted to white.
 
 import tesla from '../components/portfolio/tesla.png'
-import rapyuta from '../components/portfolio/rapyuta.png'
+import rapyuta from '../components/portfolio/rapyuta-light.png'
 import gtri from '../components/portfolio/gtri.png'
 import mitre from '../components/portfolio/mitre.png'
 import grt from '../components/portfolio/grt.png'

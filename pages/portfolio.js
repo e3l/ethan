@@ -9,27 +9,27 @@ import Spacer from "../components/spacer"
 import headshot from '../components/gallery/headshot.jpeg'
 import { experiences } from '../data/portfolio'
 
-// One experience. The accent rides down as a custom property so that the band's
-// tint, its rule and the wash it takes on hover all draw from the same colour,
-// and the band needs no per-organisation rule of its own.
+// One experience. The accent rides down as a custom property so that the notch,
+// the tag outlines and the wash the row takes on hover all draw from the same
+// colour, and the row needs no per-organisation rule of its own.
 function Experience({ name, role, logo, accent, years, stack }) {
     return (
         <li className={styles.experience} style={{ '--accent': accent }}>
-            <div className={styles.inner}>
-                <div className={styles.chip}>
-                    <Image src={logo} alt="" sizes="64px" />
-                </div>
-
-                <div className={styles.detail}>
-                    <h2 className={styles.name}>{name}</h2>
-                    <p className={styles.role}>{role}</p>
-                    <ul className={styles.stack}>
-                        {stack.map((item) => <li key={item}>{item}</li>)}
-                    </ul>
-                </div>
-
-                {years && <div className={styles.years}>{years}</div>}
+            <div className={styles.logo}>
+                <Image src={logo} alt="" sizes="112px" />
             </div>
+
+            <div className={styles.notch} />
+
+            <div className={styles.detail}>
+                <h2 className={styles.name}>{name}</h2>
+                <p className={styles.role}>{role}</p>
+                <ul className={styles.stack}>
+                    {stack.map((item) => <li key={item}>{item}</li>)}
+                </ul>
+            </div>
+
+            {years && <div className={styles.years}>{years}</div>}
         </li>
     )
 }
