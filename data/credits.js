@@ -146,22 +146,6 @@ const YANG_TANG = group('YANG TANG',
     ],
 )
 
-const KEROPPI = group('KEROPPI',
-    [
-        'HUDSON H',
-        'ERIN L',
-        'LILLIAN F',
-        'MICAH L',
-        'TIFFANY J',
-        'DALLIN L',
-        'NAOMI C',
-        'CADEN C',
-        'PHONG N',
-        'JOANNE G',
-        'KRISTINE X',
-    ],
-)
-
 const CENTENNIAL = group('CENTENNIAL',
     [
         'ANDREW W',
@@ -214,6 +198,22 @@ const EAST = group('EAST',
         'MICHAEL Z',
         'ANGELINA Z',
         'SAATVIK K',
+    ],
+)
+
+const KEROPPI = group('KEROPPI',
+    [
+        'HUDSON H',
+        'ERIN L',
+        'LILLIAN F',
+        'MICAH L',
+        'TIFFANY J',
+        'DALLIN L',
+        'NAOMI C',
+        'CADEN C',
+        'PHONG N',
+        'JOANNE G',
+        'KRISTINE X',
     ],
 )
 
@@ -970,7 +970,7 @@ const ACME = group('ACME',
 export const rows = [
     [[ALPACA]],
     [[RAPYUTA], [AMAZON, TESLA]],
-    [[YANG_TANG, KEROPPI, CENTENNIAL, CSA], [EAST, GEORGIA_TECH]],
+    [[YANG_TANG, CENTENNIAL, CSA], [EAST, KEROPPI, GEORGIA_TECH]],
     [[KURIO, POLARIS, FIRST, FLL], [GRT]],
     [[PIANO]],
     [[MITRE], [OPPLANE, QOOM, UNO, WCEO_AND_CMT]],
