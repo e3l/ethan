@@ -132,3 +132,34 @@
     margin-top: 80vh;
     height: 20vh;
 }
+
+.resume {
+    position: fixed;
+    right: 2rem;
+    bottom: 2rem;
+    z-index: 2;
+
+    width: 4.5rem;
+    height: 4.5rem;
+
+    display: grid;
+    place-items: center;
+
+    border: 1px solid var(--borders);
+    border-radius: 50%;
+    background-color: var(--back);
+    color: var(--primary);
+
+    cursor: pointer;
+}
+
+.resume:hover {
+    border-color: var(--primary);
+}
+
+.resume svg {
+    width: 2rem;
+    height: 2rem;
+
+    fill: currentColor;
+}
