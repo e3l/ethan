@@ -16,7 +16,7 @@ function Experience({ name, role, logo, accent, years, stack }) {
     return (
         <li className={styles.experience} style={{ '--accent': accent }}>
             <div className={styles.logo}>
-                <Image src={logo} alt="" sizes="112px" />
+                <Image src={logo} alt="" sizes="144px" />
             </div>
 
             <div className={styles.notch} />

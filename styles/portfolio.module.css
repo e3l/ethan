@@ -53,9 +53,21 @@
     border-top: 1px solid var(--borders);
 }
 
+/* The mark, the notch and the name all centre on one band across the top of the
+   row, so the three read as a single line. They centre on the band rather than
+   on the row because the row is what grows: the copy beneath the name already
+   runs past the mark, and it is only the band that stays put.
+
+   The four measurements are named here so the narrow layout can restate them
+   once and leave every rule below untouched. */
 .experience {
+    --head: 4.5rem;
+    --notch: 3rem;
+    --name: 1.75rem;
+    --name-height: calc(var(--name) * 1.1);
+
     display: grid;
-    grid-template-columns: 7rem 4px 1fr auto;
+    grid-template-columns: 9rem 4px 1fr auto;
     column-gap: 1.75rem;
     align-items: start;
 
@@ -69,37 +81,46 @@
     background-color: color-mix(in oklab, var(--accent) 12%, transparent);
 }
 
-/* The marks carry their own colour straight on the canvas, at a size where
-   they read as the row's subject rather than as an icon beside it. */
+/* The marks carry their own colour straight on the canvas, at a size where they
+   read as the row's subject rather than as an icon beside it. They range from a
+   mark taller than it is wide to a wordmark three and a half times wider than it
+   is tall, so the box is wider than it is tall to give the wordmarks room, and
+   each mark is centred in it: flush left, the gap between a mark and the notch
+   was a different width on every row. */
 .logo {
-    height: 5rem;
+    height: var(--head);
 }
 
 .logo img {
     object-fit: contain;
-    object-position: left center;
 }
 
 /* A short bar rather than a full-height rule: it stays a mark of where the row
    begins however tall the row grows. */
 .notch {
-    height: 3.5rem;
+    height: var(--notch);
+    margin-top: calc((var(--head) - var(--notch)) / 2);
 
     border-radius: 2px;
     background-color: var(--accent);
 }
 
-/* A grid item sizes to its content by default, which on a narrow screen lets a
-   long name or a row of stack tags push the whole page wider than the viewport
+/* Dropped so the name's own line lands on the centre of the band. The block is
+   offset, rather than centred as a whole, because everything under the name is
+   free to grow.
+
+   A grid item also sizes to its content by default, which on a narrow screen
+   lets a long name or a row of stack tags push the page wider than the viewport
    rather than wrapping. */
 .detail {
     min-width: 0;
+    margin-top: calc((var(--head) - var(--name-height)) / 2);
 }
 
 .name {
-    font-size: 1.75rem;
+    font-size: var(--name);
     font-weight: 500;
-    line-height: 1.1;
+    line-height: var(--name-height);
     letter-spacing: -0.015em;
 
     margin: 0;
@@ -133,7 +154,13 @@
     border-radius: 999px;
 }
 
+/* Sat against the band like the other three, so a year reads across from the
+   name it belongs to. */
 .years {
+    display: flex;
+    align-items: center;
+    min-height: var(--head);
+
     font-size: 0.95rem;
     color: var(--secondary);
 
@@ -147,27 +174,20 @@
     }
 
     .experience {
-        grid-template-columns: 4rem 3px 1fr;
+        --head: 3rem;
+        --notch: 2.25rem;
+        --name: 1.4rem;
+
+        grid-template-columns: 5rem 3px 1fr;
         column-gap: 1rem;
         padding: 1.75rem 0;
     }
 
-    .logo {
-        height: 3rem;
-    }
-
-    .notch {
-        height: 2.75rem;
-    }
-
-    .name {
-        font-size: 1.4rem;
-    }
-
     /* Without a fourth column the years drop under the copy rather than under
-       the mark. */
+       the mark, so there is no band left to sit against. */
     .years {
         grid-column: 3;
+        min-height: 0;
         margin-top: 0.75rem;
     }
 }
