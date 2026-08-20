@@ -175,6 +175,16 @@ const CSA = group('CSA',
     ],
 )
 
+const WRS_404 = group('WRS 404',
+    [
+        'ALAN T',
+        'ANDY C',
+    ],
+    [
+        'JOSHUA S',
+    ],
+)
+
 const EAST = group('EAST',
     [
         'EILEEN Y',
@@ -970,7 +980,7 @@ const ACME = group('ACME',
 export const rows = [
     [[ALPACA]],
     [[RAPYUTA], [AMAZON, TESLA]],
-    [[YANG_TANG, CENTENNIAL, CSA], [EAST, KEROPPI, GEORGIA_TECH]],
+    [[YANG_TANG, CENTENNIAL, CSA, WRS_404], [EAST, KEROPPI, GEORGIA_TECH]],
     [[KURIO, POLARIS, FIRST, FLL], [GRT]],
     [[PIANO]],
     [[MITRE], [OPPLANE, QOOM, UNO, WCEO_AND_CMT]],
