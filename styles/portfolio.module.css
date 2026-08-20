@@ -53,18 +53,26 @@
     border-top: 1px solid var(--borders);
 }
 
-/* The mark, the notch and the name all centre on one band across the top of the
-   row, so the three read as a single line. They centre on the band rather than
-   on the row because the row is what grows: the copy beneath the name already
-   runs past the mark, and it is only the band that stays put.
+/* The mark, the notch and the name-and-role block all centre on one band across
+   the top of the row, so the three read as a single line. Everything looser —
+   the stack tags, and in time photographs and prose — spills below the band.
 
-   The four measurements are named here so the narrow layout can restate them
-   once and leave every rule below untouched. */
+   They centre on the band rather than on the row because the row is what grows:
+   centring on the row would drift the three apart again as soon as a row
+   carries more than it carries now.
+
+   The measurements are named here so the narrow layout can restate a few of
+   them and leave every rule below untouched. Both line heights are lengths so
+   that the height of the block can be added up. */
 .experience {
     --head: 4.5rem;
     --notch: 3rem;
     --name: 1.75rem;
     --name-height: calc(var(--name) * 1.1);
+    --role: 1rem;
+    --role-height: calc(var(--role) * 1.5);
+    --role-gap: 0.35rem;
+    --title: calc(var(--name-height) + var(--role-gap) + var(--role-height));
 
     display: grid;
     grid-template-columns: 9rem 4px 1fr auto;
@@ -105,16 +113,17 @@
     background-color: var(--accent);
 }
 
-/* Dropped so the name's own line lands on the centre of the band. The block is
-   offset, rather than centred as a whole, because everything under the name is
-   free to grow.
+/* Dropped so the name and the role together centre on the band; the tags below
+   them are left to run as far as they like. The floor catches the case where a
+   name wraps and the pair outgrows the band: without it the offset goes
+   negative and lifts the copy clear of its own row.
 
    A grid item also sizes to its content by default, which on a narrow screen
    lets a long name or a row of stack tags push the page wider than the viewport
    rather than wrapping. */
 .detail {
     min-width: 0;
-    margin-top: calc((var(--head) - var(--name-height)) / 2);
+    margin-top: max(0rem, calc((var(--head) - var(--title)) / 2));
 }
 
 .name {
@@ -127,10 +136,11 @@
 }
 
 .role {
-    margin: 0.35rem 0 0;
+    margin: var(--role-gap) 0 0;
 
-    font-size: 1rem;
+    font-size: var(--role);
     font-weight: normal;
+    line-height: var(--role-height);
     color: var(--secondary);
 }
 
@@ -174,8 +184,10 @@
     }
 
     .experience {
-        --head: 3rem;
-        --notch: 2.25rem;
+        /* The band still has to be deep enough to hold the name and the role,
+           which barely shrink here, or the two stop centring against the mark. */
+        --head: 3.5rem;
+        --notch: 2.5rem;
         --name: 1.4rem;
 
         grid-template-columns: 5rem 3px 1fr;
