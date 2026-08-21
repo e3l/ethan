@@ -74,19 +74,58 @@
     --role-gap: 0.35rem;
     --title: calc(var(--name-height) + var(--role-gap) + var(--role-height));
 
+    /* The notch keeps a wider gap from the copy than from the mark. A mark is
+       centred in its column, so a narrow one already stands well clear of the
+       notch, and giving both sides the same measurement left the notch looking
+       pushed up against the copy on those rows. */
+    --gap: 1.75rem;
+    --copy-gap: 2.75rem;
+
+    position: relative;
+
     display: grid;
     grid-template-columns: 9rem 4px 1fr auto;
-    column-gap: 1.75rem;
+    column-gap: var(--gap);
     align-items: start;
 
     padding: 2.25rem 0;
     border-bottom: 1px solid var(--borders);
-
-    transition: background-color 0.4s;
 }
 
-.experience:hover {
-    background-color: color-mix(in oklab, var(--accent) 12%, transparent);
+/* The wash reaches past the row and dissolves rather than stopping dead on an
+   edge. It reaches only as far as the margin beside the row: 3vw while the row
+   is at its 94% width, and whatever is left over from 84rem on a window wider
+   than that. The fade starts inside the row as well, so the colour arrives
+   gradually instead of at full strength.
+
+   Behind the row, so the copy stays on the canvas rather than on the wash. */
+.experience::before {
+    --bleed: min(6rem, max(3vw, (100vw - 84rem) / 2));
+    --fade: calc(var(--bleed) + 5rem);
+    --wash: color-mix(in oklab, var(--accent) 15%, transparent);
+
+    content: '';
+    position: absolute;
+    z-index: -1;
+    top: 0;
+    bottom: 0;
+    left: calc(-1 * var(--bleed));
+    right: calc(-1 * var(--bleed));
+
+    opacity: 0;
+    background-image: linear-gradient(
+        to right,
+        transparent,
+        var(--wash) var(--fade),
+        var(--wash) calc(100% - var(--fade)),
+        transparent);
+
+    transition: opacity 0.4s;
+    pointer-events: none;
+}
+
+.experience:hover::before {
+    opacity: 1;
 }
 
 /* The marks carry their own colour straight on the canvas, at a size where they
@@ -124,6 +163,7 @@
 .detail {
     min-width: 0;
     margin-top: max(0rem, calc((var(--head) - var(--title)) / 2));
+    margin-left: calc(var(--copy-gap) - var(--gap));
 }
 
 .name {
@@ -189,9 +229,10 @@
         --head: 3.5rem;
         --notch: 2.5rem;
         --name: 1.4rem;
+        --gap: 1rem;
+        --copy-gap: 1.6rem;
 
         grid-template-columns: 5rem 3px 1fr;
-        column-gap: 1rem;
         padding: 1.75rem 0;
     }
 
@@ -203,3 +244,4 @@
         margin-top: 0.75rem;
     }
 }
+
