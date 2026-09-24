@@ -1,106 +1,247 @@
-#container {
-    width: 100%;
+/* The page runs to the width of the experience rows; the intro above them is
+   held to a narrower measure of its own, so the rows read as the wider band. */
+.container {
+    width: min(94%, 84rem);
 }
 
-#intro {
+.intro {
     display: flex;
     flex-direction: row;
     align-items: center;
-    gap: 10vh;
+    gap: 3rem;
 
-    width: fit-content;
-    padding: 5vh 15vw;
+    width: min(100%, 64rem);
     margin: 0 auto;
+    padding: 4rem 0;
 }
 
-#headshot {
-    width: 30vh;
-    margin: auto 0;
+.headshot {
+    width: 14rem;
     flex-shrink: 0;
 
     border-radius: 0.3em;
     overflow: hidden;
 }
 
-#resources {
+.headline {
+    font-size: 2rem;
+    font-weight: 500;
+    line-height: 1.15;
+    letter-spacing: -0.015em;
+
+    margin: 0 0 1rem;
+}
+
+.intro p {
+    margin: 0.5rem 0;
+    color: var(--secondary);
+}
+
+.resources {
+    width: min(100%, 64rem);
+    margin: 0 auto;
+    padding-bottom: 4rem;
+
     text-align: center;
 }
 
-#banners {
-    margin-block: 5vh;
+.experiences {
+    list-style: none;
+    margin: 0 0 6rem;
+    padding: 0;
+
+    border-top: 1px solid var(--borders);
 }
 
-#banners h1 {
-    margin-top: 0;
-    margin-bottom: 0.33em;
-}
+/* The mark, the notch and the name-and-role block all centre on one band across
+   the top of the row, so the three read as a single line. Everything looser —
+   the stack tags, and in time photographs and prose — spills below the band.
 
-#banners p,
-#banners h2 {
-    margin: 0.25em 0;
-}
+   They centre on the band rather than on the row because the row is what grows:
+   centring on the row would drift the three apart again as soon as a row
+   carries more than it carries now.
 
-#banners p {
-    font-size: smaller;
-}
+   The measurements are named here so the narrow layout can restate a few of
+   them and leave every rule below untouched. Both line heights are lengths so
+   that the height of the block can be added up. */
+.experience {
+    --head: 4.5rem;
+    --notch: 3rem;
+    --name: 1.75rem;
+    --name-height: calc(var(--name) * 1.1);
+    --role: 1rem;
+    --role-height: calc(var(--role) * 1.5);
+    --role-gap: 0.35rem;
+    --title: calc(var(--name-height) + var(--role-gap) + var(--role-height));
 
-#banners>div {
-    padding: 3em 10em;
+    /* The notch keeps a wider gap from the copy than from the mark. A mark is
+       centred in its column, so a narrow one already stands well clear of the
+       notch, and giving both sides the same measurement left the notch looking
+       pushed up against the copy on those rows. */
+    --gap: 1.75rem;
+    --copy-gap: 2.75rem;
+
     position: relative;
+
+    display: grid;
+    grid-template-columns: 9rem 4px 1fr auto;
+    column-gap: var(--gap);
+    align-items: start;
+
+    padding: 2.25rem 0;
+    border-bottom: 1px solid var(--borders);
 }
 
-#banners>div h1,
-#banners>div h2,
-#banners>div p {
-    position: relative;
-    z-index: 2;
-}
+/* The wash reaches past the row and dissolves rather than stopping dead on an
+   edge. It reaches only as far as the margin beside the row: 3vw while the row
+   is at its 94% width, and whatever is left over from 84rem on a window wider
+   than that. The fade starts inside the row as well, so the colour arrives
+   gradually instead of at full strength.
 
-.logo {
+   Behind the row, so the copy stays on the canvas rather than on the wash. */
+.experience::before {
+    --bleed: min(6rem, max(3vw, (100vw - 84rem) / 2));
+    --fade: calc(var(--bleed) + 5rem);
+    --wash: color-mix(in oklab, var(--accent) 15%, transparent);
+
+    content: '';
     position: absolute;
+    z-index: -1;
     top: 0;
     bottom: 0;
-    left: 3em;
-    right: 0;
+    left: calc(-1 * var(--bleed));
+    right: calc(-1 * var(--bleed));
 
-    margin: 1.5em;
+    opacity: 0;
+    background-image: linear-gradient(
+        to right,
+        transparent,
+        var(--wash) var(--fade),
+        var(--wash) calc(100% - var(--fade)),
+        transparent);
 
-    opacity: 32%;
+    transition: opacity 0.4s;
+    pointer-events: none;
+}
+
+.experience:hover::before {
+    opacity: 1;
+}
+
+/* The marks carry their own colour straight on the canvas, at a size where they
+   read as the row's subject rather than as an icon beside it. They range from a
+   mark taller than it is wide to a wordmark three and a half times wider than it
+   is tall, so the box is wider than it is tall to give the wordmarks room, and
+   each mark is centred in it: flush left, the gap between a mark and the notch
+   was a different width on every row. */
+.logo {
+    height: var(--head);
 }
 
 .logo img {
     object-fit: contain;
-    object-position: left;
 }
 
-#tesla {
-    background: rgb(46, 4, 4);
+/* A short bar rather than a full-height rule: it stays a mark of where the row
+   begins however tall the row grows. */
+.notch {
+    height: var(--notch);
+    margin-top: calc((var(--head) - var(--notch)) / 2);
+
+    border-radius: 2px;
+    background-color: var(--accent);
 }
 
-#rapyuta {
-    background: rgb(65, 65, 65);
+/* Dropped so the name and the role together centre on the band; the tags below
+   them are left to run as far as they like. The floor catches the case where a
+   name wraps and the pair outgrows the band: without it the offset goes
+   negative and lifts the copy clear of its own row.
+
+   A grid item also sizes to its content by default, which on a narrow screen
+   lets a long name or a row of stack tags push the page wider than the viewport
+   rather than wrapping. */
+.detail {
+    min-width: 0;
+    margin-top: max(0rem, calc((var(--head) - var(--title)) / 2));
+    margin-left: calc(var(--copy-gap) - var(--gap));
 }
 
-#gtri {
-    background: rgb(0, 26, 48);
+.name {
+    font-size: var(--name);
+    font-weight: 500;
+    line-height: var(--name-height);
+    letter-spacing: -0.015em;
+
+    margin: 0;
 }
 
-#gtri .logo {
-    opacity: 40%;
+.role {
+    margin: var(--role-gap) 0 0;
+
+    font-size: var(--role);
+    font-weight: normal;
+    line-height: var(--role-height);
+    color: var(--secondary);
 }
 
-#mitre {
-    background: rgb(0, 12, 23);
+.stack {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+
+    list-style: none;
+    margin: 1rem 0 0;
+    padding: 0;
 }
 
-#grt {
-    background: rgb(12, 0, 0);
+.stack li {
+    padding: 0.2rem 0.65rem;
+
+    font-size: 0.75rem;
+    color: var(--secondary);
+
+    border: 1px solid color-mix(in oklab, var(--accent) 40%, var(--borders));
+    border-radius: 999px;
 }
 
-#kurio {
-    background: rgb(25, 0, 0);
+/* Sat against the band like the other three, so a year reads across from the
+   name it belongs to. */
+.years {
+    display: flex;
+    align-items: center;
+    min-height: var(--head);
+
+    font-size: 0.95rem;
+    color: var(--secondary);
+
+    white-space: nowrap;
 }
 
-#kurio .logo {
-    opacity: 43%;
+@media (max-width: 48rem) {
+    .intro {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .experience {
+        /* The band still has to be deep enough to hold the name and the role,
+           which barely shrink here, or the two stop centring against the mark. */
+        --head: 3.5rem;
+        --notch: 2.5rem;
+        --name: 1.4rem;
+        --gap: 1rem;
+        --copy-gap: 1.6rem;
+
+        grid-template-columns: 5rem 3px 1fr;
+        padding: 1.75rem 0;
+    }
+
+    /* Without a fourth column the years drop under the copy rather than under
+       the mark, so there is no band left to sit against. */
+    .years {
+        grid-column: 3;
+        min-height: 0;
+        margin-top: 0.75rem;
+    }
 }
+
