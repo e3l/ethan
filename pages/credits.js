@@ -88,8 +88,11 @@ export default function Credits() {
                         className={style.resume}
                         onClick={resume}
                         aria-label="Resume the credits"
+                        title="Resume (or click anywhere)"
                         initial={{ opacity: 0, scale: 0.8 }}
-                        animate={{ opacity: 1, scale: 1 }}
+                        animate={{ opacity: 0.4, scale: 1 }}
+                        whileHover={{ opacity: 1 }}
+                        whileFocus={{ opacity: 1 }}
                         exit={{ opacity: 0, scale: 0.8 }}
                         transition={{ duration: 0.15 }}>
                         <svg viewBox="0 0 24 24" aria-hidden="true">

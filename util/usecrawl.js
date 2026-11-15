@@ -25,14 +25,28 @@ function useReducedMotion() {
     );
 }
 
+// Clicks on these keep their own meaning instead of resuming the crawl.
+const OWN_CLICKS = 'a, button, input, textarea, select, label, .os-scrollbar';
+
+function hasSelection() {
+    // Ranges that render as nothing do not count as a selection.
+    const selection = document.getSelection();
+    return selection !== null
+        && !selection.isCollapsed
+        && selection.toString().trim() !== '';
+}
+
 // Scrolls the page upward on its own. Scroll input, a scrollbar drag, or
-// leaving the tab latch it off until resume(); a held mouse button or a live
-// selection stop it only while they last. Until the first latch, reduced
-// motion decides. `paused` reports the latch, minus the foot of the page,
-// where there is nothing left to resume.
+// leaving the tab latch it off until resume() or a plain click on the page; a
+// held mouse button or a live selection stop it only while they last. Until
+// the first latch, reduced motion decides. `paused` is true whenever a latch
+// or a selection has the crawl stopped, except at the foot of the page, where
+// there is nothing left to resume. A held mouse button is left out so the
+// control does not flash on every click.
 export default function useCrawl() {
     const [latched, setLatched] = useState(null);
     const [ended, setEnded] = useState(false);
+    const [selected, setSelected] = useState(false);
     const reduced = useReducedMotion();
 
     const stopped = latched ?? reduced;
@@ -50,6 +64,7 @@ export default function useCrawl() {
         let locked = false;
         let selecting = false;
         let heldAt = null;
+        let dragged = false;
         let wasAtEnd = false;
         let carry = 0;
         let previousFrame = null;
@@ -108,15 +123,20 @@ export default function useCrawl() {
             locked = false;
             // Dragging the scrollbar moves the page without firing any of the
             // events above, so the position is what gives it away.
-            if (heldAt !== null && position() !== heldAt) setLatched(true);
+            dragged = heldAt !== null && position() !== heldAt;
+            if (dragged) setLatched(true);
             heldAt = null;
         }
+        function onClick(event) {
+            // A click also lands at the end of a scrollbar drag or a drag
+            // selection, and neither of those means "resume".
+            if (event.button !== 0 || dragged || hasSelection()) return;
+            if (event.target instanceof Element && event.target.closest(OWN_CLICKS)) return;
+            setLatched(false);
+        }
         function onSelectionChange() {
-            // Ranges that render as nothing do not count as a selection.
-            const selection = document.getSelection();
-            selecting = selection !== null
-                && !selection.isCollapsed
-                && selection.toString().trim() !== '';
+            selecting = hasSelection();
+            setSelected(selecting);
         }
         function onLeave() {
             setLatched(true);
@@ -127,6 +147,7 @@ export default function useCrawl() {
         window.addEventListener('keydown', onKeyDown);
         window.addEventListener('mousedown', onMouseDown);
         window.addEventListener('mouseup', onMouseUp);
+        window.addEventListener('click', onClick);
         window.addEventListener('blur', onLeave);
         document.addEventListener('selectionchange', onSelectionChange);
         document.addEventListener('visibilitychange', onLeave);
@@ -142,11 +163,12 @@ export default function useCrawl() {
             window.removeEventListener('keydown', onKeyDown);
             window.removeEventListener('mousedown', onMouseDown);
             window.removeEventListener('mouseup', onMouseUp);
+            window.removeEventListener('click', onClick);
             window.removeEventListener('blur', onLeave);
             document.removeEventListener('selectionchange', onSelectionChange);
             document.removeEventListener('visibilitychange', onLeave);
         };
     }, []);
 
-    return { paused: stopped && !ended, resume };
+    return { paused: (stopped || selected) && !ended, resume };
 }
