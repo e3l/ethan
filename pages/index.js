@@ -196,7 +196,7 @@ export default function Home() {
         </div>
 
         <div className={styles.copy}>
-          <h1 className={styles.name}>Ethan Liang</h1>
+          <h1 className={styles.name}>Hi, I&apos;m Ethan!</h1>
           <p className={styles.tagline}>BS CS @ Georgia Tech &apos;26</p>
 
           <div className={styles.blurb}>
