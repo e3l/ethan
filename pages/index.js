@@ -18,13 +18,13 @@ const eras = experiences.filter((experience) => experience.favorites?.length > 0
 // How many of an era's favourites show before it is expanded: its first row.
 const PREVIEW = 4
 
-// PROTOTYPE: three candidate placements for the expand control, picked with
-// `?expand=` and the switcher in the corner. One survives; the rest go.
-//   tile:    the last photo of the row is covered by a "+13" count
-//   link:    a text control under the row, at its right edge
-//   overlay: no rail; the name is set over the first photo and a "+13" pill
-//            sits over the last
-const VARIANTS = ['tile', 'link', 'overlay']
+// PROTOTYPE: three candidate treatments that keep the name legible over the
+// photos, picked with `?title=` and the switcher in the corner. One survives;
+// the rest go.
+//   tab:    the name sits on a black tab notched into the first photo's corner
+//   scrim:  a dark gradient spreads from the top-left corner behind the name
+//   invert: the name inverts whatever is behind it
+const VARIANTS = ['tab', 'scrim', 'invert']
 
 // The motto rises out of the black canvas and settles red, the second half a
 // beat behind the first. It plays once; with reduced motion it is simply drawn
@@ -46,7 +46,7 @@ function Motto() {
   )
 }
 
-function Photo({ photo, children }) {
+function Photo({ photo }) {
   return (
     <div className={styles.photo} style={{ '--ratio': photo.width / photo.height }}>
       <Image
@@ -55,75 +55,28 @@ function Photo({ photo, children }) {
         fill
         sizes="(max-width: 48rem) 50vw, 25vw"
         placeholder="blur" />
-      {children}
     </div>
   )
 }
 
-// One era: its first few favourites as a single row, so every era can be
-// passed over at a glance. Expanding it lays the rest out in rows beneath.
-function Era({ variant, slug, name, years, favorites }) {
+// One era: its name set over its first few favourites, which make a single
+// row so every era can be passed over at a glance. Expanding it lays the rest
+// out in rows beneath.
+function Era({ variant, slug, name, favorites }) {
   const [open, setOpen] = useState(false)
 
   const preview = favorites.slice(0, PREVIEW)
   const rest = favorites.slice(PREVIEW)
-  const more = rest.length > 0
-  const toggle = () => setOpen(!open)
-
-  const title = (
-    <h2 className={styles.eraName}>
-      <Link href={`/portfolio#${slug}`}>{name}</Link>
-    </h2>
-  )
-
-  // Collapses an open era; it sits under the last row, at the right edge.
-  const less = open && (
-    <div className={styles.footer}>
-      <button type="button" className={styles.textToggle} aria-expanded onClick={toggle}>
-        show less ↑
-      </button>
-    </div>
-  )
 
   return (
-    <section className={`${styles.era} ${variant === 'overlay' ? styles.eraOverlay : ''}`}>
-      {variant !== 'overlay' && (
-        <div className={styles.rail}>
-          {title}
-          {years && <p className={styles.eraYears}>{years}</p>}
-        </div>
-      )}
-
+    <section className={`${styles.era} ${styles[variant]}`}>
       <div className={styles.photos}>
-        {variant === 'overlay' && <div className={styles.overlayTitle}>{title}</div>}
+        <h2 className={styles.eraName}>
+          <Link href={`/portfolio#${slug}`}>{name}</Link>
+        </h2>
 
         <div className={styles.row}>
-          {preview.map((photo, i) => {
-            const last = more && !open && i === preview.length - 1
-            return (
-              <Photo key={photo.src} photo={photo}>
-                {last && variant === 'tile' && (
-                  <button
-                    type="button"
-                    className={styles.tileToggle}
-                    aria-expanded={false}
-                    aria-label={`Show ${rest.length} more photos from ${name}`}
-                    onClick={toggle}>
-                    +{rest.length}
-                  </button>
-                )}
-                {last && variant === 'overlay' && (
-                  <button
-                    type="button"
-                    className={styles.pillToggle}
-                    aria-expanded={false}
-                    onClick={toggle}>
-                    +{rest.length} more
-                  </button>
-                )}
-              </Photo>
-            )
-          })}
+          {preview.map((photo) => <Photo key={photo.src} photo={photo} />)}
         </div>
 
         {open && (
@@ -136,15 +89,17 @@ function Era({ variant, slug, name, years, favorites }) {
           </motion.div>
         )}
 
-        {variant === 'link' && more && !open && (
+        {rest.length > 0 && (
           <div className={styles.footer}>
-            <button type="button" className={styles.textToggle} aria-expanded={false} onClick={toggle}>
-              all {favorites.length} photos ↓
+            <button
+              type="button"
+              className={styles.toggle}
+              aria-expanded={open}
+              onClick={() => setOpen(!open)}>
+              {open ? 'show less ↑' : `all ${favorites.length} photos ↓`}
             </button>
           </div>
         )}
-
-        {less}
       </div>
     </section>
   )
@@ -153,11 +108,11 @@ function Era({ variant, slug, name, years, favorites }) {
 function VariantSwitcher({ current }) {
   return (
     <div className={styles.switcher}>
-      <span>expand:</span>
+      <span>title:</span>
       {VARIANTS.map((v) => (
         <Link
           key={v}
-          href={{ query: { expand: v } }}
+          href={{ query: { title: v } }}
           shallow
           scroll={false}
           className={v === current ? styles.switcherCurrent : undefined}>
@@ -170,7 +125,7 @@ function VariantSwitcher({ current }) {
 
 export default function Home() {
   const { query } = useRouter()
-  const variant = VARIANTS.includes(query.expand) ? query.expand : VARIANTS[0]
+  const variant = VARIANTS.includes(query.title) ? query.title : VARIANTS[0]
 
   return (
     <div className={styles.container}>

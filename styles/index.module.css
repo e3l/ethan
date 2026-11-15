@@ -75,37 +75,34 @@
   border-top: 1px solid var(--borders);
 }
 
-/* The name sits in a rail as wide as the portfolio's logo column, and stays in
-   view while an expanded era scrolls past. */
 .era {
-  display: grid;
-  grid-template-columns: 9rem 1fr;
-  column-gap: 2rem;
-  align-items: start;
-
   padding: 2rem 0;
   border-bottom: 1px solid var(--borders);
 }
 
-.rail {
-  position: sticky;
-  top: calc(var(--navbarheight) + 1.5rem);
-}
-
+/* Set over the top-left of the row, in the headline face, the way the old
+   banners announced each era. */
 .eraName {
+  position: absolute;
+  z-index: 2;
+  top: 0;
+  left: 0;
+
+  margin: 0;
+  padding: 0.9rem 1.25rem;
+
   font-family: var(--headlines);
-  font-size: 2rem;
+  font-size: 3.25rem;
   font-weight: normal;
   line-height: 1;
   letter-spacing: 0.02em;
   text-transform: uppercase;
 
-  margin: 0;
+  pointer-events: none;
 }
 
-.eraYears {
-  margin: 0.4rem 0 0;
-  color: var(--secondary);
+.eraName a {
+  pointer-events: auto;
 }
 
 .photos {
@@ -162,7 +159,7 @@
   margin-top: 0.25rem;
 }
 
-.textToggle {
+.toggle {
   padding: 0;
 
   font: inherit;
@@ -175,77 +172,49 @@
   transition: color 0.4s;
 }
 
-.textToggle:hover {
+.toggle:hover {
   color: var(--red);
 }
 
-/* Covers the last photo of the row with a count of what is hidden behind it. */
-.tileToggle {
+/* PROTOTYPE: the three treatments for the name. */
+
+/* A tab of the canvas notched into the first photo's corner: the name sits on
+   black, so it reads against any photo. */
+.tab .eraName {
+  padding: 0.55rem 1.1rem 0.45rem 0;
+
+  background: var(--back);
+  border-bottom-right-radius: 0.6rem;
+}
+
+/* A shadow cast from the top-left corner of the row, deep enough under the
+   name to carry it and gone by the middle of the photo. */
+.scrim .row {
+  position: relative;
+}
+
+.scrim .row::after {
+  content: '';
   position: absolute;
   inset: 0;
 
-  font-family: var(--headlines);
-  font-size: 3rem;
-  letter-spacing: 0.02em;
-  color: var(--primary);
-
-  background: rgb(0 0 0 / 0.55);
-  border: none;
-  cursor: pointer;
-  transition: background 0.4s, color 0.4s;
-}
-
-.tileToggle:hover {
-  color: var(--red);
-  background: rgb(0 0 0 / 0.7);
-}
-
-/* The name set over the photos, shadowed like the old banners so it holds
-   against any picture. */
-.eraOverlay {
-  grid-template-columns: 1fr;
-}
-
-.overlayTitle {
-  position: absolute;
-  z-index: 2;
-  top: 1rem;
-  left: 1.25rem;
-
+  background: radial-gradient(
+    ellipse 45% 70% at 0 0,
+    rgb(0 0 0 / 0.85),
+    rgb(0 0 0 / 0.45) 45%,
+    transparent);
   pointer-events: none;
 }
 
-.overlayTitle a {
-  pointer-events: auto;
-}
-
-.eraOverlay .eraName {
-  font-size: 3.25rem;
+.scrim .eraName {
   text-shadow: 3px 3px var(--back);
 }
 
-.pillToggle {
-  position: absolute;
-  right: 0.75rem;
-  bottom: 0.75rem;
-
-  padding: 0.35rem 0.85rem;
-
-  font: inherit;
-  font-size: 0.85rem;
+/* The name inverts whatever is behind it: dark on the bright parts of a
+   photo, light on the dark ones. */
+.invert .eraName {
   color: var(--primary);
-
-  background: rgb(0 0 0 / 0.6);
-  backdrop-filter: blur(6px);
-  border: 1px solid rgb(255 255 255 / 0.25);
-  border-radius: 999px;
-  cursor: pointer;
-  transition: color 0.4s, border-color 0.4s;
-}
-
-.pillToggle:hover {
-  color: var(--red);
-  border-color: var(--red);
+  mix-blend-mode: difference;
 }
 
 /* PROTOTYPE: picks between the expand candidates. */
@@ -287,13 +256,8 @@
     text-align: left;
   }
 
-  .era {
-    grid-template-columns: 1fr;
-    row-gap: 1rem;
-  }
-
-  .rail {
-    position: static;
+  .eraName {
+    font-size: 2rem;
   }
 
   .photos {
