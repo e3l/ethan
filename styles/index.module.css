@@ -218,14 +218,19 @@
   min-width: 0;
   aspect-ratio: var(--ratio);
 
-  /* A photo may grow to 1.6 times the row height and no further. A row that
-     can reach the full measure within that, as most last rows can, stretches
-     to it. One that cannot, such as a last row of a single photo, keeps its
-     photos whole at that size and is centred instead of being cropped. */
+  /* A photo may grow to 1.6 times the row height and no further (GROW_CAP in
+     components/gallery/useShortLastRow.js), and keeps its shape. A row that
+     can reach the full measure within that stretches to it. */
   max-width: calc(var(--ratio) * var(--row) * 1.6);
 
   border-radius: 0.3em;
   overflow: hidden;
+}
+
+/* A last row too short to reach the full measure within that cap does not
+   grow at all: it stays at the row height, centred. */
+.photo[data-short] {
+  flex-grow: 0;
 }
 
 .photo img {

@@ -9,6 +9,7 @@ import { useEffect, useRef, useState } from 'react'
 import styles from '../styles/index.module.css'
 
 import Spacer from '../components/spacer.js'
+import useShortLastRow from '../components/gallery/useShortLastRow.js'
 
 import headshot from '../components/gallery/headshot-home.jpg'
 import { experiences } from '../data/experiences'
@@ -110,6 +111,8 @@ function scrollToTop(el, distance) {
 function Era({ slug, name, favorites }) {
   const [open, setOpen] = useState(false)
   const section = useRef(null)
+  const rows = useRef(null)
+  useShortLastRow(rows)
 
   const preview = favorites.slice(0, PREVIEW)
   const rest = favorites.slice(PREVIEW)
@@ -137,7 +140,7 @@ function Era({ slug, name, favorites }) {
         {rest.length > 0 && (
           <div className={styles.more} {...(!open && { inert: '' })}>
             <div className={styles.clip}>
-              <div className={styles.rows}>
+              <div ref={rows} className={styles.rows}>
                 {rest.map((photo) => <Photo key={photo.src} photo={photo} />)}
               </div>
             </div>
