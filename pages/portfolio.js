@@ -7,13 +7,13 @@ import styles from "../styles/portfolio.module.css"
 import Spacer from "../components/spacer"
 
 import headshot from '../components/gallery/headshot.jpeg'
-import { experiences } from '../data/portfolio'
+import { experiences } from '../data/experiences'
 
 // One experience. The accent rides down as a custom property for the wash the
 // row takes on hover, so the row needs no per-organisation rule of its own.
-function Experience({ name, role, logo, accent, years, blurb = [], photos = [], stack }) {
+function Experience({ slug, name, role, logo, accent, years, blurb = [], photos = [], stack }) {
     return (
-        <li className={styles.experience} style={{ '--accent': accent }}>
+        <li id={slug} className={styles.experience} style={{ '--accent': accent }}>
             <div className={styles.logo}>
                 <Image src={logo} alt="" sizes="144px" />
             </div>
@@ -88,7 +88,7 @@ export default function Portfolio() {
 
             <ul className={styles.experiences}>
                 {experiences.map((experience) => (
-                    <Experience key={experience.name} {...experience} />
+                    <Experience key={experience.slug} {...experience} />
                 ))}
             </ul>
         </div>

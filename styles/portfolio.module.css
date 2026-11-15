@@ -80,6 +80,10 @@
 
     padding: 2.5rem 0;
     border-bottom: 1px solid var(--borders);
+
+    /* The row is an anchor (`/portfolio#tesla`), and the fixed navbar would
+       otherwise cover its top when it is jumped to. */
+    scroll-margin-top: var(--navbarheight);
 }
 
 /* The wash reaches past the row and dissolves rather than stopping dead on an

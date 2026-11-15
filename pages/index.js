@@ -1,183 +1,121 @@
-import Image from 'next/image'
 import Head from 'next/head'
+import Image from 'next/image'
+import Link from 'next/link'
+
+import { motion, useReducedMotion } from 'framer-motion'
+
 import styles from '../styles/index.module.css'
 
 import Spacer from '../components/spacer.js'
 
-import { motion } from 'framer-motion'
+import headshot from '../components/gallery/headshot.jpeg'
+import { experiences } from '../data/experiences'
 
-import OverlayScrollbars from 'overlayscrollbars'
-import { useEffect, useRef } from 'react'
-import { grt_imgs, kurio_imgs, rapyuta_imgs, tesla_imgs } from '../components/gallery/gallery_collection.js'
+const eras = experiences.filter((experience) => experience.favorites?.length > 0)
 
-const headlineAnimation = {
-  color: ['#000000', '#F00000', '#FFFFFF']
-};
+// The motto rises out of the black canvas, flares red, and settles white, the
+// second half a beat behind the first. It plays once; with reduced motion it is
+// simply drawn white.
+function Motto() {
+  const still = useReducedMotion()
 
-function ImageCarousel(props) {
+  const sweep = (delay) => still ? {} : {
+    initial: { color: '#000000' },
+    animate: { color: ['#000000', '#f00000', '#ffffff'] },
+    transition: { duration: 1.6, delay, times: [0, 0.45, 1] },
+  }
+
   return (
-    <motion.div className={styles.imagesContainer} id="scrollz"
-      initial={{ paddingLeft: "100vw" }}
-      whileInView={{ paddingLeft: "0vw", transition: { duration: 1.5, type: 'tween' } }}
-      viewport={{ once: true }}>
-      <div className={styles.images}>
-        {
-          function () {
-            let elems = []
-            props.imgs.forEach(function (src, i) {
-              elems.push(
-                <Image
-                  key={src.src}
-                  src={src}
-                  sizes="30vw"
-                  // quality={50}
-                  priority={i < 3 ? true : false}
-                  alt=""
-                  placeholder='blur' />
-              )
-            })
-            return elems;
-          }()
-        }
-        {/* {props.children} */}
+    <p className={styles.motto}>
+      <motion.span {...sweep(0.4)}>Go big</motion.span>{' '}
+      <motion.span {...sweep(1.0)}>or go home.</motion.span>
+    </p>
+  )
+}
+
+// Photos in justified rows: each grows from a common row height in proportion
+// to its own width, so a row fills the measure without cropping anything.
+function Era({ slug, name, role, years, favorites }) {
+  return (
+    <section className={styles.era}>
+      <header className={styles.eraHeader}>
+        <h2 className={styles.eraName}>
+          <Link href={`/portfolio#${slug}`}>{name}</Link>
+        </h2>
+        <p className={styles.eraRole}>{role}</p>
+        {years && <p className={styles.eraYears}>{years}</p>}
+      </header>
+
+      <div className={styles.photos}>
+        {favorites.map((photo) => {
+          const ratio = photo.width / photo.height
+          return (
+            <div
+              key={photo.src}
+              className={styles.photo}
+              style={{ '--ratio': ratio }}>
+              <Image
+                src={photo}
+                alt=""
+                fill
+                sizes="(max-width: 48rem) 50vw, 30vw"
+                placeholder="blur" />
+            </div>
+          )
+        })}
       </div>
-    </motion.div>)
+    </section>
+  )
 }
 
 export default function Home() {
-  const rendered = useRef(false);
-
-  useEffect(() => {
-    if (rendered.current) {
-      return;
-    }
-
-    let threshold = 0.8;
-    let observer_options = {
-      threshold: threshold
-    }
-
-    let intervals = [];
-    document.querySelectorAll("#scrollz").forEach((item) => {
-      let scrollTo = null;
-      let visible = false;
-
-      let scroller = undefined;
-
-      let observer = new IntersectionObserver((entries, observer) => {
-        entries.forEach((entry) => {
-          if (entry.intersectionRatio > threshold) {
-            visible = true;
-          } else {
-            visible = false;
-          }
-
-          if (visible && scrollTo == null) {
-            scrollTo = Array.from(item.querySelectorAll("img"));
-            scrollTo.shift(); // the first element is already scrolled to
-
-            function scrollNext() {
-              if (!visible) {
-                return;
-              }
-
-              if (scroller === undefined) {
-                scroller = OverlayScrollbars(item, { className: "os-theme-light deviant-scrollbars" });
-              }
-              if (scroller !== undefined) {
-                scroller.scroll({
-                  el: scrollTo[0],
-                  block: "begin"
-                }, 1000);
-                scrollTo.shift();
-              }
-            }
-
-            intervals.push(setInterval(scrollNext, 6000));
-          }
-        });
-      }, observer_options);
-      observer.observe(item);
-    });
-
-    rendered.current = true;
-
-    return () => {
-      intervals.forEach((intvl) => {
-        clearInterval(intvl);
-      });
-    };
-  }, []);
-
   return (
     <div className={styles.container}>
       <Head>
         <title>Ethan Liang</title>
-        <meta name="description" content="Ethan Liang: BS CS @ GT '26. Alumni Gunn High School, FRC team 192 'GRT', FTC team 12635 'Kuriosity Robotics'." />
+        <meta name="description" content="Ethan Liang: BS CS @ Georgia Tech '26, building robots." />
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <div className={styles.headlineContainer}>
-        <div className={styles.headlines}>
-          <motion.p
-            animate={headlineAnimation}
-            transition={{
-              duration: 2,
-              delay: 0
-            }}>
-            Go Big
-          </motion.p>
-          <motion.p
-            animate={headlineAnimation}
-            transition={{
-              duration: 2.25,
-              delay: 1.2
-            }}>
-            or Go Home
-          </motion.p>
+      <div className={styles.intro}>
+        <div className={styles.headshot}>
+          <Image src={headshot} alt="Ethan Liang" sizes="(max-width: 48rem) 60vw, 18rem" priority />
         </div>
-        <motion.div
-          className={styles.headlineLinks}
-          animate={{ opacity: [0, 1] }}
-          transition={{
-            delay: 1.85
-          }}>
-          <a
-            href="https://github.com/e3l" target="_blank" rel="noopener noreferrer">
-            github ↗
-          </a>
-          <Spacer />
-          <a
-            href="https://www.linkedin.com/in/e3l/" target="_blank" rel="noopener noreferrer">
-            linkedin ↗
-          </a>
-        </motion.div>
+
+        <div className={styles.copy}>
+          <h1 className={styles.name}>Ethan Liang</h1>
+          <p className={styles.tagline}>Robotics · BS CS @ Georgia Tech &apos;26</p>
+
+          <div className={styles.blurb}>
+            <p>
+              I&apos;m excited to apply robotics to tackle our hardest challenges, whether it be
+              in logistics, recycling, or beyond. I&apos;ve built both classical and learned
+              robotics software stacks, and I particularly love the interdisciplinary nature of
+              scrappily prototyping robots.
+            </p>
+            <p>
+              I&apos;m particularly hopeful that we&apos;ll harness Connected Autonomous Vehicle
+              technology (imagine intersections without signals!) within this lifetime, a
+              challenge which sits at the intersection of multi-agent planning under
+              mixed-autonomy, mesh networking, and societal policy.
+            </p>
+          </div>
+
+          <Motto />
+
+          <div className={styles.links}>
+            <a href="https://github.com/e3l" target="_blank" rel="noopener noreferrer">github ↗</a>
+            <Spacer />
+            <a href="https://www.linkedin.com/in/e3l/" target="_blank" rel="noopener noreferrer">linkedin ↗</a>
+            <Spacer />
+            <Link href="/portfolio">portfolio →</Link>
+          </div>
+        </div>
       </div>
 
-      <motion.div className={styles.banners}
-        animate={{ opacity: [0, 1] }}
-        transition={{ delay: 1.85 }}>
-
-        <div className={styles.tesla}>
-          <h1>TESLA</h1>
-          <ImageCarousel imgs={tesla_imgs} />
-        </div>
-
-        <div className={styles.rapyuta}>
-          <h1>RAPYUTA</h1>
-          <ImageCarousel imgs={rapyuta_imgs} />
-        </div>
-
-        <div className={styles.grt}>
-          <h1>GRT</h1>
-          <ImageCarousel imgs={grt_imgs} />
-        </div>
-
-        <div className={styles.kurio}>
-          <h1>KURIOSITY</h1>
-          <ImageCarousel imgs={kurio_imgs} />
-        </div>
-      </motion.div>
+      <div className={styles.gallery}>
+        {eras.map((era) => <Era key={era.slug} {...era} />)}
+      </div>
     </div>
   )
 }

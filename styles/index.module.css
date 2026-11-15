@@ -1,129 +1,159 @@
+/* The same band as the portfolio, so the two pages read as one site. */
 .container {
-  width: 100%;
+  width: min(94%, 84rem);
 }
 
-.headlineContainer {
-  /* height: calc(100vh - var(--navbarheight)); */
-  width: 100%;
-  padding: max(10vw, 12vh);
-
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: center;
-
-  color: var(--red);
-}
-
-.headlineContainer > * {
-  margin: 2vh 0;
-}
-
-.headlines {
-  font-family: var(--headlines);
-  font-size: max(9vw, 10vh);
-  line-height: max(8vw, 9vh);
-
-  display: block;
-}
-
-.headlines > * {
-  margin: 2vh 0;
-}
-
-.headlineLinks {
-  margin-left: 0.4vh;
-}
-
-.headlineLinks * {
-  font-size: 2vh;
-  color: var(--primary);
-
-  padding: 0 0.2em;
-}
-
-.headline span {
-  padding: 2vh;
-}
-
-.headline a:hover {
-  color: var(--red);
-}
-
-.banners {
-  width: 100vw;
-
-  position: relative;
-  left: 50%;
-  margin-left: -50vw;
-  right: 50%;
-  margin-right: -50vw;
-}
-
-.banners > div {
-  height: 23rem;
-
-  position: relative;
-  padding: 0 5%;
-}
-
-.banners h1 {
-  font-size: 4rem;
-  
-  position: absolute;
-  top: 2rem;
-  left: 8%;
-  margin: 0;
-
-  z-index: 9;
-
-  /* text-shadow: 3px 3px var(--secondary); */
-}
-
-.imagesContainer {
-  position: absolute;
-  top: 4.5rem;
-  left: calc(8% + 2rem);
-  right: 8%;
-  bottom: 2.5rem;
-}
-
-.images {
-  width: 100%;
-  height: 100%;
-  
+.intro {
   display: flex;
   flex-direction: row;
-  /* overflow-x: hidden; */
+  align-items: flex-start;
+  gap: 3.5rem;
+
+  width: min(100%, 64rem);
+  margin: 0 auto;
+  padding: 5rem 0 6rem;
 }
 
-.images img {
-  max-height: 100%;
-  width: auto;
-  padding: 0 0.5rem 0 0;
+.headshot {
+  width: clamp(12rem, 22vw, 18rem);
+  flex-shrink: 0;
+
+  border-radius: 0.3em;
+  overflow: hidden;
 }
 
-.images :last-child {
-  padding: 0
+.copy {
+  min-width: 0;
 }
 
-.tesla {
-  background-color: #b9142d;
-  text-shadow: 3px 3px black;
+.name {
+  font-size: 2.5rem;
+  font-weight: 500;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+
+  margin: 0;
 }
 
-.rapyuta {
-  background-color: black;
-  color: white;
-  text-shadow: 3px 3px #c81a26;
+.tagline {
+  margin: 0.4rem 0 0;
+  color: var(--secondary);
 }
 
-.grt {
-  background-color: #a90000;
+/* Held to a reading measure. */
+.blurb {
+  max-width: 38rem;
+  margin-top: 1.75rem;
 
-  text-shadow: 3px 3px black;
+  font-size: 1rem;
+  line-height: 1.65;
 }
 
-.kurio {
-  text-shadow: 3px 3px #a90000;
+.blurb p {
+  margin: 0 0 1rem;
+}
+
+/* The blurb's last line, set in the headline face: a sign-off rather than a
+   banner. */
+.motto {
+  margin: 1.5rem 0 0;
+
+  font-family: var(--headlines);
+  font-size: 2rem;
+  line-height: 1;
+  letter-spacing: 0.02em;
+}
+
+.links {
+  margin-top: 2rem;
+  font-size: 0.95rem;
+}
+
+.gallery {
+  margin-bottom: 6rem;
+  border-top: 1px solid var(--borders);
+}
+
+.era {
+  padding: 2.5rem 0;
+  border-bottom: 1px solid var(--borders);
+}
+
+.eraHeader {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  column-gap: 1rem;
+
+  margin-bottom: 1.25rem;
+}
+
+.eraName {
+  font-size: 1.75rem;
+  font-weight: 500;
+  letter-spacing: -0.015em;
+
+  margin: 0;
+}
+
+.eraRole,
+.eraYears {
+  margin: 0;
+  color: var(--secondary);
+}
+
+.eraYears {
+  margin-left: auto;
+}
+
+/* Justified rows. Every photo starts from the same height and grows in
+   proportion to its aspect ratio, so the photos in a row stay the same height
+   as each other while the row stretches to the full measure. The trailing
+   spacer soaks up the slack on the last row, so a short last row keeps its
+   height instead of being blown up to fill the width. */
+.photos {
+  --row: 15rem;
+
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.photos::after {
+  content: '';
+  flex-grow: 1000000;
+}
+
+.photo {
+  position: relative;
+  flex: var(--ratio) 1 calc(var(--ratio) * var(--row));
+  aspect-ratio: var(--ratio);
+
+  border-radius: 0.3em;
+  overflow: hidden;
+}
+
+.photo img {
+  object-fit: cover;
+}
+
+@media (max-width: 48rem) {
+  .intro {
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+    padding: 3rem 0 4rem;
+  }
+
+  .copy {
+    text-align: center;
+  }
+
+  .blurb {
+    text-align: left;
+  }
+
+  .photos {
+    --row: 8rem;
+  }
 }
