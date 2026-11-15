@@ -75,12 +75,12 @@
   border-top: 1px solid var(--borders);
 }
 
-/* Collapsing an era shrinks it over half a second while its name moves back
-   over the photos. Left to itself the browser chases that with scroll
-   anchoring and drags the page several hundred pixels down under the reader,
-   after the era has already scrolled back to its own top. Anchoring is decided
-   by the scroll container, which is OverlayScrollbars' viewport rather than
-   the document, so it is switched off there, and only on this page. */
+/* Opening or closing an era changes its height while the page is being
+   scrolled to it. Left to itself the browser chases that change with scroll
+   anchoring and drags the page several hundred pixels away from the era.
+   Anchoring is decided by the scroll container, which is OverlayScrollbars'
+   viewport rather than the document, so it is switched off there, and only on
+   this page. */
 :global(.os-viewport):has(.gallery) {
   overflow-anchor: none;
 }
@@ -89,13 +89,33 @@
   padding: 2rem 0;
   border-bottom: 1px solid var(--borders);
 
-  /* Collapsing an era scrolls back to its top; this keeps that top clear of
-     the fixed navbar. */
+  /* An era is scrolled to its top when it opens or closes; this keeps that top
+     clear of the fixed navbar. */
   scroll-margin-top: calc(var(--navbarheight) + 1rem);
 }
 
+/* Everything an era does when it opens is a transition on its `open` class,
+   all on the same timing, so a click part-way through turns it around. */
+.photos {
+  --row: 15rem;
+  --gap: 0.5rem;
+  --title: 3.25rem;
+  --ease: 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+
+  position: relative;
+  min-width: 0;
+
+  transition: padding-top var(--ease);
+}
+
+/* The name never moves far: the photos slide down to clear it instead. */
+.open .photos {
+  padding-top: calc(var(--title) + 0.75rem);
+}
+
 /* Set over the top-left of the row, in the headline face, the way the old
-   banners announced each era. */
+   banners announced each era. Open, it sheds its inset and its shadow and
+   stands on the canvas above the photos. */
 .eraName {
   position: absolute;
   z-index: 2;
@@ -106,29 +126,24 @@
   padding: 0.9rem 1.25rem;
 
   font-family: var(--headlines);
-  font-size: 3.25rem;
+  font-size: var(--title);
   font-weight: normal;
   line-height: 1;
   letter-spacing: 0.02em;
   text-transform: uppercase;
-  text-shadow: 3px 3px var(--back);
+  text-shadow: 3px 3px rgb(0 0 0 / 1);
 
   pointer-events: none;
+  transition: padding var(--ease), text-shadow var(--ease);
+}
+
+.open .eraName {
+  padding: 0;
+  text-shadow: 3px 3px rgb(0 0 0 / 0);
 }
 
 .eraName a {
   pointer-events: auto;
-}
-
-.photos {
-  --row: 15rem;
-  --gap: 0.5rem;
-
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  gap: var(--gap);
-  min-width: 0;
 }
 
 /* Every photo starts from the same height and grows in proportion to its
@@ -144,6 +159,7 @@
 
 .rows {
   flex-wrap: wrap;
+  margin-top: var(--gap);
 }
 
 /* Soaks up the slack on the last wrapped row, so a short last row keeps its
@@ -151,6 +167,49 @@
 .rows::after {
   content: '';
   flex-grow: 1000000;
+}
+
+/* A shadow cast from the top-left corner of the row, deep enough under the
+   name to carry it and gone by the middle of the photo. It fades once the era
+   is open and the name stands clear of the photos. */
+.row {
+  position: relative;
+}
+
+.row::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+
+  background: radial-gradient(
+    ellipse 45% 70% at 0 0,
+    rgb(0 0 0 / 0.85),
+    rgb(0 0 0 / 0.45) 45%,
+    transparent);
+  pointer-events: none;
+  transition: opacity var(--ease);
+}
+
+.open .row::after {
+  opacity: 0;
+}
+
+/* The rest of the era, opened by growing its one grid track from nothing to
+   its content's height: the browser works the height out, so nothing has to
+   be measured, and the clip hides the rows while the track is short of them. */
+.more {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows var(--ease);
+}
+
+.open .more {
+  grid-template-rows: 1fr;
+}
+
+.clip {
+  min-height: 0;
+  overflow: hidden;
 }
 
 .photo {
@@ -171,7 +230,7 @@
 .footer {
   display: flex;
   justify-content: flex-end;
-  margin-top: 0.25rem;
+  margin-top: 0.75rem;
 }
 
 .toggle {
@@ -191,42 +250,13 @@
   color: var(--red);
 }
 
-/* A shadow cast from the top-left corner of the row, deep enough under the
-   name to carry it and gone by the middle of the photo. It fades out once the
-   era is open and the name has moved above the photos. */
-.row {
-  position: relative;
-}
-
-.row::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-
-  background: radial-gradient(
-    ellipse 45% 70% at 0 0,
-    rgb(0 0 0 / 0.85),
-    rgb(0 0 0 / 0.45) 45%,
-    transparent);
-  pointer-events: none;
-  transition: opacity 0.45s;
-}
-
-.open .row::after {
-  opacity: 0;
-}
-
-/* Open, the name stands above the photos on the canvas, where it needs no
-   shadow, so every photo in the era is seen whole. */
-.open .eraName {
-  position: static;
-  padding: 0 0 0.5rem;
-  text-shadow: none;
-}
-
-/* Clips the rest of the era while its height opens and closes. */
-.more {
-  overflow: hidden;
+@media (prefers-reduced-motion: reduce) {
+  .photos,
+  .eraName,
+  .row::after,
+  .more {
+    transition: none;
+  }
 }
 
 @media (max-width: 48rem) {
@@ -245,11 +275,8 @@
     text-align: left;
   }
 
-  .eraName {
-    font-size: 2rem;
-  }
-
   .photos {
     --row: 8rem;
+    --title: 2rem;
   }
 }

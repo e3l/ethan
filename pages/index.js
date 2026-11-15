@@ -1,7 +1,8 @@
 import Head from 'next/head'
 import Image from 'next/image'
 import Link from 'next/link'
-import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
+
+import { motion, useReducedMotion } from 'framer-motion'
 import { useRef, useState } from 'react'
 
 import styles from '../styles/index.module.css'
@@ -49,85 +50,58 @@ function Photo({ photo }) {
   )
 }
 
-// Resolves once the element's scroll container stops scrolling. The page
-// scrolls inside OverlayScrollbars' viewport rather than the document, so the
-// container is found by walking up. Browsers without `scrollend` fall back to
-// a timeout about as long as a smooth scroll takes.
-function scrollSettled(el) {
-  let scroller = el.parentElement
-  while (scroller && !/auto|scroll/.test(getComputedStyle(scroller).overflowY)) {
-    scroller = scroller.parentElement
-  }
-  const target = scroller ?? window
-
-  return new Promise((resolve) => {
-    const done = () => {
-      clearTimeout(timer)
-      target.removeEventListener('scrollend', done)
-      resolve()
-    }
-    const timer = setTimeout(done, 800)
-    target.addEventListener('scrollend', done)
-  })
-}
-
 // One era: its name set over its first few favourites, which make a single
-// row so every era can be passed over at a glance. Expanding it lifts the name
-// above the row, so no photo is covered while the era is being looked through,
-// and opens the rest out in rows beneath.
+// row so every era can be passed over at a glance.
+//
+// Opening it moves the photos rather than the name: the name stays where it
+// is, and the photos slide down to clear it, so no photo is covered while the
+// era is looked through. The rest open out in rows beneath. Both are CSS
+// transitions on the `open` class, so a click part-way through simply turns
+// them around.
+//
+// Either way the era's top is brought into view at the same time: opening
+// scrolls it to the top of the screen, and closing from the control under a
+// long era scrolls back up to it rather than leaving the reader several eras
+// further down.
 function Era({ slug, name, favorites }) {
   const [open, setOpen] = useState(false)
   const section = useRef(null)
-  const still = useReducedMotion()
 
   const preview = favorites.slice(0, PREVIEW)
   const rest = favorites.slice(PREVIEW)
 
-  const ease = { duration: still ? 0 : 0.45, ease: [0.4, 0, 0.2, 1] }
+  const toggle = () => {
+    const el = section.current
+    const margin = parseFloat(getComputedStyle(el).scrollMarginTop) || 0
+    const top = el.getBoundingClientRect().top
 
-  // The control sits under the last row, so collapsing a long era from it
-  // would leave the reader several eras further down the page. When the era's
-  // top has scrolled out of view, collapsing first scrolls back to it and only
-  // then folds the rest away: shrinking the page under a smooth scroll cuts
-  // the scroll short.
-  const toggle = async () => {
-    if (open) {
-      const el = section.current
-      const margin = parseFloat(getComputedStyle(el).scrollMarginTop) || 0
-      if (el.getBoundingClientRect().top < margin) {
-        const settled = scrollSettled(el)
-        el.scrollIntoView({ behavior: still ? 'auto' : 'smooth', block: 'start' })
-        await settled
-      }
+    if (!open || top < margin) {
+      const still = matchMedia('(prefers-reduced-motion: reduce)').matches
+      el.scrollIntoView({ behavior: still ? 'auto' : 'smooth', block: 'start' })
     }
-    setOpen(!open)
+    setOpen((was) => !was)
   }
 
   return (
     <section ref={section} className={`${styles.era} ${open ? styles.open : ''}`}>
       <div className={styles.photos}>
-        <motion.h2 layout="position" transition={ease} className={styles.eraName}>
+        <h2 className={styles.eraName}>
           <Link href={`/portfolio#${slug}`}>{name}</Link>
-        </motion.h2>
+        </h2>
 
-        <motion.div layout="position" transition={ease} className={styles.row}>
+        <div className={styles.row}>
           {preview.map((photo) => <Photo key={photo.src} photo={photo} />)}
-        </motion.div>
+        </div>
 
-        <AnimatePresence initial={false}>
-          {open && (
-            <motion.div
-              className={styles.more}
-              initial={{ height: 0, opacity: 0 }}
-              animate={{ height: 'auto', opacity: 1 }}
-              exit={{ height: 0, opacity: 0 }}
-              transition={ease}>
+        {rest.length > 0 && (
+          <div className={styles.more} {...(!open && { inert: '' })}>
+            <div className={styles.clip}>
               <div className={styles.rows}>
                 {rest.map((photo) => <Photo key={photo.src} photo={photo} />)}
               </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
+            </div>
+          </div>
+        )}
 
         {rest.length > 0 && (
           <div className={styles.footer}>
