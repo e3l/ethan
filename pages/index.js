@@ -16,11 +16,10 @@ import { experiences } from '../data/experiences'
 
 const eras = experiences.filter((experience) => experience.favorites?.length > 0)
 
-// How many of an era's favourites show before it is expanded: its first row.
+// Photos shown before an era is expanded.
 const PREVIEW = 4
 
-// The motto rises out of the black canvas into red, the second half a beat
-// behind the first. It plays once; with reduced motion it is simply drawn red.
+// Fades from black to red once; static under reduced motion.
 function Motto() {
   const still = useReducedMotion()
 
@@ -51,16 +50,12 @@ function Photo({ photo }) {
   )
 }
 
-// Matches the timing of an era's CSS transitions (0.45s, ease-in-out).
+// Matches the era's CSS transition (0.45s ease-in-out).
 const SCROLL_MS = 450
 const easeInOut = (t) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2)
 
-// Scrolls the page by `distance` over the same time the era takes to open or
-// close. The browser's own smooth scroll is cut short when the page changes
-// height under it, which is exactly what an era does while it closes, so the
-// scroll is stepped here instead, one frame at a time. The page scrolls inside
-// OverlayScrollbars' viewport rather than the document, so that is found by
-// walking up. Any wheel, touch or key from the reader hands the scroll back.
+// Stepped per frame because native smooth scroll stops when the page resizes
+// mid-scroll. The page scrolls inside OverlayScrollbars, not the document.
 function scrollToTop(el, distance) {
   let scroller = el.parentElement
   while (scroller && !(
@@ -95,19 +90,8 @@ function scrollToTop(el, distance) {
   requestAnimationFrame(step)
 }
 
-// One era: its name set over its first few favourites, which make a single
-// row so every era can be passed over at a glance.
-//
-// Opening it moves the photos rather than the name: the name stays where it
-// is, and the photos slide down to clear it, so no photo is covered while the
-// era is looked through. The rest open out in rows beneath. Both are CSS
-// transitions on the `open` class, so a click part-way through simply turns
-// them around.
-//
-// Either way the era's top is brought into view at the same time: opening
-// scrolls it to the top of the screen, and closing from the control under a
-// long era scrolls back up to it rather than leaving the reader several eras
-// further down.
+// Opening scrolls the era to the top; closing scrolls back if its top is
+// off screen. The animation itself is CSS on the `open` class.
 function Era({ slug, name, favorites }) {
   const [open, setOpen] = useState(false)
   const section = useRef(null)
@@ -163,11 +147,8 @@ function Era({ slug, name, favorites }) {
   )
 }
 
-// The page scrolls inside OverlayScrollbars, which re-measures its content
-// only when its own box resizes or the DOM changes. An era opening is neither:
-// it grows by a CSS transition, so without a nudge the scrollable height stays
-// at what it was and the rest of the page cannot be scrolled to. Every change
-// in the gallery's size asks each instance to measure again.
+// OverlayScrollbars misses growth from CSS transitions, so re-measure it
+// whenever the gallery resizes.
 function useScrollbarsFollow(ref) {
   useEffect(() => {
     const observer = new ResizeObserver(() => {
@@ -178,8 +159,7 @@ function useScrollbarsFollow(ref) {
   }, [ref])
 }
 
-// The gallery fades in once, as the motto settles red, so the eye starts on
-// the intro before the photos arrive. With reduced motion it is simply shown.
+// Fades in as the motto settles, so attention starts on the intro.
 const GALLERY_FADE = { duration: 0.8, delay: 1.6, ease: 'easeOut' }
 
 export default function Home() {

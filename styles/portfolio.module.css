@@ -81,8 +81,7 @@
     padding: 2.5rem 0;
     border-bottom: 1px solid var(--borders);
 
-    /* Rows are link targets (/portfolio#tesla); keeps the row's top clear of
-       the fixed navbar when one is jumped to. */
+    /* Clears the fixed navbar for #slug links. */
     scroll-margin-top: var(--navbarheight);
 }
 

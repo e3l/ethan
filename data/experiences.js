@@ -1,7 +1,7 @@
-// Work and team experience, most recent first. The portfolio and the home
-// gallery both read from here.
+// Work and team experience, most recent first. Read by the portfolio and the
+// home gallery.
 //
-//   slug       short name used in URLs; /portfolio#tesla lands on Tesla's row
+//   slug       URL name; /portfolio#tesla
 //   name       organisation
 //   role       my role there
 //   logo       the organisation's logo
@@ -9,10 +9,7 @@
 //   stack      technologies and skills
 //   blurb      optional; paragraphs about what I worked on
 //   photos     optional; images from the work, shown on the portfolio
-//   favorites  optional; favourite photos from that era, shown in the home
-//              gallery. Most important first: the first four are the row shown
-//              before the era is expanded. Without any, the era is left out of
-//              the gallery.
+//   favorites  optional; home gallery photos, most important first
 
 import tesla from '../components/portfolio/tesla.png'
 import rapyuta from '../components/portfolio/rapyuta-light.png'

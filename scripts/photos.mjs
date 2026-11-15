@@ -1,25 +1,6 @@
-// Keeps the gallery's photos at one display-ready spec. Originals belong in a
-// photo library; the repo holds these display copies.
-//
-//   npm run photos             optimise every photo that is not yet to spec
-//   npm run photos -- --check  report photos not to spec, change nothing, and
-//                              exit non-zero if there are any (run as
-//                              `prebuild`, so a stray original fails the build)
-//
-// A photo is to spec when it is a JPEG, its long edge is at most LONG_EDGE, and
-// it carries no EXIF or XMP metadata. Optimising produces exactly that, so a
-// photo that has been through it is skipped from then on and never
-// recompressed.
-//
-// Optimising applies the camera's rotation, shrinks the photo to LONG_EDGE
-// (never enlarging), keeps its colour profile so wide-gamut (Display P3)
-// photos keep their colour, drops all other metadata (camera, location), and
-// encodes a JPEG at QUALITY with colour at full resolution (4:4:4). A photo
-// that was not a JPEG is replaced by `<name>.jpg`, and its import must be
-// updated to match.
-//
-// Transparency cannot survive as a JPEG, so a photo that actually uses it is
-// refused rather than flattened.
+// Keeps gallery photos to one spec: JPEG, long edge <= LONG_EDGE, no EXIF/XMP.
+//   npm run photos             fix photos not to spec (compliant ones are skipped)
+//   npm run photos -- --check  list them and exit 1 (runs as prebuild)
 
 import { readdirSync, statSync, unlinkSync, renameSync } from 'node:fs'
 import { join, extname, relative } from 'node:path'
@@ -40,7 +21,6 @@ function walk(dir) {
   })
 }
 
-// Why a photo is not to spec, or an empty list if it is.
 async function problems(path) {
   const meta = await sharp(path).metadata()
   const found = []
