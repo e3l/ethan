@@ -25,8 +25,16 @@ function useReducedMotion() {
     );
 }
 
-// Clicks on these keep their own meaning instead of resuming the crawl.
+// Clicks on these keep their own meaning instead of toggling the crawl.
 const OWN_CLICKS = 'a, button, input, textarea, select, label, .os-scrollbar';
+
+// The longest gap between frames the crawl will make up for, so coming back
+// to the page does not jump it forward by however long it was gone.
+const MAX_FRAME_MS = 100;
+
+// How close a click has to follow the window regaining focus to count as the
+// click that brought it back, rather than one meant for the page.
+const REFOCUS_MS = 100;
 
 function hasSelection() {
     // Ranges that render as nothing do not count as a selection.
@@ -36,13 +44,18 @@ function hasSelection() {
         && selection.toString().trim() !== '';
 }
 
-// Scrolls the page upward on its own. Scroll input, a scrollbar drag, or
-// leaving the tab latch it off until resume() or a plain click on the page; a
-// held mouse button or a live selection stop it only while they last. Until
-// the first latch, reduced motion decides. `paused` is true whenever a latch
-// or a selection has the crawl stopped, except at the foot of the page, where
-// there is nothing left to resume. A held mouse button is left out so the
-// control does not flash on every click.
+// Scrolls the page upward on its own.
+//
+// Stays paused until resumed: a click on the page, scrolling, or a scrollbar
+// drag. A click or resume() starts it again.
+// Pauses only while it lasts: a held mouse button, selected text, or the page
+// being out of focus or out of view.
+//
+// Until the first pause or play, reduced motion decides. `paused` drives the
+// resume button: true when the crawl is paused or text is selected, but not
+// at the foot of the page, where there is nothing left to play. A held mouse
+// button and an unfocused page do not count, since the first ends in a click
+// that decides for itself and the second is not being looked at.
 export default function useCrawl() {
     const [latched, setLatched] = useState(null);
     const [ended, setEnded] = useState(false);
@@ -65,6 +78,10 @@ export default function useCrawl() {
         let selecting = false;
         let heldAt = null;
         let dragged = false;
+        let focused = document.hasFocus();
+        let away = !focused || document.hidden;
+        let focusedAt = -Infinity;
+        let downAt = -Infinity;
         let wasAtEnd = false;
         let carry = 0;
         let previousFrame = null;
@@ -87,7 +104,7 @@ export default function useCrawl() {
                 setEnded(wasAtEnd);
             }
 
-            if (latchedNow.current || locked || selecting) {
+            if (latchedNow.current || locked || selecting || away) {
                 carry = 0;
                 return;
             }
@@ -98,7 +115,7 @@ export default function useCrawl() {
 
             // Accumulate fractional pixels so speed does not depend on frame
             // rate, and scroll only whole ones.
-            carry += ((now - previous) / 1000) * PIXELS_PER_SECOND;
+            carry += (Math.min(now - previous, MAX_FRAME_MS) / 1000) * PIXELS_PER_SECOND;
             const pixels = Math.floor(carry);
             if (pixels >= 1) {
                 carry -= pixels;
@@ -115,9 +132,10 @@ export default function useCrawl() {
         function onKeyDown(event) {
             if (SCROLL_KEYS.has(event.key)) setLatched(true);
         }
-        function onMouseDown() {
+        function onMouseDown(event) {
             locked = true;
             heldAt = position() ?? null;
+            downAt = event.timeStamp;
         }
         function onMouseUp() {
             locked = false;
@@ -128,18 +146,30 @@ export default function useCrawl() {
             heldAt = null;
         }
         function onClick(event) {
-            // A click also lands at the end of a scrollbar drag or a drag
-            // selection, and neither of those means "resume".
-            if (event.button !== 0 || dragged || hasSelection()) return;
+            // These clicks are not play/pause: the end of a scrollbar drag or
+            // a drag selection, the second click of a double click, and the
+            // click that brought the window back into focus.
+            if (event.button !== 0 || event.detail > 1) return;
+            if (dragged || hasSelection()) return;
+            if (focusedAt > downAt - REFOCUS_MS) return;
             if (event.target instanceof Element && event.target.closest(OWN_CLICKS)) return;
-            setLatched(false);
+            setLatched(!latchedNow.current);
         }
         function onSelectionChange() {
             selecting = hasSelection();
             setSelected(selecting);
         }
-        function onLeave() {
-            setLatched(true);
+        function onFocus(event) {
+            focused = true;
+            focusedAt = event.timeStamp;
+            away = document.hidden;
+        }
+        function onBlur() {
+            focused = false;
+            away = true;
+        }
+        function onVisibilityChange() {
+            away = !focused || document.hidden;
         }
 
         window.addEventListener('wheel', onWheel);
@@ -148,9 +178,10 @@ export default function useCrawl() {
         window.addEventListener('mousedown', onMouseDown);
         window.addEventListener('mouseup', onMouseUp);
         window.addEventListener('click', onClick);
-        window.addEventListener('blur', onLeave);
+        window.addEventListener('focus', onFocus);
+        window.addEventListener('blur', onBlur);
         document.addEventListener('selectionchange', onSelectionChange);
-        document.addEventListener('visibilitychange', onLeave);
+        document.addEventListener('visibilitychange', onVisibilityChange);
 
         frameId = requestAnimationFrame(step);
 
@@ -164,9 +195,10 @@ export default function useCrawl() {
             window.removeEventListener('mousedown', onMouseDown);
             window.removeEventListener('mouseup', onMouseUp);
             window.removeEventListener('click', onClick);
-            window.removeEventListener('blur', onLeave);
+            window.removeEventListener('focus', onFocus);
+            window.removeEventListener('blur', onBlur);
             document.removeEventListener('selectionchange', onSelectionChange);
-            document.removeEventListener('visibilitychange', onLeave);
+            document.removeEventListener('visibilitychange', onVisibilityChange);
         };
     }, []);
 

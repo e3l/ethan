@@ -139,13 +139,13 @@
     bottom: 1.5rem;
     z-index: 2;
 
-    width: 2.75rem;
-    height: 2.75rem;
+    width: 3rem;
+    height: 3rem;
 
     display: grid;
     place-items: center;
 
-    border: 1px solid var(--borders);
+    border: 1.5px solid var(--primary);
     border-radius: 50%;
     background-color: var(--back);
     color: var(--primary);
@@ -153,13 +153,9 @@
     cursor: pointer;
 }
 
-.resume:hover {
-    border-color: var(--primary);
-}
-
 .resume svg {
-    width: 1.25rem;
-    height: 1.25rem;
+    width: 1.75rem;
+    height: 1.75rem;
 
     fill: currentColor;
 }
