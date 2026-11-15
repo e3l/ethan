@@ -1,23 +1,18 @@
-// One entry per experience, ordered most recent first. The portfolio, the home
-// gallery and, eventually, a page per experience all read from the same entry.
+// Work and team experience, most recent first. The portfolio and the home
+// gallery both read from here.
 //
-// `slug` names the experience in URLs. The portfolio uses it as each row's
-// anchor, so `/portfolio#tesla` lands on Tesla's row.
-//
-// `accent` is the organisation's own brand colour, used only as a highlight.
-//
-// `blurb` (an array of paragraphs) and `photos` (an array of imported images)
-// belong to the portfolio: what the work was, and pictures of the tech itself.
-//
-// `favorites` (an array of imported images) belong to the home gallery: the
-// photos from that era worth showing for their own sake, whether or not they
-// show the work. They are listed most important first, and the first four are
-// the row the era shows before it is expanded, so reordering the array is how
-// a photo is promoted or demoted. An experience without any is left out of the
-// gallery.
-//
-// Rapyuta's mark is filled black, which is invisible here, so it is drawn from
-// a variant whose fill has been lifted to white.
+//   slug       short name used in URLs; /portfolio#tesla lands on Tesla's row
+//   name       organisation
+//   role       my role there
+//   logo       the organisation's logo
+//   accent     the organisation's brand colour
+//   stack      technologies and skills
+//   blurb      optional; paragraphs about what I worked on
+//   photos     optional; images from the work, shown on the portfolio
+//   favorites  optional; favourite photos from that era, shown in the home
+//              gallery. Most important first: the first four are the row shown
+//              before the era is expanded. Without any, the era is left out of
+//              the gallery.
 
 import tesla from '../components/portfolio/tesla.png'
 import rapyuta from '../components/portfolio/rapyuta-light.png'
@@ -76,7 +71,6 @@ export const experiences = [
         role: 'Computer Vision & Data',
         logo: tesla,
         accent: '#e82127',
-        years: '',
         stack: ['AWS S3', 'SQL', 'Kafka', 'Kubernetes', 'C#/.NET'],
         favorites: [tesla_a, tesla_b, tesla_c, tesla_d, tesla_e, tesla_g, tesla_h, tesla_f],
     },
@@ -86,7 +80,6 @@ export const experiences = [
         role: 'Robotics Perception & Systems',
         logo: rapyuta,
         accent: '#e2231a',
-        years: '',
         stack: [
             'Python',
             'PyTorch',
@@ -114,7 +107,6 @@ export const experiences = [
         role: 'Robotics Simulation',
         logo: gtri,
         accent: '#b3a369',
-        years: '',
         stack: ['ROS', 'catkin', 'Gazebo', 'SLAM'],
     },
     {
@@ -123,7 +115,6 @@ export const experiences = [
         role: 'Deep Learning Research',
         logo: mitre,
         accent: '#005b94',
-        years: '',
         stack: ['Cybersecurity', 'Computer Vision', 'Generative Adversarial Networks'],
     },
     {
@@ -132,7 +123,6 @@ export const experiences = [
         role: 'Controls Team Lead',
         logo: grt,
         accent: '#ed1c24',
-        years: '',
         stack: [
             'Jetson Nano',
             'GStreamer H.264 streaming',
@@ -151,7 +141,6 @@ export const experiences = [
         role: 'Software Team Lead',
         logo: kurio,
         accent: '#ef2b2d',
-        years: '',
         stack: [
             'Multi-threaded software architecture',
             'SLAM',

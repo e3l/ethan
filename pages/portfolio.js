@@ -9,16 +9,14 @@ import Spacer from "../components/spacer"
 import headshot from '../components/gallery/headshot.jpeg'
 import { experiences } from '../data/experiences'
 
-// One experience. The accent rides down as a custom property for the wash the
-// row takes on hover, so the row needs no per-organisation rule of its own.
-function Experience({ slug, name, role, logo, accent, years, blurb = [], photos = [], stack }) {
+function Experience({ slug, name, role, logo, accent, blurb = [], photos = [], stack }) {
     return (
         <li id={slug} className={styles.experience} style={{ '--accent': accent }}>
             <div className={styles.logo}>
                 <Image src={logo} alt="" sizes="144px" />
             </div>
 
-            <div className={styles.notch} />
+            <div className={styles.divider} />
 
             <div className={styles.detail}>
                 <h2 className={styles.name}>{name}</h2>
@@ -44,8 +42,6 @@ function Experience({ slug, name, role, logo, accent, years, blurb = [], photos 
                     {stack.map((item) => <li key={item}>{item}</li>)}
                 </ul>
             </div>
-
-            {years && <div className={styles.years}>{years}</div>}
         </li>
     )
 }
@@ -62,7 +58,7 @@ export default function Portfolio() {
                     <Image
                         src={headshot}
                         alt="headshot of ethan"
-                        sizes="(max-width: 1455px) max(192px, 22vw), 320px" />
+                        sizes="(max-width: 872px) 192px, (max-width: 1455px) 22vw, 320px" />
                 </div>
                 <div>
                     <h1 className={styles.headline}>BS CS @ Georgia Tech, &apos;26</h1>
