@@ -62,7 +62,7 @@ export default function Portfolio() {
                     <Image
                         src={headshot}
                         alt="headshot of ethan"
-                        sizes="224px" />
+                        sizes="(max-width: 1455px) max(192px, 22vw), 320px" />
                 </div>
                 <div>
                     <h1 className={styles.headline}>BS CS @ Georgia Tech, &apos;26</h1>

@@ -15,8 +15,10 @@
     padding: 4rem 0;
 }
 
+/* Scales with the width of the window, since the intro is a row and width is
+   what it has to share with the copy beside it. */
 .headshot {
-    width: 14rem;
+    width: clamp(12rem, 22vw, 20rem);
     flex-shrink: 0;
 
     border-radius: 0.3em;
