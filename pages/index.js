@@ -3,6 +3,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 
 import { motion, useReducedMotion } from 'framer-motion'
+import { useState } from 'react'
 
 import styles from '../styles/index.module.css'
 
@@ -13,16 +14,19 @@ import { experiences } from '../data/experiences'
 
 const eras = experiences.filter((experience) => experience.favorites?.length > 0)
 
-// The motto rises out of the black canvas, flares red, and settles white, the
-// second half a beat behind the first. It plays once; with reduced motion it is
-// simply drawn white.
+// How many of an era's favourites show before it is expanded: its first row.
+const PREVIEW = 4
+
+// The motto rises out of the black canvas and settles red, the second half a
+// beat behind the first. It plays once; with reduced motion it is simply drawn
+// red.
 function Motto() {
   const still = useReducedMotion()
 
   const sweep = (delay) => still ? {} : {
     initial: { color: '#000000' },
-    animate: { color: ['#000000', '#f00000', '#ffffff'] },
-    transition: { duration: 1.6, delay, times: [0, 0.45, 1] },
+    animate: { color: ['#000000', '#ffffff', '#f00000'] },
+    transition: { duration: 1.6, delay, times: [0, 0.4, 1] },
   }
 
   return (
@@ -33,36 +37,60 @@ function Motto() {
   )
 }
 
-// Photos in justified rows: each grows from a common row height in proportion
-// to its own width, so a row fills the measure without cropping anything.
-function Era({ slug, name, role, years, favorites }) {
+function Photo({ photo }) {
+  return (
+    <div className={styles.photo} style={{ '--ratio': photo.width / photo.height }}>
+      <Image
+        src={photo}
+        alt=""
+        fill
+        sizes="(max-width: 48rem) 50vw, 25vw"
+        placeholder="blur" />
+    </div>
+  )
+}
+
+// One era: its name in the rail on the left, and on the right its first few
+// favourites as a single row, so every era can be passed over at a glance.
+// Expanding it lays the rest out in rows beneath.
+function Era({ slug, name, years, favorites }) {
+  const [open, setOpen] = useState(false)
+
+  const preview = favorites.slice(0, PREVIEW)
+  const rest = favorites.slice(PREVIEW)
+
   return (
     <section className={styles.era}>
-      <header className={styles.eraHeader}>
+      <div className={styles.rail}>
         <h2 className={styles.eraName}>
           <Link href={`/portfolio#${slug}`}>{name}</Link>
         </h2>
-        <p className={styles.eraRole}>{role}</p>
         {years && <p className={styles.eraYears}>{years}</p>}
-      </header>
+        {rest.length > 0 && (
+          <button
+            type="button"
+            className={styles.toggle}
+            aria-expanded={open}
+            onClick={() => setOpen(!open)}>
+            {open ? 'show less ↑' : `+${rest.length} more ↓`}
+          </button>
+        )}
+      </div>
 
       <div className={styles.photos}>
-        {favorites.map((photo) => {
-          const ratio = photo.width / photo.height
-          return (
-            <div
-              key={photo.src}
-              className={styles.photo}
-              style={{ '--ratio': ratio }}>
-              <Image
-                src={photo}
-                alt=""
-                fill
-                sizes="(max-width: 48rem) 50vw, 30vw"
-                placeholder="blur" />
-            </div>
-          )
-        })}
+        <div className={styles.row}>
+          {preview.map((photo) => <Photo key={photo.src} photo={photo} />)}
+        </div>
+
+        {open && (
+          <motion.div
+            className={styles.rows}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.4 }}>
+            {rest.map((photo) => <Photo key={photo.src} photo={photo} />)}
+          </motion.div>
+        )}
       </div>
     </section>
   )
@@ -78,13 +106,15 @@ export default function Home() {
       </Head>
 
       <div className={styles.intro}>
-        <div className={styles.headshot}>
-          <Image src={headshot} alt="Ethan Liang" sizes="(max-width: 48rem) 60vw, 18rem" priority />
+        <div className={styles.headshotColumn}>
+          <div className={styles.headshot}>
+            <Image src={headshot} alt="Ethan Liang" sizes="(max-width: 48rem) 60vw, 18rem" priority />
+          </div>
         </div>
 
         <div className={styles.copy}>
           <h1 className={styles.name}>Ethan Liang</h1>
-          <p className={styles.tagline}>Robotics · BS CS @ Georgia Tech &apos;26</p>
+          <p className={styles.tagline}>BS CS @ Georgia Tech &apos;26</p>
 
           <div className={styles.blurb}>
             <p>

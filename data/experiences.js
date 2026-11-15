@@ -11,7 +11,10 @@
 //
 // `favorites` (an array of imported images) belong to the home gallery: the
 // photos from that era worth showing for their own sake, whether or not they
-// show the work. An experience without any is left out of the gallery.
+// show the work. They are listed most important first, and the first four are
+// the row the era shows before it is expanded, so reordering the array is how
+// a photo is promoted or demoted. An experience without any is left out of the
+// gallery.
 //
 // Rapyuta's mark is filled black, which is invisible here, so it is drawn from
 // a variant whose fill has been lifted to white.
