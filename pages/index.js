@@ -178,9 +178,14 @@ function useScrollbarsFollow(ref) {
   }, [ref])
 }
 
+// The gallery fades in once, as the motto settles red, so the eye starts on
+// the intro before the photos arrive. With reduced motion it is simply shown.
+const GALLERY_FADE = { duration: 0.8, delay: 1.6, ease: 'easeOut' }
+
 export default function Home() {
   const gallery = useRef(null)
   useScrollbarsFollow(gallery)
+  const still = useReducedMotion()
 
   return (
     <div className={styles.container}>
@@ -226,9 +231,16 @@ export default function Home() {
         </div>
       </div>
 
-      <div ref={gallery} className={styles.gallery}>
+      <motion.div
+        ref={gallery}
+        className={styles.gallery}
+        {...(!still && {
+          initial: { opacity: 0 },
+          animate: { opacity: 1 },
+          transition: GALLERY_FADE,
+        })}>
         {eras.map((era) => <Era key={era.slug} {...era} />)}
-      </div>
+      </motion.div>
     </div>
   )
 }
