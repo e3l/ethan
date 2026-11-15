@@ -53,7 +53,7 @@ function MyApp({ Component, pageProps, router }) {
             exit="exit"
             transition={{
               type: 'linear',
-              duration: 0.5
+              duration: 0.2
             }}>
             <main
               className="content">
