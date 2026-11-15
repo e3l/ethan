@@ -12,8 +12,9 @@ const SCROLL_KEYS = new Set([
 // Clicks on these already do something, so they do not also play or pause.
 const OWN_CLICKS = 'a, button, input, textarea, select, label, .os-scrollbar';
 
-// The longest gap between frames the crawl makes up for, so coming back to
-// the page does not jump it forward by however long it was gone.
+// Browsers stop animation frames while the page is hidden, which pauses the
+// crawl. This caps the gap between frames the crawl makes up for, so coming
+// back does not jump it forward by however long the page was hidden.
 const MAX_FRAME_MS = 100;
 
 // A click this soon after the window regains focus is the click that brought
@@ -50,16 +51,14 @@ function hasSelection() {
 // - Playing or paused, which the visitor chooses. A click on the page toggles
 //   it and scrolling by hand pauses it. Until the visitor chooses, reduced
 //   motion decides.
-// - Holds, which stop it only while they last: a held mouse button, selected
-//   text, or the page being hidden (another tab, or a minimised window). A
-//   page that is visible but unfocused, say on a second monitor, keeps
-//   playing, since it can still be watched.
+// - Holds, which stop it only while they last: a held mouse button or
+//   selected text.
 // It moves while playing and not held.
 //
 // `showPlay` is true while paused or while text is selected, except at the
-// foot of the page, where there is nothing left to play. The other holds do
-// not show it: a held mouse button ends in a click that decides for itself,
-// and a hidden page cannot be seen. `play()` plays and clears any selection.
+// foot of the page, where there is nothing left to play. A held mouse button
+// does not show it, since it ends in a click that decides for itself.
+// `play()` plays and clears any selection.
 export default function useCrawl() {
     const reducedMotion = useReducedMotion();
     const [choice, setChoice] = useState(null);
@@ -84,12 +83,8 @@ export default function useCrawl() {
         const getScroller = () => (scroller ??= OverlayScrollbars(document.body));
         const scrollY = () => getScroller()?.scroll().position.y;
 
-        const holds = {
-            mouse: false,
-            selection: false,
-            hidden: document.hidden,
-        };
-        const held = () => holds.mouse || holds.selection || holds.hidden;
+        const holds = { mouse: false, selection: false };
+        const held = () => holds.mouse || holds.selection;
 
         // The latest mouse press, kept until the click that follows it.
         let press = null;
@@ -181,9 +176,6 @@ export default function useCrawl() {
         function onFocus(event) {
             focusedAt = event.timeStamp;
         }
-        function onVisibilityChange() {
-            holds.hidden = document.hidden;
-        }
 
         // One signal detaches every listener. This route unmounts on every
         // navigation away, so they have to come off then.
@@ -198,7 +190,6 @@ export default function useCrawl() {
         window.addEventListener('click', onClick, { signal });
         window.addEventListener('focus', onFocus, { signal });
         document.addEventListener('selectionchange', onSelectionChange, { signal });
-        document.addEventListener('visibilitychange', onVisibilityChange, { signal });
 
         frameId = requestAnimationFrame(step);
 
