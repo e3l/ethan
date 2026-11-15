@@ -1,13 +1,24 @@
 import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from 'react';
 import OverlayScrollbars from 'overlayscrollbars';
 
-const PIXELS_PER_SECOND = 125;
+const PIXELS_PER_SECOND = 150;
 
-// Keys the browser scrolls with. Space is left out: it reaches this handler
-// from the resume button too, where it means "press", not "scroll".
+// Keys the browser scrolls with. Space is left out: it also presses the play
+// button, where it means "press", not "scroll".
 const SCROLL_KEYS = new Set([
     'ArrowUp', 'ArrowDown', 'PageUp', 'PageDown', 'Home', 'End',
 ]);
+
+// Clicks on these already do something, so they do not also play or pause.
+const OWN_CLICKS = 'a, button, input, textarea, select, label, .os-scrollbar';
+
+// The longest gap between frames the crawl makes up for, so coming back to
+// the page does not jump it forward by however long it was gone.
+const MAX_FRAME_MS = 100;
+
+// A click this soon after the window regains focus is the click that brought
+// it back, not one meant for the page.
+const REFOCUS_MS = 100;
 
 const REDUCED_MOTION = '(prefers-reduced-motion: reduce)';
 
@@ -25,165 +36,161 @@ function useReducedMotion() {
     );
 }
 
-// Clicks on these keep their own meaning instead of toggling the crawl.
-const OWN_CLICKS = 'a, button, input, textarea, select, label, .os-scrollbar';
-
-// The longest gap between frames the crawl will make up for, so coming back
-// to the page does not jump it forward by however long it was gone.
-const MAX_FRAME_MS = 100;
-
-// How close a click has to follow the window regaining focus to count as the
-// click that brought it back, rather than one meant for the page.
-const REFOCUS_MS = 100;
-
+// Selected whitespace renders as nothing, so it does not count.
 function hasSelection() {
-    // Ranges that render as nothing do not count as a selection.
     const selection = document.getSelection();
     return selection !== null
         && !selection.isCollapsed
         && selection.toString().trim() !== '';
 }
 
-// Scrolls the page upward on its own.
+// Scrolls the page upward on its own, like film credits.
 //
-// Stays paused until resumed: a click on the page, scrolling, or a scrollbar
-// drag. A click or resume() starts it again.
-// Pauses only while it lasts: a held mouse button, selected text, or the page
-// being out of focus or out of view.
+// Two things decide whether it moves:
+// - Playing or paused, which the visitor chooses. A click on the page toggles
+//   it and scrolling by hand pauses it. Until the visitor chooses, reduced
+//   motion decides.
+// - Holds, which stop it only while they last: a held mouse button, selected
+//   text, or the page being out of focus or out of view.
+// It moves while playing and not held.
 //
-// Until the first pause or play, reduced motion decides. `paused` drives the
-// resume button: true when the crawl is paused or text is selected, but not
-// at the foot of the page, where there is nothing left to play. A held mouse
-// button and an unfocused page do not count, since the first ends in a click
-// that decides for itself and the second is not being looked at.
+// `showPlay` is true while paused or while text is selected, except at the
+// foot of the page, where there is nothing left to play. The other holds do
+// not show it: a held mouse button ends in a click that decides for itself,
+// and an unfocused page is not being looked at. `play()` plays and clears any
+// selection.
 export default function useCrawl() {
-    const [latched, setLatched] = useState(null);
-    const [ended, setEnded] = useState(false);
-    const [selected, setSelected] = useState(false);
-    const reduced = useReducedMotion();
+    const reducedMotion = useReducedMotion();
+    const [choice, setChoice] = useState(null);
+    const playing = choice ?? !reducedMotion;
+    const [textSelected, setTextSelected] = useState(false);
+    const [atEnd, setAtEnd] = useState(false);
 
-    const stopped = latched ?? reduced;
-    const latchedNow = useRef(false);
+    // The frame loop and the listeners are set up once, so they read
+    // `playing` through a ref.
+    const playingRef = useRef(playing);
     useEffect(() => {
-        latchedNow.current = stopped;
-    }, [stopped]);
+        playingRef.current = playing;
+    }, [playing]);
 
-    const resume = useCallback(() => {
+    const play = useCallback(() => {
         document.getSelection()?.removeAllRanges();
-        setLatched(false);
+        setChoice(true);
     }, []);
 
     useEffect(() => {
-        let locked = false;
-        let selecting = false;
-        let heldAt = null;
-        let dragged = false;
-        let clearing = false;
+        let scroller;
+        const getScroller = () => (scroller ??= OverlayScrollbars(document.body));
+        const scrollY = () => getScroller()?.scroll().position.y;
+
         let focused = document.hasFocus();
-        let away = !focused || document.hidden;
+        const holds = {
+            mouse: false,
+            selection: false,
+            away: !focused || document.hidden,
+        };
+        const held = () => holds.mouse || holds.selection || holds.away;
+
+        // The latest mouse press, kept until the click that follows it.
+        let press = null;
         let focusedAt = -Infinity;
-        let downAt = -Infinity;
-        let wasAtEnd = false;
-        let carry = 0;
-        let previousFrame = null;
+
+        // Frame loop. Speed comes from elapsed time rather than frame count,
+        // and fractional pixels carry over so only whole ones are scrolled.
         let frameId;
-
-        let scroller = OverlayScrollbars(document.querySelector("body"));
-        const position = () => scroller?.scroll().position.y;
-        const atEnd = () => scroller?.scroll().ratio.y >= 1;
-
+        let lastFrame = null;
+        let carry = 0;
+        let wasAtEnd = false;
         function step(now) {
             frameId = requestAnimationFrame(step);
+            const elapsed = lastFrame === null ? 0 : Math.min(now - lastFrame, MAX_FRAME_MS);
+            lastFrame = now;
 
-            const previous = previousFrame;
-            previousFrame = now;
-            if (previous === null) return;
+            const s = getScroller();
+            if (s === undefined) return;
 
-            // Nothing left to resume once the crawl has run out of page.
-            if (atEnd() !== wasAtEnd) {
-                wasAtEnd = !wasAtEnd;
-                setEnded(wasAtEnd);
+            const isAtEnd = s.scroll().ratio.y >= 1;
+            if (isAtEnd !== wasAtEnd) {
+                wasAtEnd = isAtEnd;
+                setAtEnd(isAtEnd);
             }
 
-            if (latchedNow.current || locked || selecting || away) {
+            if (!playingRef.current || held()) {
                 carry = 0;
                 return;
             }
-
-            if (scroller === undefined) {
-                scroller = OverlayScrollbars(document.querySelector("body"));
-            }
-
-            // Accumulate fractional pixels so speed does not depend on frame
-            // rate, and scroll only whole ones.
-            carry += (Math.min(now - previous, MAX_FRAME_MS) / 1000) * PIXELS_PER_SECOND;
+            carry += (elapsed / 1000) * PIXELS_PER_SECOND;
             const pixels = Math.floor(carry);
             if (pixels >= 1) {
                 carry -= pixels;
-                scroller.scroll({ y: `+=${pixels}` });
+                s.scroll({ y: `+=${pixels}` });
             }
         }
 
-        function onWheel() {
-            setLatched(true);
+        function pause() {
+            setChoice(false);
         }
-        function onTouchMove() {
-            setLatched(true);
+
+        // Whether a click is a plain click on the page, as opposed to one that
+        // finishes or belongs to something else.
+        function isPlayPauseClick(event) {
+            // Not a left click, or the second click of a double click.
+            if (event.button !== 0 || event.detail > 1) return false;
+            // A link, a button, or the scrollbar.
+            if (event.target instanceof Element && event.target.closest(OWN_CLICKS)) return false;
+            if (press === null) return true;
+            // The end of a scrollbar drag.
+            if (press.scrolled) return false;
+            // The end of selecting text, or a click that cleared a selection.
+            if (press.hadSelection || hasSelection()) return false;
+            // The click that brought the window back into focus.
+            if (focusedAt > press.at - REFOCUS_MS) return false;
+            return true;
         }
-        function onKeyDown(event) {
-            if (SCROLL_KEYS.has(event.key)) setLatched(true);
-        }
+
         function onMouseDown(event) {
-            locked = true;
-            heldAt = position() ?? null;
-            downAt = event.timeStamp;
-            // `selecting` still reflects the selection from before this press,
-            // since selectionchange fires after mousedown handlers run.
-            clearing = selecting;
+            holds.mouse = true;
+            // selectionchange fires after this, so `holds.selection` still
+            // describes the selection from before the press.
+            press = { at: event.timeStamp, startY: scrollY(), hadSelection: holds.selection, scrolled: false };
         }
         function onMouseUp() {
-            locked = false;
-            // Dragging the scrollbar moves the page without firing any of the
-            // events above, so the position is what gives it away.
-            dragged = heldAt !== null && position() !== heldAt;
-            if (dragged) setLatched(true);
-            heldAt = null;
+            holds.mouse = false;
+            if (press === null) return;
+            // Dragging the scrollbar fires no scroll input, so a page that
+            // moved during the press is what gives it away.
+            press.scrolled = scrollY() !== press.startY;
+            if (press.scrolled) pause();
         }
         function onClick(event) {
-            // These clicks are not play/pause: the end of a scrollbar drag or
-            // a drag selection, a click that clears a selection, the second
-            // click of a double click, and the click that brought the window
-            // back into focus.
-            if (event.button !== 0 || event.detail > 1) return;
-            if (dragged || clearing || hasSelection()) return;
-            if (focusedAt > downAt - REFOCUS_MS) return;
-            if (event.target instanceof Element && event.target.closest(OWN_CLICKS)) return;
-            setLatched(!latchedNow.current);
+            if (isPlayPauseClick(event)) setChoice(!playingRef.current);
+        }
+        function onKeyDown(event) {
+            if (SCROLL_KEYS.has(event.key)) pause();
         }
         function onSelectionChange() {
-            selecting = hasSelection();
-            setSelected(selecting);
+            holds.selection = hasSelection();
+            setTextSelected(holds.selection);
         }
         function onFocus(event) {
             focused = true;
             focusedAt = event.timeStamp;
-            away = document.hidden;
+            holds.away = document.hidden;
         }
         function onBlur() {
             focused = false;
-            away = true;
+            holds.away = true;
         }
         function onVisibilityChange() {
-            away = !focused || document.hidden;
+            holds.away = !focused || document.hidden;
         }
 
-        // Every listener shares one signal, so aborting it detaches them all.
-        // This route unmounts on every navigation away, so they have to come
-        // back off then.
+        // One signal detaches every listener. This route unmounts on every
+        // navigation away, so they have to come off then.
         const listeners = new AbortController();
         const { signal } = listeners;
-        window.addEventListener('wheel', onWheel, { signal });
-        window.addEventListener('touchmove', onTouchMove, { signal });
+        window.addEventListener('wheel', pause, { signal });
+        window.addEventListener('touchmove', pause, { signal });
         window.addEventListener('keydown', onKeyDown, { signal });
         window.addEventListener('mousedown', onMouseDown, { signal });
         window.addEventListener('mouseup', onMouseUp, { signal });
@@ -201,5 +208,5 @@ export default function useCrawl() {
         };
     }, []);
 
-    return { paused: (stopped || selected) && !ended, resume };
+    return { showPlay: (!playing || textSelected) && !atEnd, play };
 }

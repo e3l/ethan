@@ -133,7 +133,7 @@
     height: 20vh;
 }
 
-.resume {
+.play {
     position: fixed;
     right: 1.5rem;
     bottom: 1.5rem;
@@ -154,7 +154,7 @@
     cursor: pointer;
 }
 
-.resume svg {
+.play svg {
     width: 1.75rem;
     height: 1.75rem;
 

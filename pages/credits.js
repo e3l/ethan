@@ -33,7 +33,7 @@ function Group({ label, blocks }) {
 
 export default function Credits() {
     const [opacity, setOpacity] = useState(0);
-    const { paused, resume } = useCrawl();
+    const { showPlay, play } = useCrawl();
 
     useEffect(() => {
         // The splash art fades in proportion to how much of the placeholder at
@@ -83,11 +83,11 @@ export default function Credits() {
                 </motion.div>
             </div>
             <AnimatePresence>
-                {paused &&
+                {showPlay &&
                     <motion.button
-                        className={style.resume}
-                        onClick={resume}
-                        aria-label="Resume the credits"
+                        className={style.play}
+                        onClick={play}
+                        aria-label="Play the credits"
                         title="Play (or click anywhere)"
                         initial={{ opacity: 0, scale: 0.8 }}
                         animate={{ opacity: 0.5, scale: 1 }}
@@ -95,6 +95,11 @@ export default function Credits() {
                         whileFocus={{ opacity: 1 }}
                         exit={{ opacity: 0, scale: 0.8 }}
                         transition={{ duration: 0.15 }}>
+                        {/* The triangle's box sits right of the viewBox centre:
+                            a triangle's weight is toward its flat side, so a
+                            box-centred one looks shifted left. Icon sets bake
+                            in the same offset (Material's play_arrow is
+                            M8 5v14l11-7z). */}
                         <svg viewBox="0 0 24 24" aria-hidden="true">
                             <path d="M7.5 5v14l11-7z" />
                         </svg>
