@@ -16,7 +16,7 @@ function Experience({ name, role, logo, accent, blurb = [], photos = [], stack }
                 <Image src={logo} alt="" sizes="144px" />
             </div>
 
-            <div className={styles.notch} />
+            <div className={styles.divider} />
 
             <div className={styles.detail}>
                 <h2 className={styles.name}>{name}</h2>
@@ -58,7 +58,7 @@ export default function Portfolio() {
                     <Image
                         src={headshot}
                         alt="headshot of ethan"
-                        sizes="(max-width: 1455px) max(192px, 22vw), 320px" />
+                        sizes="(max-width: 872px) 192px, (max-width: 1455px) 22vw, 320px" />
                 </div>
                 <div>
                     <h1 className={styles.headline}>BS CS @ Georgia Tech, &apos;26</h1>

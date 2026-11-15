@@ -128,7 +128,7 @@
 
 /* The vertical line between the logo and the text. It runs the full height of
    the row's content, in a grey slightly lighter than the lines between rows. */
-.notch {
+.divider {
     align-self: stretch;
 
     border-radius: 1px;
