@@ -18,6 +18,8 @@ function Experience({ name, role, logo, accent, years, blurb = [], photos = [], 
                 <Image src={logo} alt="" sizes="144px" />
             </div>
 
+            <div className={styles.notch} />
+
             <div className={styles.detail}>
                 <h2 className={styles.name}>{name}</h2>
                 <p className={styles.role}>{role}</p>
