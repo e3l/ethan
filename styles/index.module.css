@@ -18,7 +18,7 @@
   width: clamp(12rem, 22vw, 18rem);
   flex-shrink: 0;
 
-  border-radius: 0.3em;
+  border-radius: 1rem;
   overflow: hidden;
 }
 
@@ -75,9 +75,23 @@
   border-top: 1px solid var(--borders);
 }
 
+/* Collapsing an era shrinks it over half a second while its name moves back
+   over the photos. Left to itself the browser chases that with scroll
+   anchoring and drags the page several hundred pixels down under the reader,
+   after the era has already scrolled back to its own top. Anchoring is decided
+   by the scroll container, which is OverlayScrollbars' viewport rather than
+   the document, so it is switched off there, and only on this page. */
+:global(.os-viewport):has(.gallery) {
+  overflow-anchor: none;
+}
+
 .era {
   padding: 2rem 0;
   border-bottom: 1px solid var(--borders);
+
+  /* Collapsing an era scrolls back to its top; this keeps that top clear of
+     the fixed navbar. */
+  scroll-margin-top: calc(var(--navbarheight) + 1rem);
 }
 
 /* Set over the top-left of the row, in the headline face, the way the old
@@ -97,6 +111,7 @@
   line-height: 1;
   letter-spacing: 0.02em;
   text-transform: uppercase;
+  text-shadow: 3px 3px var(--back);
 
   pointer-events: none;
 }
@@ -176,24 +191,14 @@
   color: var(--red);
 }
 
-/* PROTOTYPE: the three treatments for the name. */
-
-/* A tab of the canvas notched into the first photo's corner: the name sits on
-   black, so it reads against any photo. */
-.tab .eraName {
-  padding: 0.55rem 1.1rem 0.45rem 0;
-
-  background: var(--back);
-  border-bottom-right-radius: 0.6rem;
-}
-
 /* A shadow cast from the top-left corner of the row, deep enough under the
-   name to carry it and gone by the middle of the photo. */
-.scrim .row {
+   name to carry it and gone by the middle of the photo. It fades out once the
+   era is open and the name has moved above the photos. */
+.row {
   position: relative;
 }
 
-.scrim .row::after {
+.row::after {
   content: '';
   position: absolute;
   inset: 0;
@@ -204,40 +209,24 @@
     rgb(0 0 0 / 0.45) 45%,
     transparent);
   pointer-events: none;
+  transition: opacity 0.45s;
 }
 
-.scrim .eraName {
-  text-shadow: 3px 3px var(--back);
+.open .row::after {
+  opacity: 0;
 }
 
-/* The name inverts whatever is behind it: dark on the bright parts of a
-   photo, light on the dark ones. */
-.invert .eraName {
-  color: var(--primary);
-  mix-blend-mode: difference;
+/* Open, the name stands above the photos on the canvas, where it needs no
+   shadow, so every photo in the era is seen whole. */
+.open .eraName {
+  position: static;
+  padding: 0 0 0.5rem;
+  text-shadow: none;
 }
 
-/* PROTOTYPE: picks between the expand candidates. */
-.switcher {
-  position: fixed;
-  z-index: 20;
-  right: 1.25rem;
-  bottom: 1.25rem;
-
-  display: flex;
-  gap: 0.75rem;
-  padding: 0.5rem 0.9rem;
-
-  font-size: 0.8rem;
-  color: var(--secondary);
-
-  background: rgb(20 20 20 / 0.9);
-  border: 1px solid var(--borders);
-  border-radius: 999px;
-}
-
-.switcherCurrent {
-  color: var(--red);
+/* Clips the rest of the era while its height opens and closes. */
+.more {
+  overflow: hidden;
 }
 
 @media (max-width: 48rem) {

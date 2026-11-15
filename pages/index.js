@@ -1,10 +1,8 @@
 import Head from 'next/head'
 import Image from 'next/image'
 import Link from 'next/link'
-import { useRouter } from 'next/router'
-
-import { motion, useReducedMotion } from 'framer-motion'
-import { useState } from 'react'
+import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
+import { useRef, useState } from 'react'
 
 import styles from '../styles/index.module.css'
 
@@ -17,14 +15,6 @@ const eras = experiences.filter((experience) => experience.favorites?.length > 0
 
 // How many of an era's favourites show before it is expanded: its first row.
 const PREVIEW = 4
-
-// PROTOTYPE: three candidate treatments that keep the name legible over the
-// photos, picked with `?title=` and the switcher in the corner. One survives;
-// the rest go.
-//   tab:    the name sits on a black tab notched into the first photo's corner
-//   scrim:  a dark gradient spreads from the top-left corner behind the name
-//   invert: the name inverts whatever is behind it
-const VARIANTS = ['tab', 'scrim', 'invert']
 
 // The motto rises out of the black canvas and settles red, the second half a
 // beat behind the first. It plays once; with reduced motion it is simply drawn
@@ -59,35 +49,85 @@ function Photo({ photo }) {
   )
 }
 
+// Resolves once the element's scroll container stops scrolling. The page
+// scrolls inside OverlayScrollbars' viewport rather than the document, so the
+// container is found by walking up. Browsers without `scrollend` fall back to
+// a timeout about as long as a smooth scroll takes.
+function scrollSettled(el) {
+  let scroller = el.parentElement
+  while (scroller && !/auto|scroll/.test(getComputedStyle(scroller).overflowY)) {
+    scroller = scroller.parentElement
+  }
+  const target = scroller ?? window
+
+  return new Promise((resolve) => {
+    const done = () => {
+      clearTimeout(timer)
+      target.removeEventListener('scrollend', done)
+      resolve()
+    }
+    const timer = setTimeout(done, 800)
+    target.addEventListener('scrollend', done)
+  })
+}
+
 // One era: its name set over its first few favourites, which make a single
-// row so every era can be passed over at a glance. Expanding it lays the rest
-// out in rows beneath.
-function Era({ variant, slug, name, favorites }) {
+// row so every era can be passed over at a glance. Expanding it lifts the name
+// above the row, so no photo is covered while the era is being looked through,
+// and opens the rest out in rows beneath.
+function Era({ slug, name, favorites }) {
   const [open, setOpen] = useState(false)
+  const section = useRef(null)
+  const still = useReducedMotion()
 
   const preview = favorites.slice(0, PREVIEW)
   const rest = favorites.slice(PREVIEW)
 
+  const ease = { duration: still ? 0 : 0.45, ease: [0.4, 0, 0.2, 1] }
+
+  // The control sits under the last row, so collapsing a long era from it
+  // would leave the reader several eras further down the page. When the era's
+  // top has scrolled out of view, collapsing first scrolls back to it and only
+  // then folds the rest away: shrinking the page under a smooth scroll cuts
+  // the scroll short.
+  const toggle = async () => {
+    if (open) {
+      const el = section.current
+      const margin = parseFloat(getComputedStyle(el).scrollMarginTop) || 0
+      if (el.getBoundingClientRect().top < margin) {
+        const settled = scrollSettled(el)
+        el.scrollIntoView({ behavior: still ? 'auto' : 'smooth', block: 'start' })
+        await settled
+      }
+    }
+    setOpen(!open)
+  }
+
   return (
-    <section className={`${styles.era} ${styles[variant]}`}>
+    <section ref={section} className={`${styles.era} ${open ? styles.open : ''}`}>
       <div className={styles.photos}>
-        <h2 className={styles.eraName}>
+        <motion.h2 layout="position" transition={ease} className={styles.eraName}>
           <Link href={`/portfolio#${slug}`}>{name}</Link>
-        </h2>
+        </motion.h2>
 
-        <div className={styles.row}>
+        <motion.div layout="position" transition={ease} className={styles.row}>
           {preview.map((photo) => <Photo key={photo.src} photo={photo} />)}
-        </div>
+        </motion.div>
 
-        {open && (
-          <motion.div
-            className={styles.rows}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.4 }}>
-            {rest.map((photo) => <Photo key={photo.src} photo={photo} />)}
-          </motion.div>
-        )}
+        <AnimatePresence initial={false}>
+          {open && (
+            <motion.div
+              className={styles.more}
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: 'auto', opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              transition={ease}>
+              <div className={styles.rows}>
+                {rest.map((photo) => <Photo key={photo.src} photo={photo} />)}
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
 
         {rest.length > 0 && (
           <div className={styles.footer}>
@@ -95,7 +135,7 @@ function Era({ variant, slug, name, favorites }) {
               type="button"
               className={styles.toggle}
               aria-expanded={open}
-              onClick={() => setOpen(!open)}>
+              onClick={toggle}>
               {open ? 'show less ↑' : `all ${favorites.length} photos ↓`}
             </button>
           </div>
@@ -105,28 +145,7 @@ function Era({ variant, slug, name, favorites }) {
   )
 }
 
-function VariantSwitcher({ current }) {
-  return (
-    <div className={styles.switcher}>
-      <span>title:</span>
-      {VARIANTS.map((v) => (
-        <Link
-          key={v}
-          href={{ query: { title: v } }}
-          shallow
-          scroll={false}
-          className={v === current ? styles.switcherCurrent : undefined}>
-          {v}
-        </Link>
-      ))}
-    </div>
-  )
-}
-
 export default function Home() {
-  const { query } = useRouter()
-  const variant = VARIANTS.includes(query.title) ? query.title : VARIANTS[0]
-
   return (
     <div className={styles.container}>
       <Head>
@@ -172,10 +191,8 @@ export default function Home() {
       </div>
 
       <div className={styles.gallery}>
-        {eras.map((era) => <Era key={era.slug} variant={variant} {...era} />)}
+        {eras.map((era) => <Era key={era.slug} {...era} />)}
       </div>
-
-      <VariantSwitcher current={variant} />
     </div>
   )
 }
