@@ -1,5 +1,4 @@
-// Work and team experience, most recent first. Read by the portfolio and the
-// home gallery.
+// Work and team experience, most recent first.
 //
 //   slug       URL name; /portfolio#tesla
 //   name       organisation

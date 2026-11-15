@@ -85,7 +85,7 @@
   scroll-margin-top: calc(var(--navbarheight) + 1rem);
 }
 
-/* The footer draws the closing rule. */
+/* The footer already has a top border. */
 .era:last-child {
   border-bottom: none;
 }
@@ -137,7 +137,7 @@
   pointer-events: auto;
 }
 
-/* Justified rows: photos grow in proportion to their aspect ratio. */
+/* Photos in a row share one height and stretch to fill the width. */
 .row,
 .rows {
   display: flex;
@@ -150,7 +150,7 @@
   margin-top: var(--gap);
 }
 
-/* Scrim behind the name. */
+/* Dark gradient behind the era name. */
 .row {
   position: relative;
 }
@@ -173,7 +173,7 @@
   opacity: 0;
 }
 
-/* Animates to auto height via a 0fr -> 1fr grid track. */
+/* Opens to the rows' full height by animating 0fr to 1fr. */
 .more {
   display: grid;
   grid-template-rows: 0fr;
