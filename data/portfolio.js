@@ -1,14 +1,13 @@
-// The portfolio page is content. One entry per experience, ordered most recent
-// first.
+// The experiences listed on /portfolio, most recent first.
 //
-// `accent` is the organisation's own brand colour, used only for the wash the
-// row takes on hover.
+// Fields:
+//   accent  the company's brand colour; tints the row's background on hover
+//   years   shown at the right of the row; leave '' to hide it
+//   blurb   optional; a list of paragraphs, shown under the role
+//   photos  optional; a list of imported images, shown under the blurb
 //
-// `blurb` (an array of paragraphs) and `photos` (an array of imported images)
-// are optional; each renders between the role and the stack when present.
-//
-// Rapyuta's mark is filled black, which is invisible here, so it is drawn from
-// a variant whose fill has been lifted to white.
+// Rapyuta's logo is black, which disappears on the black background, so this
+// uses rapyuta-light.png, a copy recoloured to white.
 
 import tesla from '../components/portfolio/tesla.png'
 import rapyuta from '../components/portfolio/rapyuta-light.png'
