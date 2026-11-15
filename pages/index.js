@@ -14,7 +14,7 @@ import { scrollPageBy, useScrollbarsFollow } from '../util/scroll.js'
 import headshot from '../components/gallery/headshot-home.jpg'
 import { experiences } from '../data/experiences'
 
-const eras = experiences.filter((experience) => experience.gallery?.length > 0)
+const eras = experiences.filter((experience) => experience.lifePhotos?.length > 0)
 
 // Photos shown before an era is expanded.
 const PREVIEW = 4
@@ -55,14 +55,14 @@ const EASE_MS = 450
 
 // Opening scrolls the era to the top; closing scrolls back if its top is
 // off screen. The animation itself is CSS on the `open` class.
-function Era({ slug, name, gallery }) {
+function Era({ slug, name, lifePhotos }) {
   const [open, setOpen] = useState(false)
   const section = useRef(null)
   const rows = useRef(null)
   useShortLastRow(rows)
 
-  const preview = gallery.slice(0, PREVIEW)
-  const rest = gallery.slice(PREVIEW)
+  const preview = lifePhotos.slice(0, PREVIEW)
+  const rest = lifePhotos.slice(PREVIEW)
 
   const toggle = () => {
     const el = section.current
@@ -101,7 +101,7 @@ function Era({ slug, name, gallery }) {
               className={styles.toggle}
               aria-expanded={open}
               onClick={toggle}>
-              {open ? 'show less ↑' : `all ${gallery.length} photos ↓`}
+              {open ? 'show less ↑' : `all ${lifePhotos.length} photos ↓`}
             </button>
           </div>
         )}

@@ -9,7 +9,7 @@ import Spacer from "../components/spacer"
 import headshot from '../components/gallery/headshot.jpeg'
 import { experiences } from '../data/experiences'
 
-function Experience({ slug, name, role, logo, accent, blurb = [], photos = [], stack }) {
+function Experience({ slug, name, role, logo, accent, blurb = [], workPhotos = [], stack }) {
     return (
         <li id={slug} className={styles.experience} style={{ '--accent': accent }}>
             <div className={styles.logo}>
@@ -28,9 +28,9 @@ function Experience({ slug, name, role, logo, accent, blurb = [], photos = [], s
                     </div>
                 )}
 
-                {photos.length > 0 && (
+                {workPhotos.length > 0 && (
                     <div className={styles.photos}>
-                        {photos.map((photo) => (
+                        {workPhotos.map((photo) => (
                             <div key={photo.src}>
                                 <Image src={photo} alt="" fill sizes="(max-width: 48rem) 45vw, 13rem" />
                             </div>
