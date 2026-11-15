@@ -78,6 +78,7 @@ export default function useCrawl() {
         let selecting = false;
         let heldAt = null;
         let dragged = false;
+        let clearing = false;
         let focused = document.hasFocus();
         let away = !focused || document.hidden;
         let focusedAt = -Infinity;
@@ -136,6 +137,9 @@ export default function useCrawl() {
             locked = true;
             heldAt = position() ?? null;
             downAt = event.timeStamp;
+            // `selecting` still reflects the selection from before this press,
+            // since selectionchange fires after mousedown handlers run.
+            clearing = selecting;
         }
         function onMouseUp() {
             locked = false;
@@ -147,10 +151,11 @@ export default function useCrawl() {
         }
         function onClick(event) {
             // These clicks are not play/pause: the end of a scrollbar drag or
-            // a drag selection, the second click of a double click, and the
-            // click that brought the window back into focus.
+            // a drag selection, a click that clears a selection, the second
+            // click of a double click, and the click that brought the window
+            // back into focus.
             if (event.button !== 0 || event.detail > 1) return;
-            if (dragged || hasSelection()) return;
+            if (dragged || clearing || hasSelection()) return;
             if (focusedAt > downAt - REFOCUS_MS) return;
             if (event.target instanceof Element && event.target.closest(OWN_CLICKS)) return;
             setLatched(!latchedNow.current);
@@ -172,33 +177,27 @@ export default function useCrawl() {
             away = !focused || document.hidden;
         }
 
-        window.addEventListener('wheel', onWheel);
-        window.addEventListener('touchmove', onTouchMove);
-        window.addEventListener('keydown', onKeyDown);
-        window.addEventListener('mousedown', onMouseDown);
-        window.addEventListener('mouseup', onMouseUp);
-        window.addEventListener('click', onClick);
-        window.addEventListener('focus', onFocus);
-        window.addEventListener('blur', onBlur);
-        document.addEventListener('selectionchange', onSelectionChange);
-        document.addEventListener('visibilitychange', onVisibilityChange);
+        // Every listener shares one signal, so aborting it detaches them all.
+        // This route unmounts on every navigation away, so they have to come
+        // back off then.
+        const listeners = new AbortController();
+        const { signal } = listeners;
+        window.addEventListener('wheel', onWheel, { signal });
+        window.addEventListener('touchmove', onTouchMove, { signal });
+        window.addEventListener('keydown', onKeyDown, { signal });
+        window.addEventListener('mousedown', onMouseDown, { signal });
+        window.addEventListener('mouseup', onMouseUp, { signal });
+        window.addEventListener('click', onClick, { signal });
+        window.addEventListener('focus', onFocus, { signal });
+        window.addEventListener('blur', onBlur, { signal });
+        document.addEventListener('selectionchange', onSelectionChange, { signal });
+        document.addEventListener('visibilitychange', onVisibilityChange, { signal });
 
         frameId = requestAnimationFrame(step);
 
-        // This route unmounts on every navigation away, so everything attached
-        // to window or document has to come back off here.
         return () => {
             cancelAnimationFrame(frameId);
-            window.removeEventListener('wheel', onWheel);
-            window.removeEventListener('touchmove', onTouchMove);
-            window.removeEventListener('keydown', onKeyDown);
-            window.removeEventListener('mousedown', onMouseDown);
-            window.removeEventListener('mouseup', onMouseUp);
-            window.removeEventListener('click', onClick);
-            window.removeEventListener('focus', onFocus);
-            window.removeEventListener('blur', onBlur);
-            document.removeEventListener('selectionchange', onSelectionChange);
-            document.removeEventListener('visibilitychange', onVisibilityChange);
+            listeners.abort();
         };
     }, []);
 

@@ -76,7 +76,7 @@ export default function Credits() {
                 <motion.div
                     style={{ opacity: opacity }}>
                     <Image src={yourname}
-                        alt="The comet from Your Name blazes towards the setting sun in the horizon, its tail shining against a star-speckled night sky." />
+                        alt="two pieces of a comet break apart as they fall through the night sky -- will they ever see each other again?" />
                     <div className={style.splashCredit}>
                         <a href="https://www.pixiv.net/artworks/59397171" target="_blank" rel="noreferrer">さとう枕 | pixiv</a>
                     </div>
@@ -96,7 +96,7 @@ export default function Credits() {
                         exit={{ opacity: 0, scale: 0.8 }}
                         transition={{ duration: 0.15 }}>
                         <svg viewBox="0 0 24 24" aria-hidden="true">
-                            <path d="M8.5 5v14l11-7z" />
+                            <path d="M7 5v14l11-7z" />
                         </svg>
                     </motion.button>
                 }
