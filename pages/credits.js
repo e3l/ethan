@@ -3,10 +3,10 @@ import Image from 'next/image';
 
 import style from '../styles/credits.module.css'
 import yourname from '../public/credits.png'
-import { motion } from 'framer-motion';
-import OverlayScrollbars from 'overlayscrollbars';
+import { AnimatePresence, motion } from 'framer-motion';
 import { opensans } from '../util/fonts';
 import { rows } from '../data/credits';
+import useCrawl from '../util/usecrawl';
 
 // One block of names. The label column stays in the markup even when empty so
 // that every block lines up on the same centre seam.
@@ -33,6 +33,7 @@ function Group({ label, blocks }) {
 
 export default function Credits() {
     const [opacity, setOpacity] = useState(0);
+    const { showPlay, play } = useCrawl();
 
     useEffect(() => {
         // The splash art fades in proportion to how much of the placeholder at
@@ -44,86 +45,7 @@ export default function Credits() {
         }, { threshold: Array.from({ length: 101 }, (x, i) => i / 100) });
         splashObserver.observe(document.querySelector("#splashplaceholder"));
 
-        // The credits crawl upward on their own, pausing for a second after any
-        // user scroll, for as long as a mouse button is held, and for as long
-        // as any text stays selected.
-        //
-        // Driven off the frame clock, with each step derived from elapsed time:
-        // that keeps the on-screen speed independent of frame rate, costs one
-        // callback per painted frame, and stops the crawl automatically while
-        // the tab is backgrounded.
-        const PIXELS_PER_SECOND = 100;
-
-        let lastScrollAt = Number.NEGATIVE_INFINITY; // so the crawl starts at once
-        let locked = false;
-        let selecting = false;
-        let carry = 0;
-        let previousFrame = null;
-        let frameId;
-
-        let scroller = OverlayScrollbars(document.querySelector("body"));
-
-        function step(now) {
-            frameId = requestAnimationFrame(step);
-
-            const previous = previousFrame;
-            previousFrame = now;
-            if (previous === null) return;
-
-            if (locked || selecting || now - lastScrollAt <= 1000) {
-                carry = 0;
-                return;
-            }
-
-            if (scroller === undefined) {
-                scroller = OverlayScrollbars(document.querySelector("body"));
-            }
-
-            // Accumulate fractional pixels so speed does not depend on frame
-            // rate, and scroll only whole ones.
-            carry += ((now - previous) / 1000) * PIXELS_PER_SECOND;
-            const pixels = Math.floor(carry);
-            if (pixels >= 1) {
-                carry -= pixels;
-                scroller.scroll({ y: `+=${pixels}` });
-            }
-        }
-
-        function noteUserScroll() {
-            lastScrollAt = performance.now();
-        }
-        function onMouseDown() {
-            locked = true;
-        }
-        function onMouseUp() {
-            locked = false;
-            noteUserScroll();
-        }
-        function onSelectionChange() {
-            // Ranges that render as nothing do not count as a selection.
-            const selection = document.getSelection();
-            selecting = selection !== null
-                && !selection.isCollapsed
-                && selection.toString().trim() !== '';
-        }
-
-        window.addEventListener('wheel', noteUserScroll);
-        window.addEventListener('mousedown', onMouseDown);
-        window.addEventListener('mouseup', onMouseUp);
-        document.addEventListener('selectionchange', onSelectionChange);
-
-        frameId = requestAnimationFrame(step);
-
-        // This route unmounts on every navigation away, so everything attached
-        // to window or observing a node has to come back off here.
-        return () => {
-            cancelAnimationFrame(frameId);
-            window.removeEventListener('wheel', noteUserScroll);
-            window.removeEventListener('mousedown', onMouseDown);
-            window.removeEventListener('mouseup', onMouseUp);
-            document.removeEventListener('selectionchange', onSelectionChange);
-            splashObserver.disconnect();
-        };
+        return () => splashObserver.disconnect();
     }, []);
 
     return (
@@ -154,12 +76,36 @@ export default function Credits() {
                 <motion.div
                     style={{ opacity: opacity }}>
                     <Image src={yourname}
-                        alt="The comet from Your Name blazes towards the setting sun in the horizon, its tail shining against a star-speckled night sky." />
+                        alt="two pieces of a comet break apart as they fall through the night sky -- will they ever see each other again?" />
                     <div className={style.splashCredit}>
                         <a href="https://www.pixiv.net/artworks/59397171" target="_blank" rel="noreferrer">さとう枕 | pixiv</a>
                     </div>
                 </motion.div>
             </div>
+            <AnimatePresence>
+                {showPlay &&
+                    <motion.button
+                        className={style.play}
+                        onClick={play}
+                        aria-label="Play the credits"
+                        title="Play (or click anywhere)"
+                        initial={{ opacity: 0, scale: 0.8 }}
+                        animate={{ opacity: 0.5, scale: 1 }}
+                        whileHover={{ opacity: 1 }}
+                        whileFocus={{ opacity: 1 }}
+                        exit={{ opacity: 0, scale: 0.8 }}
+                        transition={{ duration: 0.15 }}>
+                        {/* The triangle sits a little right of centre on
+                            purpose. Most of a triangle's shape is on its flat
+                            left side, so one centred by its outer edges looks
+                            shifted left. Icon sets do the same thing:
+                            Material's play icon is M8 5v14l11-7z. */}
+                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M7.5 5v14l11-7z" />
+                        </svg>
+                    </motion.button>
+                }
+            </AnimatePresence>
         </div>
     )
 
