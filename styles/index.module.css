@@ -71,7 +71,7 @@
 }
 
 .gallery {
-  margin-bottom: 6rem;
+  margin-bottom: 3rem;
   border-top: 1px solid var(--borders);
 }
 
@@ -92,6 +92,12 @@
   /* An era is scrolled to its top when it opens or closes; this keeps that top
      clear of the fixed navbar. */
   scroll-margin-top: calc(var(--navbarheight) + 1rem);
+}
+
+/* The footer's own rule closes the page, so the last era does not draw one
+   just above it. */
+.era:last-child {
+  border-bottom: none;
 }
 
 /* Everything an era does when it opens is a transition on its `open` class,
@@ -148,12 +154,13 @@
 
 /* Every photo starts from the same height and grows in proportion to its
    aspect ratio, so photos side by side stay the same height as each other
-   while their row, the last one included, stretches to the full measure.
+   while their row stretches to the full measure.
 
    The preview is always one row: its photos never wrap, they only scale. */
 .row,
 .rows {
   display: flex;
+  justify-content: center;
   gap: var(--gap);
 }
 
@@ -211,10 +218,11 @@
   min-width: 0;
   aspect-ratio: var(--ratio);
 
-  /* Every row, the last included, stretches to the full measure. A last row
-     of only one or two photos would grow far taller than the rest, so a row
-     stops growing taller at this cap and its photos crop to fit instead. */
-  max-height: calc(var(--row) * 1.6);
+  /* A photo may grow to 1.6 times the row height and no further. A row that
+     can reach the full measure within that, as most last rows can, stretches
+     to it. One that cannot, such as a last row of a single photo, keeps its
+     photos whole at that size and is centred instead of being cropped. */
+  max-width: calc(var(--ratio) * var(--row) * 1.6);
 
   border-radius: 0.3em;
   overflow: hidden;
