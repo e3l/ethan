@@ -96,7 +96,7 @@ export default function Credits() {
                         exit={{ opacity: 0, scale: 0.8 }}
                         transition={{ duration: 0.15 }}>
                         <svg viewBox="0 0 24 24" aria-hidden="true">
-                            <path d="M7 5v14l11-7z" />
+                            <path d="M7.5 5v14l11-7z" />
                         </svg>
                     </motion.button>
                 }

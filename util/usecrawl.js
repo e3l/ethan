@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from 'react';
 import OverlayScrollbars from 'overlayscrollbars';
 
-const PIXELS_PER_SECOND = 100;
+const PIXELS_PER_SECOND = 125;
 
 // Keys the browser scrolls with. Space is left out: it reaches this handler
 // from the resume button too, where it means "press", not "scroll".
