@@ -202,15 +202,15 @@ export default function Home() {
           <div className={styles.blurb}>
             <p>
               I&apos;m excited to apply robotics to tackle our hardest challenges, whether it be
-              in logistics, recycling, or beyond. I&apos;ve built both classical and learned
-              robotics software stacks, and I particularly love the interdisciplinary nature of
-              scrappily prototyping robots.
+              in logistics, recycling, or beyond.
+              I love the interdisciplinary nature of scrappily prototyping robots.
             </p>
             <p>
               I&apos;m particularly hopeful that we&apos;ll harness Connected Autonomous Vehicle
-              technology (imagine intersections without signals!) within this lifetime, a
-              challenge which sits at the intersection of multi-agent planning under
-              mixed-autonomy, mesh networking, and societal policy.
+              technology (imagine intersections without signals!) within this lifetime!
+            </p>
+            <p>
+              I love playing the piano, biking, and eating good food :)
             </p>
           </div>
 
