@@ -51,14 +51,15 @@ function hasSelection() {
 //   it and scrolling by hand pauses it. Until the visitor chooses, reduced
 //   motion decides.
 // - Holds, which stop it only while they last: a held mouse button, selected
-//   text, or the page being out of focus or out of view.
+//   text, or the page being hidden (another tab, or a minimised window). A
+//   page that is visible but unfocused, say on a second monitor, keeps
+//   playing, since it can still be watched.
 // It moves while playing and not held.
 //
 // `showPlay` is true while paused or while text is selected, except at the
 // foot of the page, where there is nothing left to play. The other holds do
 // not show it: a held mouse button ends in a click that decides for itself,
-// and an unfocused page is not being looked at. `play()` plays and clears any
-// selection.
+// and a hidden page cannot be seen. `play()` plays and clears any selection.
 export default function useCrawl() {
     const reducedMotion = useReducedMotion();
     const [choice, setChoice] = useState(null);
@@ -83,13 +84,12 @@ export default function useCrawl() {
         const getScroller = () => (scroller ??= OverlayScrollbars(document.body));
         const scrollY = () => getScroller()?.scroll().position.y;
 
-        let focused = document.hasFocus();
         const holds = {
             mouse: false,
             selection: false,
-            away: !focused || document.hidden,
+            hidden: document.hidden,
         };
-        const held = () => holds.mouse || holds.selection || holds.away;
+        const held = () => holds.mouse || holds.selection || holds.hidden;
 
         // The latest mouse press, kept until the click that follows it.
         let press = null;
@@ -162,6 +162,12 @@ export default function useCrawl() {
             press.scrolled = scrollY() !== press.startY;
             if (press.scrolled) pause();
         }
+        function onContextMenu() {
+            // Where the menu opens on press (macOS, Linux, and Ctrl+click on
+            // a Mac), it takes the mouse and the page never sees the release.
+            holds.mouse = false;
+            press = null;
+        }
         function onClick(event) {
             if (isPlayPauseClick(event)) setChoice(!playingRef.current);
         }
@@ -173,16 +179,10 @@ export default function useCrawl() {
             setTextSelected(holds.selection);
         }
         function onFocus(event) {
-            focused = true;
             focusedAt = event.timeStamp;
-            holds.away = document.hidden;
-        }
-        function onBlur() {
-            focused = false;
-            holds.away = true;
         }
         function onVisibilityChange() {
-            holds.away = !focused || document.hidden;
+            holds.hidden = document.hidden;
         }
 
         // One signal detaches every listener. This route unmounts on every
@@ -194,9 +194,9 @@ export default function useCrawl() {
         window.addEventListener('keydown', onKeyDown, { signal });
         window.addEventListener('mousedown', onMouseDown, { signal });
         window.addEventListener('mouseup', onMouseUp, { signal });
+        window.addEventListener('contextmenu', onContextMenu, { signal });
         window.addEventListener('click', onClick, { signal });
         window.addEventListener('focus', onFocus, { signal });
-        window.addEventListener('blur', onBlur, { signal });
         document.addEventListener('selectionchange', onSelectionChange, { signal });
         document.addEventListener('visibilitychange', onVisibilityChange, { signal });
 
