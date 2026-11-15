@@ -50,6 +50,50 @@ function Photo({ photo }) {
   )
 }
 
+// Matches the timing of an era's CSS transitions (0.45s, ease-in-out).
+const SCROLL_MS = 450
+const easeInOut = (t) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2)
+
+// Scrolls the page by `distance` over the same time the era takes to open or
+// close. The browser's own smooth scroll is cut short when the page changes
+// height under it, which is exactly what an era does while it closes, so the
+// scroll is stepped here instead, one frame at a time. The page scrolls inside
+// OverlayScrollbars' viewport rather than the document, so that is found by
+// walking up. Any wheel, touch or key from the reader hands the scroll back.
+function scrollToTop(el, distance) {
+  let scroller = el.parentElement
+  while (scroller && !(
+    /auto|scroll/.test(getComputedStyle(scroller).overflowY) &&
+    scroller.scrollHeight > scroller.clientHeight
+  )) {
+    scroller = scroller.parentElement
+  }
+  scroller ??= document.scrollingElement
+
+  const from = scroller.scrollTop
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    scroller.scrollTop = from + distance
+    return
+  }
+
+  let cancelled = false
+  const interrupts = ['wheel', 'touchstart', 'keydown']
+  const cancel = () => { cancelled = true }
+  interrupts.forEach((type) => window.addEventListener(type, cancel, { once: true, passive: true }))
+
+  const start = performance.now()
+  const step = (now) => {
+    const t = Math.min((now - start) / SCROLL_MS, 1)
+    if (!cancelled) scroller.scrollTop = from + distance * easeInOut(t)
+    if (t < 1 && !cancelled) {
+      requestAnimationFrame(step)
+    } else {
+      interrupts.forEach((type) => window.removeEventListener(type, cancel))
+    }
+  }
+  requestAnimationFrame(step)
+}
+
 // One era: its name set over its first few favourites, which make a single
 // row so every era can be passed over at a glance.
 //
@@ -75,10 +119,7 @@ function Era({ slug, name, favorites }) {
     const margin = parseFloat(getComputedStyle(el).scrollMarginTop) || 0
     const top = el.getBoundingClientRect().top
 
-    if (!open || top < margin) {
-      const still = matchMedia('(prefers-reduced-motion: reduce)').matches
-      el.scrollIntoView({ behavior: still ? 'auto' : 'smooth', block: 'start' })
-    }
+    if (!open || top < margin) scrollToTop(el, top - margin)
     setOpen((was) => !was)
   }
 

@@ -100,7 +100,7 @@
   --row: 15rem;
   --gap: 0.5rem;
   --title: 3.25rem;
-  --ease: 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+  --ease: 0.45s cubic-bezier(0.65, 0, 0.35, 1); /* ease-in-out, as the scroll in index.js */
 
   position: relative;
   min-width: 0;
