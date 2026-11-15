@@ -11,7 +11,7 @@ import { experiences } from '../data/portfolio'
 
 // One row of the experience list. The accent colour is passed to the CSS as the
 // --accent variable, which the stylesheet uses for the hover tint.
-function Experience({ name, role, logo, accent, years, blurb = [], photos = [], stack }) {
+function Experience({ name, role, logo, accent, blurb = [], photos = [], stack }) {
     return (
         <li className={styles.experience} style={{ '--accent': accent }}>
             <div className={styles.logo}>
@@ -44,8 +44,6 @@ function Experience({ name, role, logo, accent, years, blurb = [], photos = [], 
                     {stack.map((item) => <li key={item}>{item}</li>)}
                 </ul>
             </div>
-
-            {years && <div className={styles.years}>{years}</div>}
         </li>
     )
 }

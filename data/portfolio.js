@@ -1,13 +1,12 @@
-// The experiences listed on /portfolio, most recent first.
+// Work and team experience, most recent first.
 //
-// Fields:
-//   accent  the company's brand colour; tints the row's background on hover
-//   years   shown at the right of the row; leave '' to hide it
-//   blurb   optional; a list of paragraphs, shown under the role
-//   photos  optional; a list of imported images, shown under the blurb
-//
-// Rapyuta's logo is black, which disappears on the black background, so this
-// uses rapyuta-light.png, a copy recoloured to white.
+//   name    organisation
+//   role    my role there
+//   logo    the organisation's logo
+//   accent  the organisation's brand colour
+//   stack   technologies and skills
+//   blurb   optional; paragraphs about what I worked on
+//   photos  optional; images from the work
 
 import tesla from '../components/portfolio/tesla.png'
 import rapyuta from '../components/portfolio/rapyuta-light.png'
@@ -22,7 +21,6 @@ export const experiences = [
         role: 'Computer Vision & Data',
         logo: tesla,
         accent: '#e82127',
-        years: '',
         stack: ['AWS S3', 'SQL', 'Kafka', 'Kubernetes', 'C#/.NET'],
     },
     {
@@ -30,7 +28,6 @@ export const experiences = [
         role: 'Robotics Perception & Systems',
         logo: rapyuta,
         accent: '#e2231a',
-        years: '',
         stack: [
             'Python',
             'PyTorch',
@@ -52,7 +49,6 @@ export const experiences = [
         role: 'Robotics Simulation',
         logo: gtri,
         accent: '#b3a369',
-        years: '',
         stack: ['ROS', 'catkin', 'Gazebo', 'SLAM'],
     },
     {
@@ -60,7 +56,6 @@ export const experiences = [
         role: 'Deep Learning Research',
         logo: mitre,
         accent: '#005b94',
-        years: '',
         stack: ['Cybersecurity', 'Computer Vision', 'Generative Adversarial Networks'],
     },
     {
@@ -68,7 +63,6 @@ export const experiences = [
         role: 'Controls Team Lead',
         logo: grt,
         accent: '#ed1c24',
-        years: '',
         stack: [
             'Jetson Nano',
             'GStreamer H.264 streaming',
@@ -85,7 +79,6 @@ export const experiences = [
         role: 'Software Team Lead',
         logo: kurio,
         accent: '#ef2b2d',
-        years: '',
         stack: [
             'Multi-threaded software architecture',
             'SLAM',
