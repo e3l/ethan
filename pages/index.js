@@ -3,18 +3,18 @@ import Image from 'next/image'
 import Link from 'next/link'
 
 import { motion, useReducedMotion } from 'framer-motion'
-import OverlayScrollbars from 'overlayscrollbars'
-import { useEffect, useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 
 import styles from '../styles/index.module.css'
 
 import Spacer from '../components/spacer.js'
 import useShortLastRow from '../components/gallery/useShortLastRow.js'
+import { scrollPageBy, useScrollbarsFollow } from '../util/scroll.js'
 
 import headshot from '../components/gallery/headshot-home.jpg'
 import { experiences } from '../data/experiences'
 
-const eras = experiences.filter((experience) => experience.favorites?.length > 0)
+const eras = experiences.filter((experience) => experience.gallery?.length > 0)
 
 // Photos shown before an era is expanded.
 const PREVIEW = 4
@@ -50,63 +50,26 @@ function Photo({ photo }) {
   )
 }
 
-// Matches the era's CSS transition (0.45s ease-in-out).
-const SCROLL_MS = 450
-const easeInOut = (t) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2)
-
-// Stepped per frame because native smooth scroll stops when the page resizes
-// mid-scroll. The page scrolls inside OverlayScrollbars, not the document.
-function scrollToTop(el, distance) {
-  let scroller = el.parentElement
-  while (scroller && !(
-    /auto|scroll/.test(getComputedStyle(scroller).overflowY) &&
-    scroller.scrollHeight > scroller.clientHeight
-  )) {
-    scroller = scroller.parentElement
-  }
-  scroller ??= document.scrollingElement
-
-  const from = scroller.scrollTop
-  if (matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    scroller.scrollTop = from + distance
-    return
-  }
-
-  let cancelled = false
-  const interrupts = ['wheel', 'touchstart', 'keydown']
-  const cancel = () => { cancelled = true }
-  interrupts.forEach((type) => window.addEventListener(type, cancel, { once: true, passive: true }))
-
-  const start = performance.now()
-  const step = (now) => {
-    const t = Math.min((now - start) / SCROLL_MS, 1)
-    if (!cancelled) scroller.scrollTop = from + distance * easeInOut(t)
-    if (t < 1 && !cancelled) {
-      requestAnimationFrame(step)
-    } else {
-      interrupts.forEach((type) => window.removeEventListener(type, cancel))
-    }
-  }
-  requestAnimationFrame(step)
-}
+// Matches --ease in styles/index.module.css.
+const EASE_MS = 450
 
 // Opening scrolls the era to the top; closing scrolls back if its top is
 // off screen. The animation itself is CSS on the `open` class.
-function Era({ slug, name, favorites }) {
+function Era({ slug, name, gallery }) {
   const [open, setOpen] = useState(false)
   const section = useRef(null)
   const rows = useRef(null)
   useShortLastRow(rows)
 
-  const preview = favorites.slice(0, PREVIEW)
-  const rest = favorites.slice(PREVIEW)
+  const preview = gallery.slice(0, PREVIEW)
+  const rest = gallery.slice(PREVIEW)
 
   const toggle = () => {
     const el = section.current
     const margin = parseFloat(getComputedStyle(el).scrollMarginTop) || 0
     const top = el.getBoundingClientRect().top
 
-    if (!open || top < margin) scrollToTop(el, top - margin)
+    if (!open || top < margin) scrollPageBy(el, top - margin, EASE_MS)
     setOpen((was) => !was)
   }
 
@@ -138,25 +101,13 @@ function Era({ slug, name, favorites }) {
               className={styles.toggle}
               aria-expanded={open}
               onClick={toggle}>
-              {open ? 'show less ↑' : `all ${favorites.length} photos ↓`}
+              {open ? 'show less ↑' : `all ${gallery.length} photos ↓`}
             </button>
           </div>
         )}
       </div>
     </section>
   )
-}
-
-// OverlayScrollbars misses growth from CSS transitions, so re-measure it
-// whenever the gallery resizes.
-function useScrollbarsFollow(ref) {
-  useEffect(() => {
-    const observer = new ResizeObserver(() => {
-      document.querySelectorAll('.os-host').forEach((host) => OverlayScrollbars(host)?.update(true))
-    })
-    observer.observe(ref.current)
-    return () => observer.disconnect()
-  }, [ref])
 }
 
 // Fades in as the motto settles, so attention starts on the intro.

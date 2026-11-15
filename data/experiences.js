@@ -8,7 +8,7 @@
 //   stack      technologies and skills
 //   blurb      optional; paragraphs about what I worked on
 //   photos     optional; images from the work, shown on the portfolio
-//   favorites  optional; home gallery photos, most important first
+//   gallery    optional; home page photos, most important first
 
 import tesla from '../components/portfolio/tesla.png'
 import rapyuta from '../components/portfolio/rapyuta-light.png'
@@ -68,7 +68,7 @@ export const experiences = [
         logo: tesla,
         accent: '#e82127',
         stack: ['AWS S3', 'SQL', 'Kafka', 'Kubernetes', 'C#/.NET'],
-        favorites: [tesla_a, tesla_b, tesla_c, tesla_d, tesla_e, tesla_g, tesla_h, tesla_f],
+        gallery: [tesla_a, tesla_b, tesla_c, tesla_d, tesla_e, tesla_g, tesla_h, tesla_f],
     },
     {
         slug: 'rapyuta',
@@ -91,7 +91,7 @@ export const experiences = [
             'Ansible',
             'Grafana',
         ],
-        favorites: [
+        gallery: [
             rapyuta_a, rapyuta_b, rapyuta_c, rapyuta_d, rapyuta_e, rapyuta_f,
             rapyuta_g, rapyuta_h, rapyuta_i, rapyuta_j, rapyuta_k, rapyuta_l,
             rapyuta_m, rapyuta_n, rapyuta_o, rapyuta_p, rapyuta_q,
@@ -129,7 +129,7 @@ export const experiences = [
             'Design/Systems Integration',
             'Logistics & Purchasing & Coordination',
         ],
-        favorites: [grt_a, grt_b, grt_c, grt_d, grt_e, grt_f, grt_g],
+        gallery: [grt_a, grt_b, grt_c, grt_d, grt_e, grt_f, grt_g],
     },
     {
         slug: 'kurio',
@@ -147,6 +147,6 @@ export const experiences = [
             'Java',
             'Mentorship & Leadership',
         ],
-        favorites: [kurio_a, kurio_b, kurio_c, kurio_d, kurio_e, kurio_f, kurio_g],
+        gallery: [kurio_a, kurio_b, kurio_c, kurio_d, kurio_e, kurio_f, kurio_g],
     },
 ]
