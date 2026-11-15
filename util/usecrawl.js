@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from 'react';
 import OverlayScrollbars from 'overlayscrollbars';
-import Router from 'next/router';
+import { useIsPresent } from 'framer-motion';
 
 const PIXELS_PER_SECOND = 150;
 
@@ -67,13 +67,15 @@ export default function useCrawl() {
     const playing = choice ?? !reducedMotion;
     const [textSelected, setTextSelected] = useState(false);
     const [atEnd, setAtEnd] = useState(false);
+    // False while the page fades out after you navigate away.
+    const isPresent = useIsPresent();
 
     // The frame loop and the event handlers below are set up only once, so
     // they would see an out-of-date `playing`. They read it from this ref.
     const playingRef = useRef(playing);
     useEffect(() => {
-        playingRef.current = playing;
-    }, [playing]);
+        playingRef.current = playing && isPresent;
+    }, [playing, isPresent]);
 
     const play = useCallback(() => {
         document.getSelection()?.removeAllRanges();
@@ -85,8 +87,8 @@ export default function useCrawl() {
         const getScroller = () => (scroller ??= OverlayScrollbars(document.body));
         const scrollY = () => getScroller()?.scroll().position.y;
 
-        const holds = { mouse: false, selection: false, leaving: false };
-        const held = () => holds.mouse || holds.selection || holds.leaving;
+        const holds = { mouse: false, selection: false };
+        const held = () => holds.mouse || holds.selection;
 
         // The most recent mouse press, used to decide what the click after it
         // means.
@@ -182,16 +184,6 @@ export default function useCrawl() {
         function onFocus(event) {
             focusedAt = event.timeStamp;
         }
-        // This page stays mounted while it fades out, so stop scrolling as
-        // soon as you leave it, and start again if the navigation fails.
-        function onLeave(url) {
-            // A link back to this page doesn't leave it.
-            if (new URL(url, location.href).pathname === location.pathname) return;
-            holds.leaving = true;
-        }
-        function onLeaveFailed() {
-            holds.leaving = false;
-        }
 
         // All of these listeners share one signal, so a single abort()
         // removes them when you leave the page.
@@ -206,16 +198,12 @@ export default function useCrawl() {
         window.addEventListener('click', onClick, { signal });
         window.addEventListener('focus', onFocus, { signal });
         document.addEventListener('selectionchange', onSelectionChange, { signal });
-        Router.events.on('routeChangeStart', onLeave);
-        Router.events.on('routeChangeError', onLeaveFailed);
 
         frameId = requestAnimationFrame(step);
 
         return () => {
             cancelAnimationFrame(frameId);
             listeners.abort();
-            Router.events.off('routeChangeStart', onLeave);
-            Router.events.off('routeChangeError', onLeaveFailed);
         };
     }, []);
 
