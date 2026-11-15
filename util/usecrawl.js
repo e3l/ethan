@@ -184,7 +184,9 @@ export default function useCrawl() {
         }
         // This page stays mounted while it fades out, so stop scrolling as
         // soon as you leave it, and start again if the navigation fails.
-        function onLeave() {
+        function onLeave(url) {
+            // A link back to this page doesn't leave it.
+            if (new URL(url, location.href).pathname === location.pathname) return;
             holds.leaving = true;
         }
         function onLeaveFailed() {
