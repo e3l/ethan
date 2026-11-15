@@ -3,28 +3,29 @@ import OverlayScrollbars from 'overlayscrollbars';
 
 const PIXELS_PER_SECOND = 150;
 
-// Keys the browser scrolls with. Space is left out: it also presses the play
-// button, where it means "press", not "scroll".
+// Keys that scroll the page. Space isn't included because pressing Space on
+// the play button should play the credits, not pause them.
 const SCROLL_KEYS = new Set([
     'ArrowUp', 'ArrowDown', 'PageUp', 'PageDown', 'Home', 'End',
 ]);
 
-// Clicks on these already do something, so they do not also play or pause.
+// Clicking one of these already does something, so it shouldn't also play or
+// pause the credits.
 const OWN_CLICKS = 'a, button, input, textarea, select, label, .os-scrollbar';
 
-// Browsers stop animation frames while the page is hidden, which pauses the
-// crawl. This caps the gap between frames the crawl makes up for, so coming
-// back does not jump it forward by however long the page was hidden.
+// Browsers don't run animation frames on hidden tabs, so the credits stop by
+// themselves when you switch away. When you come back, the first frame sees a
+// long gap in time. Capping the gap stops the credits from jumping ahead.
 const MAX_FRAME_MS = 100;
 
-// A click this soon after the window regains focus is the click that brought
-// it back, not one meant for the page.
+// A click this soon after the window gets focus is you switching back from
+// another app, not you trying to play or pause.
 const REFOCUS_MS = 100;
 
 const REDUCED_MOTION = '(prefers-reduced-motion: reduce)';
 
-// The server has no media queries to read, so it renders as if motion were
-// welcome and the subscription corrects it on hydration.
+// The server can't see the user's motion setting, so it assumes motion is
+// fine. The browser corrects this once the page loads.
 function useReducedMotion() {
     return useSyncExternalStore(
         (onChange) => {
@@ -37,7 +38,7 @@ function useReducedMotion() {
     );
 }
 
-// Selected whitespace renders as nothing, so it does not count.
+// Selected whitespace is invisible, so it doesn't count.
 function hasSelection() {
     const selection = document.getSelection();
     return selection !== null
@@ -45,20 +46,20 @@ function hasSelection() {
         && selection.toString().trim() !== '';
 }
 
-// Scrolls the page upward on its own, like film credits.
+// Scrolls the page by itself, so the credits roll like at the end of a movie.
 //
-// Two things decide whether it moves:
-// - Playing or paused, which the visitor chooses. A click on the page toggles
-//   it and scrolling by hand pauses it. Until the visitor chooses, reduced
-//   motion decides.
-// - Holds, which stop it only while they last: a held mouse button or
-//   selected text.
-// It moves while playing and not held.
+// The credits move when both of these are true:
+// - They're playing. Clicking the page plays or pauses them, and scrolling
+//   yourself pauses them. Until you do either, they play unless your system
+//   asks for reduced motion.
+// - Nothing is holding them. Holding a mouse button down or having text
+//   selected stops them, but only until you let go or clear the selection.
 //
-// `showPlay` is true while paused or while text is selected, except at the
-// foot of the page, where there is nothing left to play. A held mouse button
-// does not show it, since it ends in a click that decides for itself.
-// `play()` plays and clears any selection.
+// Returns `showPlay`, whether to show the play button, and `play()`, which
+// starts the credits and clears any selected text. The button shows while the
+// credits are paused or text is selected, but not at the bottom of the page,
+// where there's nothing left to play. It doesn't show while you hold the
+// mouse down, because letting go finishes a click that plays or pauses anyway.
 export default function useCrawl() {
     const reducedMotion = useReducedMotion();
     const [choice, setChoice] = useState(null);
@@ -66,8 +67,8 @@ export default function useCrawl() {
     const [textSelected, setTextSelected] = useState(false);
     const [atEnd, setAtEnd] = useState(false);
 
-    // The frame loop and the listeners are set up once, so they read
-    // `playing` through a ref.
+    // The frame loop and the event handlers below are set up only once, so
+    // they would see an out-of-date `playing`. They read it from this ref.
     const playingRef = useRef(playing);
     useEffect(() => {
         playingRef.current = playing;
@@ -86,12 +87,14 @@ export default function useCrawl() {
         const holds = { mouse: false, selection: false };
         const held = () => holds.mouse || holds.selection;
 
-        // The latest mouse press, kept until the click that follows it.
+        // The most recent mouse press, used to decide what the click after it
+        // means.
         let press = null;
         let focusedAt = -Infinity;
 
-        // Frame loop. Speed comes from elapsed time rather than frame count,
-        // and fractional pixels carry over so only whole ones are scrolled.
+        // Runs every frame. Speed is based on time passed rather than frames,
+        // so it's the same on any screen. The page can only scroll by whole
+        // pixels, so leftover fractions are saved for the next frame.
         let frameId;
         let lastFrame = null;
         let carry = 0;
@@ -126,40 +129,42 @@ export default function useCrawl() {
             setChoice(false);
         }
 
-        // Whether a click is a plain click on the page, as opposed to one that
-        // finishes or belongs to something else.
+        // Most clicks on the page play or pause the credits. These don't:
         function isPlayPauseClick(event) {
-            // Not a left click, or the second click of a double click.
+            // Right or middle clicks, and the second click of a double-click.
             if (event.button !== 0 || event.detail > 1) return false;
-            // A link, a button, or the scrollbar.
+            // Clicks on links, buttons, or the scrollbar.
             if (event.target instanceof Element && event.target.closest(OWN_CLICKS)) return false;
             if (press === null) return true;
-            // The end of a scrollbar drag.
+            // Letting go after dragging the scrollbar.
             if (press.scrolled) return false;
-            // The end of selecting text, or a click that cleared a selection.
+            // Letting go after selecting text, or clicking to clear a selection.
             if (press.hadSelection || hasSelection()) return false;
-            // The click that brought the window back into focus.
+            // The click that switched back to this window from another app.
             if (focusedAt > press.at - REFOCUS_MS) return false;
             return true;
         }
 
         function onMouseDown(event) {
             holds.mouse = true;
-            // selectionchange fires after this, so `holds.selection` still
-            // describes the selection from before the press.
+            // The browser updates the selection after this runs, so
+            // `holds.selection` still says whether text was selected before
+            // the press.
             press = { at: event.timeStamp, startY: scrollY(), hadSelection: holds.selection, scrolled: false };
         }
         function onMouseUp() {
             holds.mouse = false;
             if (press === null) return;
-            // Dragging the scrollbar fires no scroll input, so a page that
-            // moved during the press is what gives it away.
+            // Dragging the scrollbar doesn't fire any of the scroll events we
+            // listen for, so check whether the page moved while the mouse was
+            // down.
             press.scrolled = scrollY() !== press.startY;
             if (press.scrolled) pause();
         }
         function onContextMenu() {
-            // Where the menu opens on press (macOS, Linux, and Ctrl+click on
-            // a Mac), it takes the mouse and the page never sees the release.
+            // On macOS and Linux the menu opens as soon as you press, and the
+            // page never hears the button come back up. Treat the menu
+            // opening as letting go.
             holds.mouse = false;
             press = null;
         }
@@ -177,8 +182,8 @@ export default function useCrawl() {
             focusedAt = event.timeStamp;
         }
 
-        // One signal detaches every listener. This route unmounts on every
-        // navigation away, so they have to come off then.
+        // All of these listeners share one signal, so a single abort()
+        // removes them when you leave the page.
         const listeners = new AbortController();
         const { signal } = listeners;
         window.addEventListener('wheel', pause, { signal });

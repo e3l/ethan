@@ -95,11 +95,11 @@ export default function Credits() {
                         whileFocus={{ opacity: 1 }}
                         exit={{ opacity: 0, scale: 0.8 }}
                         transition={{ duration: 0.15 }}>
-                        {/* The triangle's box sits right of the viewBox centre:
-                            a triangle's weight is toward its flat side, so a
-                            box-centred one looks shifted left. Icon sets bake
-                            in the same offset (Material's play_arrow is
-                            M8 5v14l11-7z). */}
+                        {/* The triangle sits a little right of centre on
+                            purpose. Most of a triangle's shape is on its flat
+                            left side, so one centred by its outer edges looks
+                            shifted left. Icon sets do the same thing:
+                            Material's play icon is M8 5v14l11-7z. */}
                         <svg viewBox="0 0 24 24" aria-hidden="true">
                             <path d="M7.5 5v14l11-7z" />
                         </svg>
