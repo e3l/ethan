@@ -84,9 +84,7 @@ a:hover {
   /* cursor: pointer; */
 }
 
-/* When one page replaces another, the site scrolls back to the top itself.
-   The browser would otherwise try to keep the old page's content in place
-   while the pages swap, and could leave the new page scrolled to the bottom. */
+/* The site scrolls to the top itself when pages swap; the browser's anchoring would drag the new page down. */
 .os-viewport {
   overflow-anchor: none;
 }
