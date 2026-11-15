@@ -1,11 +1,11 @@
 // The portfolio page is content. One entry per experience, ordered most recent
 // first.
 //
-// `accent` is the organisation's own brand colour. It draws the notch beside
-// the mark, the outlines of the stack tags and the wash the row takes on hover,
-// so it needs enough saturation to hold up against the black canvas. Four of
-// the six are a red of some kind, so the accent alone cannot tell the rows
-// apart: the mark is what carries each identity, and the accent reinforces it.
+// `accent` is the organisation's own brand colour, used only for the wash the
+// row takes on hover.
+//
+// `blurb` (an array of paragraphs) and `photos` (an array of imported images)
+// are optional; each renders between the role and the stack when present.
 //
 // Rapyuta's mark is filled black, which is invisible here, so it is drawn from
 // a variant whose fill has been lifted to white.

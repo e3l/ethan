@@ -9,21 +9,35 @@ import Spacer from "../components/spacer"
 import headshot from '../components/gallery/headshot.jpeg'
 import { experiences } from '../data/portfolio'
 
-// One experience. The accent rides down as a custom property so that the notch,
-// the tag outlines and the wash the row takes on hover all draw from the same
-// colour, and the row needs no per-organisation rule of its own.
-function Experience({ name, role, logo, accent, years, stack }) {
+// One experience. The accent rides down as a custom property for the wash the
+// row takes on hover, so the row needs no per-organisation rule of its own.
+function Experience({ name, role, logo, accent, years, blurb = [], photos = [], stack }) {
     return (
         <li className={styles.experience} style={{ '--accent': accent }}>
             <div className={styles.logo}>
                 <Image src={logo} alt="" sizes="144px" />
             </div>
 
-            <div className={styles.notch} />
-
             <div className={styles.detail}>
                 <h2 className={styles.name}>{name}</h2>
                 <p className={styles.role}>{role}</p>
+
+                {blurb.length > 0 && (
+                    <div className={styles.blurb}>
+                        {blurb.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}
+                    </div>
+                )}
+
+                {photos.length > 0 && (
+                    <div className={styles.photos}>
+                        {photos.map((photo) => (
+                            <div key={photo.src}>
+                                <Image src={photo} alt="" fill sizes="(max-width: 48rem) 45vw, 13rem" />
+                            </div>
+                        ))}
+                    </div>
+                )}
+
                 <ul className={styles.stack}>
                     {stack.map((item) => <li key={item}>{item}</li>)}
                 </ul>

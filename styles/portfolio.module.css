@@ -34,7 +34,8 @@
 
 .intro p {
     margin: 0.5rem 0;
-    color: var(--secondary);
+    font-size: 1.1rem;
+    line-height: 1.5;
 }
 
 .resources {
@@ -53,42 +54,29 @@
     border-top: 1px solid var(--borders);
 }
 
-/* The mark, the notch and the name-and-role block all centre on one band across
-   the top of the row, so the three read as a single line. Everything looser —
-   the stack tags, and in time photographs and prose — spills below the band.
+/* Everything hangs from the top of the row: a row grows downward as it gains
+   prose and photographs, so the mark stays beside the name it labels rather
+   than drifting to the middle of whatever the row holds.
 
-   They centre on the band rather than on the row because the row is what grows:
-   centring on the row would drift the three apart again as soon as a row
-   carries more than it carries now.
-
-   The measurements are named here so the narrow layout can restate a few of
-   them and leave every rule below untouched. Both line heights are lengths so
-   that the height of the block can be added up. */
+   The mark is as tall as the name and the role together, so the two start and
+   end on the same lines. Both line heights are lengths so that the height can
+   be added up. */
 .experience {
-    --head: 4.5rem;
-    --notch: 3rem;
     --name: 1.75rem;
     --name-height: calc(var(--name) * 1.1);
     --role: 1rem;
     --role-height: calc(var(--role) * 1.5);
     --role-gap: 0.35rem;
-    --title: calc(var(--name-height) + var(--role-gap) + var(--role-height));
-
-    /* The notch keeps a wider gap from the copy than from the mark. A mark is
-       centred in its column, so a narrow one already stands well clear of the
-       notch, and giving both sides the same measurement left the notch looking
-       pushed up against the copy on those rows. */
-    --gap: 1.75rem;
-    --copy-gap: 2.75rem;
+    --head: calc(var(--name-height) + var(--role-gap) + var(--role-height));
 
     position: relative;
 
     display: grid;
-    grid-template-columns: 9rem 4px 1fr auto;
-    column-gap: var(--gap);
+    grid-template-columns: 9rem 1fr auto;
+    column-gap: 2.5rem;
     align-items: start;
 
-    padding: 2.25rem 0;
+    padding: 2.5rem 0;
     border-bottom: 1px solid var(--borders);
 }
 
@@ -128,12 +116,9 @@
     opacity: 1;
 }
 
-/* The marks carry their own colour straight on the canvas, at a size where they
-   read as the row's subject rather than as an icon beside it. They range from a
-   mark taller than it is wide to a wordmark three and a half times wider than it
-   is tall, so the box is wider than it is tall to give the wordmarks room, and
-   each mark is centred in it: flush left, the gap between a mark and the notch
-   was a different width on every row. */
+/* The marks range from one taller than it is wide to a wordmark three and a
+   half times wider than it is tall, so the box is wider than it is tall to give
+   the wordmarks room, and each mark is centred across it. */
 .logo {
     height: var(--head);
 }
@@ -142,28 +127,11 @@
     object-fit: contain;
 }
 
-/* A short bar rather than a full-height rule: it stays a mark of where the row
-   begins however tall the row grows. */
-.notch {
-    height: var(--notch);
-    margin-top: calc((var(--head) - var(--notch)) / 2);
-
-    border-radius: 2px;
-    background-color: var(--accent);
-}
-
-/* Dropped so the name and the role together centre on the band; the tags below
-   them are left to run as far as they like. The floor catches the case where a
-   name wraps and the pair outgrows the band: without it the offset goes
-   negative and lifts the copy clear of its own row.
-
-   A grid item also sizes to its content by default, which on a narrow screen
-   lets a long name or a row of stack tags push the page wider than the viewport
-   rather than wrapping. */
 .detail {
+    /* A grid item sizes to its content by default, which on a narrow screen
+       lets a long name or a row of stack tags push the page wider than the
+       viewport rather than wrapping. */
     min-width: 0;
-    margin-top: max(0rem, calc((var(--head) - var(--title)) / 2));
-    margin-left: calc(var(--copy-gap) - var(--gap));
 }
 
 .name {
@@ -184,6 +152,38 @@
     color: var(--secondary);
 }
 
+/* Held to a reading measure: the row is far wider than a comfortable line. */
+.blurb {
+    max-width: 44rem;
+    margin-top: 1rem;
+    line-height: 1.6;
+}
+
+.blurb p {
+    margin: 0 0 0.75rem;
+}
+
+.photos {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(11rem, 1fr));
+    gap: 0.5rem;
+
+    max-width: 52rem;
+    margin-top: 1.25rem;
+}
+
+.photos > div {
+    position: relative;
+    aspect-ratio: 4 / 3;
+
+    border-radius: 0.3em;
+    overflow: hidden;
+}
+
+.photos img {
+    object-fit: cover;
+}
+
 .stack {
     display: flex;
     flex-wrap: wrap;
@@ -200,18 +200,14 @@
     font-size: 0.75rem;
     color: var(--secondary);
 
-    border: 1px solid color-mix(in oklab, var(--accent) 40%, var(--borders));
+    border: 1px solid var(--borders);
     border-radius: 999px;
 }
 
-/* Sat against the band like the other three, so a year reads across from the
-   name it belongs to. */
+/* On the name's line, so a year reads across from the name it belongs to. */
 .years {
-    display: flex;
-    align-items: center;
-    min-height: var(--head);
-
     font-size: 0.95rem;
+    line-height: var(--name-height);
     color: var(--secondary);
 
     white-space: nowrap;
@@ -224,24 +220,16 @@
     }
 
     .experience {
-        /* The band still has to be deep enough to hold the name and the role,
-           which barely shrink here, or the two stop centring against the mark. */
-        --head: 3.5rem;
-        --notch: 2.5rem;
         --name: 1.4rem;
-        --gap: 1rem;
-        --copy-gap: 1.6rem;
 
-        grid-template-columns: 5rem 3px 1fr;
+        grid-template-columns: 4.5rem 1fr;
+        column-gap: 1.25rem;
         padding: 1.75rem 0;
     }
 
-    /* Without a fourth column the years drop under the copy rather than under
-       the mark, so there is no band left to sit against. */
+    /* Without a third column the years drop under the copy. */
     .years {
-        grid-column: 3;
-        min-height: 0;
+        grid-column: 2;
         margin-top: 0.75rem;
     }
 }
-
