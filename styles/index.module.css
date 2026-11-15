@@ -148,7 +148,7 @@
 
 /* Every photo starts from the same height and grows in proportion to its
    aspect ratio, so photos side by side stay the same height as each other
-   while their row stretches to the full measure.
+   while their row, the last one included, stretches to the full measure.
 
    The preview is always one row: its photos never wrap, they only scale. */
 .row,
@@ -160,13 +160,6 @@
 .rows {
   flex-wrap: wrap;
   margin-top: var(--gap);
-}
-
-/* Soaks up the slack on the last wrapped row, so a short last row keeps its
-   height instead of being blown up to fill the width. */
-.rows::after {
-  content: '';
-  flex-grow: 1000000;
 }
 
 /* A shadow cast from the top-left corner of the row, deep enough under the
@@ -217,6 +210,11 @@
   flex: var(--ratio) 1 calc(var(--ratio) * var(--row));
   min-width: 0;
   aspect-ratio: var(--ratio);
+
+  /* Every row, the last included, stretches to the full measure. A last row
+     of only one or two photos would grow far taller than the rest, so a row
+     stops growing taller at this cap and its photos crop to fit instead. */
+  max-height: calc(var(--row) * 1.6);
 
   border-radius: 0.3em;
   overflow: hidden;

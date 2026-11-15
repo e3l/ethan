@@ -3,7 +3,8 @@ import Image from 'next/image'
 import Link from 'next/link'
 
 import { motion, useReducedMotion } from 'framer-motion'
-import { useRef, useState } from 'react'
+import OverlayScrollbars from 'overlayscrollbars'
+import { useEffect, useRef, useState } from 'react'
 
 import styles from '../styles/index.module.css'
 
@@ -17,22 +18,21 @@ const eras = experiences.filter((experience) => experience.favorites?.length > 0
 // How many of an era's favourites show before it is expanded: its first row.
 const PREVIEW = 4
 
-// The motto rises out of the black canvas and settles red, the second half a
-// beat behind the first. It plays once; with reduced motion it is simply drawn
-// red.
+// The motto rises out of the black canvas into red, the second half a beat
+// behind the first. It plays once; with reduced motion it is simply drawn red.
 function Motto() {
   const still = useReducedMotion()
 
   const sweep = (delay) => still ? {} : {
     initial: { color: '#000000' },
-    animate: { color: ['#000000', '#ffffff', '#f00000'] },
-    transition: { duration: 1.6, delay, times: [0, 0.4, 1] },
+    animate: { color: '#f00000' },
+    transition: { duration: 1.2, delay, ease: 'easeOut' },
   }
 
   return (
     <p className={styles.motto}>
       <motion.span {...sweep(0.4)}>Go big</motion.span>{' '}
-      <motion.span {...sweep(1.0)}>or go home.</motion.span>
+      <motion.span {...sweep(0.9)}>or go home.</motion.span>
     </p>
   )
 }
@@ -160,7 +160,25 @@ function Era({ slug, name, favorites }) {
   )
 }
 
+// The page scrolls inside OverlayScrollbars, which re-measures its content
+// only when its own box resizes or the DOM changes. An era opening is neither:
+// it grows by a CSS transition, so without a nudge the scrollable height stays
+// at what it was and the rest of the page cannot be scrolled to. Every change
+// in the gallery's size asks each instance to measure again.
+function useScrollbarsFollow(ref) {
+  useEffect(() => {
+    const observer = new ResizeObserver(() => {
+      document.querySelectorAll('.os-host').forEach((host) => OverlayScrollbars(host)?.update(true))
+    })
+    observer.observe(ref.current)
+    return () => observer.disconnect()
+  }, [ref])
+}
+
 export default function Home() {
+  const gallery = useRef(null)
+  useScrollbarsFollow(gallery)
+
   return (
     <div className={styles.container}>
       <Head>
@@ -205,7 +223,7 @@ export default function Home() {
         </div>
       </div>
 
-      <div className={styles.gallery}>
+      <div ref={gallery} className={styles.gallery}>
         {eras.map((era) => <Era key={era.slug} {...era} />)}
       </div>
     </div>
