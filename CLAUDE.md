@@ -9,3 +9,5 @@ Uses the **Pages Router** (`pages/`), not the App Router.
 `next build` does not lint. `npm run lint` runs the ESLint CLI as its own step and has to be invoked explicitly.
 
 Turbopack matches loaders on the literal file extension, so image files need lowercase extensions.
+
+After adding a photo under `components/gallery`, run `npm run photos`; the build fails until you do.
