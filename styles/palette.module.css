@@ -1,16 +1,14 @@
-/* Fills the space between the navbar and the footer, with everything centred. */
+/* Fills the space between the navbar and the footer, centred vertically. */
 .container {
-    width: min(90%, 48rem);
+    width: min(90%, 56rem);
     min-height: calc(100vh - var(--navbarheight) - 8rem);
     padding: 3rem 0;
 
     display: flex;
     flex-direction: column;
-    align-items: center;
     justify-content: center;
-    gap: 2rem;
+    gap: 2.5rem;
 
-    text-align: center;
     line-height: 1.6;
 }
 
@@ -18,29 +16,52 @@
     margin: 0;
 }
 
-.palette {
-    width: 100%;
-
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 1rem;
+.lead {
+    font-size: 1.2rem;
+    text-wrap: balance;
 }
 
-/* The hex value sits in the bottom-right corner. The border keeps the black
-   swatch visible against the black page. */
+/* A small label on the left, its content on the right. */
+.row {
+    display: grid;
+    grid-template-columns: 6rem 1fr;
+    align-items: start;
+    gap: 1.5rem;
+
+    padding-top: 1rem;
+    border-top: 1px solid var(--borders);
+}
+
+.row h2 {
+    font-family: var(--headlines);
+    font-weight: 400;
+    font-size: 1.3rem;
+    letter-spacing: 0.04em;
+
+    margin: 0;
+}
+
+.palette {
+    display: flex;
+    gap: 0.75rem;
+}
+
+/* The border keeps the black swatch visible against the black page. */
 .swatch {
-    height: 10rem;
-    padding: 0.75rem;
+    width: 7.5rem;
+    aspect-ratio: 1;
+    padding: 0.5rem;
 
     display: flex;
     align-items: flex-end;
     justify-content: flex-end;
 
-    font-size: 0.85rem;
-    letter-spacing: 0.04em;
+    font-family: var(--headlines);
+    font-size: 1rem;
+    letter-spacing: 0.05em;
 
     border: 1px solid var(--borders);
-    border-radius: 0.35rem;
+    border-radius: 0.15rem;
 
     transition: transform 0.3s;
 }
