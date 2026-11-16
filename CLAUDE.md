@@ -10,4 +10,4 @@ Uses the **Pages Router** (`pages/`), not the App Router.
 
 Turbopack matches loaders on the literal file extension, so image files need lowercase extensions.
 
-Photos under `components/gallery` are display copies kept to one spec by `scripts/photos.mjs` (JPEG, long edge ≤ 2560px, no EXIF/XMP; originals live in a photo library, not the repo). After adding a photo, run `npm run photos` and update its import if the extension changed. `prebuild` runs `npm run photos -- --check`, so a photo not to spec fails the build.
+After adding a photo under `components/gallery`, run `npm run photos`; the build fails until you do.
