@@ -8,9 +8,7 @@ import { motion } from 'framer-motion'
 
 import OverlayScrollbars from 'overlayscrollbars'
 import { useEffect, useRef } from 'react'
-import { experiences } from '../data/experiences'
-
-const lifePhotos = (slug) => experiences.find((experience) => experience.slug === slug).lifePhotos
+import { lifePhotos } from '../data/lifePhotos'
 
 const headlineAnimation = {
   color: ['#000000', '#F00000', '#FFFFFF']
@@ -162,22 +160,22 @@ export default function Home() {
 
         <div className={styles.tesla}>
           <h1>TESLA</h1>
-          <ImageCarousel imgs={lifePhotos('tesla')} />
+          <ImageCarousel imgs={lifePhotos.tesla} />
         </div>
 
         <div className={styles.rapyuta}>
           <h1>RAPYUTA</h1>
-          <ImageCarousel imgs={lifePhotos('rapyuta')} />
+          <ImageCarousel imgs={lifePhotos.rapyuta} />
         </div>
 
         <div className={styles.grt}>
           <h1>GRT</h1>
-          <ImageCarousel imgs={lifePhotos('grt')} />
+          <ImageCarousel imgs={lifePhotos.grt} />
         </div>
 
         <div className={styles.kurio}>
           <h1>KURIOSITY</h1>
-          <ImageCarousel imgs={lifePhotos('kurio')} />
+          <ImageCarousel imgs={lifePhotos.kurio} />
         </div>
       </motion.div>
     </div>
