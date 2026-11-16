@@ -83,12 +83,6 @@ a:hover {
   background-color: var(--primary) !important;
   /* cursor: pointer; */
 }
-
-/* The site scrolls to the top itself when pages swap; the browser's anchoring would drag the new page down. */
-.os-viewport {
-  overflow-anchor: none;
-}
-
 /* ===== Scrollbar CSS ===== */
   /* Firefox */
   * {

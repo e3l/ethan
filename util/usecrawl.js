@@ -67,15 +67,20 @@ export default function useCrawl() {
     const playing = choice ?? !reducedMotion;
     const [textSelected, setTextSelected] = useState(false);
     const [atEnd, setAtEnd] = useState(false);
-    // False while the page fades out after you navigate away.
-    const isPresent = useIsPresent();
 
     // The frame loop and the event handlers below are set up only once, so
     // they would see an out-of-date `playing`. They read it from this ref.
     const playingRef = useRef(playing);
     useEffect(() => {
-        playingRef.current = playing && isPresent;
-    }, [playing, isPresent]);
+        playingRef.current = playing;
+    }, [playing]);
+
+    // False while the page fades out after you navigate away.
+    const isPresent = useIsPresent();
+    const presentRef = useRef(isPresent);
+    useEffect(() => {
+        presentRef.current = isPresent;
+    }, [isPresent]);
 
     const play = useCallback(() => {
         document.getSelection()?.removeAllRanges();
@@ -116,7 +121,7 @@ export default function useCrawl() {
                 setAtEnd(isAtEnd);
             }
 
-            if (!playingRef.current || held()) {
+            if (!playingRef.current || !presentRef.current || held()) {
                 carry = 0;
                 return;
             }
