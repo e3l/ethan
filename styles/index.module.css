@@ -1,129 +1,293 @@
+/* Same width as the portfolio. */
 .container {
-  width: 100%;
+  width: min(94%, 84rem);
 }
 
-.headlineContainer {
-  /* height: calc(100vh - var(--navbarheight)); */
-  width: 100%;
-  padding: max(10vw, 12vh);
-
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: center;
-
-  color: var(--red);
-}
-
-.headlineContainer > * {
-  margin: 2vh 0;
-}
-
-.headlines {
-  font-family: var(--headlines);
-  font-size: max(9vw, 10vh);
-  line-height: max(8vw, 9vh);
-
-  display: block;
-}
-
-.headlines > * {
-  margin: 2vh 0;
-}
-
-.headlineLinks {
-  margin-left: 0.4vh;
-}
-
-.headlineLinks * {
-  font-size: 2vh;
-  color: var(--primary);
-
-  padding: 0 0.2em;
-}
-
-.headline span {
-  padding: 2vh;
-}
-
-.headline a:hover {
-  color: var(--red);
-}
-
-.banners {
-  width: 100vw;
-
-  position: relative;
-  left: 50%;
-  margin-left: -50vw;
-  right: 50%;
-  margin-right: -50vw;
-}
-
-.banners > div {
-  height: 23rem;
-
-  position: relative;
-  padding: 0 5%;
-}
-
-.banners h1 {
-  font-size: 4rem;
-  
-  position: absolute;
-  top: 2rem;
-  left: 8%;
-  margin: 0;
-
-  z-index: 9;
-
-  /* text-shadow: 3px 3px var(--secondary); */
-}
-
-.imagesContainer {
-  position: absolute;
-  top: 4.5rem;
-  left: calc(8% + 2rem);
-  right: 8%;
-  bottom: 2.5rem;
-}
-
-.images {
-  width: 100%;
-  height: 100%;
-  
+.intro {
   display: flex;
   flex-direction: row;
-  /* overflow-x: hidden; */
+  align-items: flex-start;
+  gap: 6rem;
+
+  width: min(100%, 66rem);
+  margin: 0 auto;
+  padding: 5rem 0 6rem;
 }
 
-.images img {
-  max-height: 100%;
-  width: auto;
-  padding: 0 0.5rem 0 0;
+.headshot {
+  width: clamp(12rem, 22vw, 18rem);
+  flex-shrink: 0;
+
+  border-radius: 1rem;
+  overflow: hidden;
 }
 
-.images :last-child {
-  padding: 0
+.copy {
+  min-width: 0;
 }
 
-.tesla {
-  background-color: #b9142d;
-  text-shadow: 3px 3px black;
+.name {
+  font-size: 2.5rem;
+  font-weight: 500;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+
+  margin: 0;
 }
 
-.rapyuta {
-  background-color: black;
-  color: white;
-  text-shadow: 3px 3px #c81a26;
+.tagline {
+  margin: 0.4rem 0 0;
+  color: var(--secondary);
 }
 
-.grt {
-  background-color: #a90000;
+.blurb {
+  max-width: 38rem;
+  margin-top: 1.75rem;
 
-  text-shadow: 3px 3px black;
+  font-size: 1rem;
+  line-height: 1.65;
 }
 
-.kurio {
-  text-shadow: 3px 3px #a90000;
+.blurb p {
+  margin: 0 0 1rem;
+}
+
+.motto {
+  margin: 1.5rem 0 0;
+
+  font-family: var(--headlines);
+  font-size: 2rem;
+  line-height: 1;
+  letter-spacing: 0.02em;
+  color: var(--red);
+}
+
+.motto span {
+  animation: to-red 1.2s ease-out both;
+}
+
+.motto span:first-child {
+  animation-delay: 0.4s;
+}
+
+.motto span:last-child {
+  animation-delay: 0.9s;
+}
+
+@keyframes to-red {
+  from { color: var(--back); }
+}
+
+.links {
+  margin-top: 2rem;
+  font-size: 0.95rem;
+}
+
+/* Fades in as the motto settles, so attention starts on the intro. */
+.gallery {
+  margin-bottom: 3rem;
+  border-top: 1px solid var(--borders);
+  animation: fade-in 0.8s ease-out 1.6s both;
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+}
+
+/* Scroll anchoring drags the page while an era resizes. */
+:global(.os-viewport):has(.gallery) {
+  overflow-anchor: none;
+}
+
+.era {
+  padding: 2rem 0;
+  border-bottom: 1px solid var(--borders);
+
+  /* Clears the fixed navbar when scrolled to. */
+  scroll-margin-top: calc(var(--navbarheight) + 1rem);
+}
+
+/* The footer already has a top border. */
+.era:last-child {
+  border-bottom: none;
+}
+
+.photos {
+  --row: 15rem;
+  --gap: 0.5rem;
+  --title: 3.25rem;
+  --ease: 0.45s cubic-bezier(0.65, 0, 0.35, 1);
+
+  position: relative;
+  min-width: 0;
+
+  transition: padding-top var(--ease);
+}
+
+/* Photos slide down to clear the name. */
+.open .photos {
+  padding-top: calc(var(--title) + 0.75rem);
+}
+
+.eraName {
+  position: absolute;
+  z-index: 2;
+  top: 0;
+  left: 0;
+
+  margin: 0;
+  padding: 0.9rem 1.25rem;
+
+  font-family: var(--headlines);
+  font-size: var(--title);
+  font-weight: normal;
+  line-height: 1;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  text-shadow: 3px 3px rgb(0 0 0 / 1);
+
+  pointer-events: none;
+  transition: padding var(--ease), text-shadow var(--ease);
+}
+
+.open .eraName {
+  padding: 0;
+  text-shadow: 3px 3px rgb(0 0 0 / 0);
+}
+
+.eraName a {
+  pointer-events: auto;
+}
+
+/* Photos in a row share one height and stretch to fill the width. */
+.row,
+.rows {
+  display: flex;
+  justify-content: center;
+  gap: var(--gap);
+}
+
+.rows {
+  flex-wrap: wrap;
+  margin-top: var(--gap);
+}
+
+/* Dark gradient behind the era name. */
+.row {
+  position: relative;
+}
+
+.row::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+
+  background: radial-gradient(
+    ellipse 45% 70% at 0 0,
+    rgb(0 0 0 / 0.85),
+    rgb(0 0 0 / 0.45) 45%,
+    transparent);
+  pointer-events: none;
+  transition: opacity var(--ease);
+}
+
+.open .row::after {
+  opacity: 0;
+}
+
+/* Opens to the rows' full height by animating 0fr to 1fr. */
+.more {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows var(--ease);
+}
+
+.open .more {
+  grid-template-rows: 1fr;
+}
+
+.clip {
+  min-height: 0;
+  overflow: hidden;
+}
+
+.photo {
+  position: relative;
+  flex: var(--ratio) 1 calc(var(--ratio) * var(--row));
+  min-width: 0;
+  aspect-ratio: var(--ratio);
+
+  /* Grow at most 1.6x the row height. */
+  max-width: calc(var(--ratio) * var(--row) * 1.6);
+
+  border-radius: 0.3em;
+  overflow: hidden;
+}
+
+/* Set by util/useShortLastRow.js. */
+.photo[data-short] {
+  flex-grow: 0;
+}
+
+.photo img {
+  object-fit: cover;
+}
+
+.footer {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 0.75rem;
+}
+
+.toggle {
+  padding: 0;
+
+  font: inherit;
+  font-size: 0.9rem;
+  color: var(--secondary);
+
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: color 0.4s;
+}
+
+.toggle:hover {
+  color: var(--red);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .photos,
+  .eraName,
+  .row::after,
+  .more {
+    transition: none;
+  }
+
+  .motto span,
+  .gallery {
+    animation: none;
+  }
+}
+
+@media (max-width: 48rem) {
+  .intro {
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+    padding: 3rem 0 4rem;
+  }
+
+  .copy {
+    text-align: center;
+  }
+
+  .blurb {
+    text-align: left;
+  }
+
+  .photos {
+    --row: 8rem;
+    --title: 2rem;
+  }
 }
