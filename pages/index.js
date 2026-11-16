@@ -8,7 +8,7 @@ import { motion } from 'framer-motion'
 
 import OverlayScrollbars from 'overlayscrollbars'
 import { useEffect, useRef } from 'react'
-import { grt_imgs, kurio_imgs, rapyuta_imgs, tesla_imgs } from '../components/gallery/gallery_collection.js'
+import { lifePhotos } from '../data/lifePhotos'
 
 const headlineAnimation = {
   color: ['#000000', '#F00000', '#FFFFFF']
@@ -160,22 +160,22 @@ export default function Home() {
 
         <div className={styles.tesla}>
           <h1>TESLA</h1>
-          <ImageCarousel imgs={tesla_imgs} />
+          <ImageCarousel imgs={lifePhotos.tesla} />
         </div>
 
         <div className={styles.rapyuta}>
           <h1>RAPYUTA</h1>
-          <ImageCarousel imgs={rapyuta_imgs} />
+          <ImageCarousel imgs={lifePhotos.rapyuta} />
         </div>
 
         <div className={styles.grt}>
           <h1>GRT</h1>
-          <ImageCarousel imgs={grt_imgs} />
+          <ImageCarousel imgs={lifePhotos.grt} />
         </div>
 
         <div className={styles.kurio}>
           <h1>KURIOSITY</h1>
-          <ImageCarousel imgs={kurio_imgs} />
+          <ImageCarousel imgs={lifePhotos.kurio} />
         </div>
       </motion.div>
     </div>

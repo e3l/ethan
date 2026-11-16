@@ -80,6 +80,9 @@
 
     padding: 2.5rem 0;
     border-bottom: 1px solid var(--borders);
+
+    /* Clears the fixed navbar for #slug links. */
+    scroll-margin-top: var(--navbarheight);
 }
 
 /* Hover tint in the company's accent colour.

@@ -7,11 +7,11 @@ import styles from "../styles/portfolio.module.css"
 import Spacer from "../components/spacer"
 
 import headshot from '../components/gallery/headshot.jpeg'
-import { experiences } from '../data/portfolio'
+import { experiences } from '../data/experiences'
 
-function Experience({ name, role, logo, accent, blurb = [], photos = [], stack }) {
+function Experience({ slug, name, role, logo, accent, blurb = [], workPhotos = [], stack }) {
     return (
-        <li className={styles.experience} style={{ '--accent': accent }}>
+        <li id={slug} className={styles.experience} style={{ '--accent': accent }}>
             <div className={styles.logo}>
                 <Image src={logo} alt="" sizes="144px" />
             </div>
@@ -28,9 +28,9 @@ function Experience({ name, role, logo, accent, blurb = [], photos = [], stack }
                     </div>
                 )}
 
-                {photos.length > 0 && (
+                {workPhotos.length > 0 && (
                     <div className={styles.photos}>
-                        {photos.map((photo) => (
+                        {workPhotos.map((photo) => (
                             <div key={photo.src}>
                                 <Image src={photo} alt="" fill sizes="(max-width: 48rem) 45vw, 13rem" />
                             </div>
@@ -84,7 +84,7 @@ export default function Portfolio() {
 
             <ul className={styles.experiences}>
                 {experiences.map((experience) => (
-                    <Experience key={experience.name} {...experience} />
+                    <Experience key={experience.slug} {...experience} />
                 ))}
             </ul>
         </div>

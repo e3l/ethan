@@ -1,12 +1,15 @@
 // Work and team experience, most recent first.
 //
-//   name    organisation
-//   role    my role there
-//   logo    the organisation's logo
-//   accent  the organisation's brand colour
-//   stack   technologies and skills
-//   blurb   optional; paragraphs about what I worked on
-//   photos  optional; images from the work
+//   slug       URL name; /portfolio#tesla
+//   name       organisation
+//   role       my role there
+//   logo       the organisation's logo
+//   accent     the organisation's brand colour
+//   stack      technologies and skills
+//   blurb      optional; paragraphs about what I worked on
+//   workPhotos optional; photos of the work, shown on the portfolio
+//
+// Favourite photos from each experience are in lifePhotos.js.
 
 import tesla from '../components/portfolio/tesla.png'
 import rapyuta from '../components/portfolio/rapyuta-light.png'
@@ -17,6 +20,7 @@ import kurio from '../components/portfolio/kurio.png'
 
 export const experiences = [
     {
+        slug: 'tesla',
         name: 'Tesla',
         role: 'Computer Vision & Data',
         logo: tesla,
@@ -24,6 +28,7 @@ export const experiences = [
         stack: ['AWS S3', 'SQL', 'Kafka', 'Kubernetes', 'C#/.NET'],
     },
     {
+        slug: 'rapyuta',
         name: 'Rapyuta Robotics',
         role: 'Robotics Perception & Systems',
         logo: rapyuta,
@@ -45,6 +50,7 @@ export const experiences = [
         ],
     },
     {
+        slug: 'gtri',
         name: 'Georgia Tech Research Institute',
         role: 'Robotics Simulation',
         logo: gtri,
@@ -52,6 +58,7 @@ export const experiences = [
         stack: ['ROS', 'catkin', 'Gazebo', 'SLAM'],
     },
     {
+        slug: 'mitre',
         name: 'MITRE Corporation',
         role: 'Deep Learning Research',
         logo: mitre,
@@ -59,6 +66,7 @@ export const experiences = [
         stack: ['Cybersecurity', 'Computer Vision', 'Generative Adversarial Networks'],
     },
     {
+        slug: 'grt',
         name: 'Gunn Robotics Team',
         role: 'Controls Team Lead',
         logo: grt,
@@ -75,6 +83,7 @@ export const experiences = [
         ],
     },
     {
+        slug: 'kurio',
         name: 'Kuriosity Robotics',
         role: 'Software Team Lead',
         logo: kurio,
