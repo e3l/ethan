@@ -1,12 +1,13 @@
 import style from '../styles/palette.module.css'
 import { opensans } from '../util/fonts'
 
-// Each swatch shows a CSS variable from globals.css next to its hex value.
+// The site's colors from globals.css. `text` is the color the hex label is
+// written in, picked so it stays readable on that swatch.
 const colors = [
-    { name: 'red', hex: '#F00000' },
-    { name: 'back', hex: '#000000' },
-    { name: 'secondary', hex: '#B8B8B8' },
-    { name: 'primary', hex: '#FFFFFF' },
+    { name: 'red', hex: '#F00000', text: 'primary' },
+    { name: 'back', hex: '#000000', text: 'secondary' },
+    { name: 'secondary', hex: '#B8B8B8', text: 'back' },
+    { name: 'primary', hex: '#FFFFFF', text: 'back' },
 ]
 
 export default function Palette() {
@@ -16,14 +17,11 @@ export default function Palette() {
                 Originally made by hand with Next.js, now in collaboration with Claude, hosted on Vercel.
             </p>
             <div className={style.palette}>
-                {colors.map(({ name, hex }) => (
-                    <figure key={name} className={style.swatch}>
-                        <div style={{ backgroundColor: `var(--${name})` }} />
-                        <figcaption>
-                            <span>--{name}</span>
-                            <span className={style.hex}>{hex}</span>
-                        </figcaption>
-                    </figure>
+                {colors.map(({ name, hex, text }) => (
+                    <div key={name} className={style.swatch}
+                        style={{ backgroundColor: `var(--${name})`, color: `var(--${text})` }}>
+                        {hex}
+                    </div>
                 ))}
             </div>
             <p>

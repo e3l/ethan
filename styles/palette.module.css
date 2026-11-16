@@ -1,6 +1,6 @@
 /* Fills the space between the navbar and the footer, with everything centred. */
 .container {
-    width: min(90%, 40rem);
+    width: min(90%, 48rem);
     min-height: calc(100vh - var(--navbarheight) - 8rem);
     padding: 3rem 0;
 
@@ -19,39 +19,32 @@
 }
 
 .palette {
-    display: flex;
-    gap: 1.25rem;
+    width: 100%;
+
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
 }
 
+/* The hex value sits in the bottom-right corner. The border keeps the black
+   swatch visible against the black page. */
 .swatch {
-    margin: 0;
-}
+    height: 10rem;
+    padding: 0.75rem;
 
-/* The border keeps the black swatch visible against the black page. */
-.swatch > div {
-    width: 5.5rem;
-    aspect-ratio: 1;
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-end;
+
+    font-size: 0.85rem;
+    letter-spacing: 0.04em;
 
     border: 1px solid var(--borders);
-    border-radius: 1rem;
+    border-radius: 0.35rem;
 
     transition: transform 0.3s;
 }
 
-.swatch:hover > div {
+.swatch:hover {
     transform: translateY(-4px);
-}
-
-.swatch figcaption {
-    display: flex;
-    flex-direction: column;
-
-    margin-top: 0.6rem;
-    font-size: 0.8rem;
-    line-height: 1.4;
-    text-align: left;
-}
-
-.hex {
-    color: var(--secondary);
 }
