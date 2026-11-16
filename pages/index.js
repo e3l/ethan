@@ -2,40 +2,22 @@ import Head from 'next/head'
 import Image from 'next/image'
 import Link from 'next/link'
 
-import { motion, useReducedMotion } from 'framer-motion'
 import { useRef, useState } from 'react'
 
 import styles from '../styles/index.module.css'
 
 import Spacer from '../components/spacer.js'
-import useShortLastRow from '../components/gallery/useShortLastRow.js'
 import { scrollPageBy, useScrollbarsFollow } from '../util/scroll.js'
+import useShortLastRow from '../util/useShortLastRow.js'
 
 import headshot from '../components/gallery/headshot-home.jpg'
 import { experiences } from '../data/experiences'
+import { lifePhotos } from '../data/lifePhotos'
 
-const eras = experiences.filter((experience) => experience.lifePhotos?.length > 0)
+const eras = experiences.filter(({ slug }) => lifePhotos[slug])
 
 // Photos shown before an era is expanded.
 const PREVIEW = 4
-
-// Fades from black to red once; static under reduced motion.
-function Motto() {
-  const still = useReducedMotion()
-
-  const sweep = (delay) => still ? {} : {
-    initial: { color: '#000000' },
-    animate: { color: '#f00000' },
-    transition: { duration: 1.2, delay, ease: 'easeOut' },
-  }
-
-  return (
-    <p className={styles.motto}>
-      <motion.span {...sweep(0.4)}>Go big</motion.span>{' '}
-      <motion.span {...sweep(0.9)}>or go home.</motion.span>
-    </p>
-  )
-}
 
 function Photo({ photo }) {
   return (
@@ -50,32 +32,31 @@ function Photo({ photo }) {
   )
 }
 
-// Matches --ease in styles/index.module.css.
-const EASE_MS = 450
-
 // Opening scrolls the era to the top; closing scrolls back if its top is
 // off screen. The animation itself is CSS on the `open` class.
-function Era({ slug, name, lifePhotos }) {
+function Era({ slug, name, photos }) {
   const [open, setOpen] = useState(false)
   const section = useRef(null)
+  const frame = useRef(null)
   const rows = useRef(null)
   useShortLastRow(rows)
 
-  const preview = lifePhotos.slice(0, PREVIEW)
-  const rest = lifePhotos.slice(PREVIEW)
+  const preview = photos.slice(0, PREVIEW)
+  const rest = photos.slice(PREVIEW)
 
   const toggle = () => {
-    const el = section.current
-    const margin = parseFloat(getComputedStyle(el).scrollMarginTop) || 0
-    const top = el.getBoundingClientRect().top
+    const margin = parseFloat(getComputedStyle(section.current).scrollMarginTop)
+    const top = section.current.getBoundingClientRect().top
+    // The scroll runs alongside the CSS transition, so it takes its duration.
+    const duration = parseFloat(getComputedStyle(frame.current).transitionDuration) * 1000
 
-    if (!open || top < margin) scrollPageBy(el, top - margin, EASE_MS)
+    if (!open || top < margin) scrollPageBy(top - margin, duration)
     setOpen((was) => !was)
   }
 
   return (
     <section ref={section} className={`${styles.era} ${open ? styles.open : ''}`}>
-      <div className={styles.photos}>
+      <div ref={frame} className={styles.photos}>
         <h2 className={styles.eraName}>
           <Link href={`/portfolio#${slug}`}>{name}</Link>
         </h2>
@@ -101,7 +82,7 @@ function Era({ slug, name, lifePhotos }) {
               className={styles.toggle}
               aria-expanded={open}
               onClick={toggle}>
-              {open ? 'show less ↑' : `all ${lifePhotos.length} photos ↓`}
+              {open ? 'show less ↑' : `all ${photos.length} photos ↓`}
             </button>
           </div>
         )}
@@ -110,13 +91,9 @@ function Era({ slug, name, lifePhotos }) {
   )
 }
 
-// Fades in as the motto settles, so attention starts on the intro.
-const GALLERY_FADE = { duration: 0.8, delay: 1.6, ease: 'easeOut' }
-
 export default function Home() {
   const gallery = useRef(null)
   useScrollbarsFollow(gallery)
-  const still = useReducedMotion()
 
   return (
     <div className={styles.container}>
@@ -150,7 +127,9 @@ export default function Home() {
             </p>
           </div>
 
-          <Motto />
+          <p className={styles.motto}>
+            <span>Go big</span> <span>or go home.</span>
+          </p>
 
           <div className={styles.links}>
             <a href="https://github.com/e3l" target="_blank" rel="noopener noreferrer">github ↗</a>
@@ -162,16 +141,11 @@ export default function Home() {
         </div>
       </div>
 
-      <motion.div
-        ref={gallery}
-        className={styles.gallery}
-        {...(!still && {
-          initial: { opacity: 0 },
-          animate: { opacity: 1 },
-          transition: GALLERY_FADE,
-        })}>
-        {eras.map((era) => <Era key={era.slug} {...era} />)}
-      </motion.div>
+      <div ref={gallery} className={styles.gallery}>
+        {eras.map(({ slug, name }) => (
+          <Era key={slug} slug={slug} name={name} photos={lifePhotos[slug]} />
+        ))}
+      </div>
     </div>
   )
 }

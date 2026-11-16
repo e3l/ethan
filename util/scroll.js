@@ -1,47 +1,45 @@
 import OverlayScrollbars from 'overlayscrollbars'
 import { useEffect } from 'react'
 
-// The page scrolls inside OverlayScrollbars (pages/_app.js), not the document,
-// so page scrolling goes through here.
-
-function scrollerOf(el) {
-  let scroller = el.parentElement
-  while (scroller && !(
-    /auto|scroll/.test(getComputedStyle(scroller).overflowY) &&
-    scroller.scrollHeight > scroller.clientHeight
-  )) {
-    scroller = scroller.parentElement
-  }
-  return scroller ?? document.scrollingElement
+// The page scrolls inside OverlayScrollbars' viewport (set up in
+// pages/_app.js), not the document, so page scrolling goes through here.
+function pageScroller() {
+  return OverlayScrollbars(document.body)?.getElements('viewport') ?? document.scrollingElement
 }
 
 const easeInOut = (t) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2)
 
-// Scrolls the page containing `el` by `distance` px over `duration` ms.
-// Stepped per frame because native smooth scroll stops if the page resizes
-// mid-scroll. Any wheel, touch or key press cancels it.
-export function scrollPageBy(el, distance, duration) {
-  const scroller = scrollerOf(el)
+let cancelRunning = () => {}
+
+// Scrolls the page by `distance` px over `duration` ms, replacing any scroll
+// still running. Stepped per frame rather than OverlayScrollbars' own scroll(),
+// which stops at the page height measured when it starts, so it can't follow a
+// page that grows mid-scroll. Any wheel, touch or key press cancels it.
+export function scrollPageBy(distance, duration) {
+  cancelRunning()
+  const scroller = pageScroller()
   const from = scroller.scrollTop
-  if (matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  if (duration <= 0) {
     scroller.scrollTop = from + distance
     return
   }
 
   let cancelled = false
   const interrupts = ['wheel', 'touchstart', 'keydown']
-  const cancel = () => { cancelled = true }
-  interrupts.forEach((type) => window.addEventListener(type, cancel, { once: true, passive: true }))
+  const cancel = () => {
+    cancelled = true
+    interrupts.forEach((type) => window.removeEventListener(type, cancel))
+  }
+  interrupts.forEach((type) => window.addEventListener(type, cancel, { passive: true }))
+  cancelRunning = cancel
 
   const start = performance.now()
   const step = (now) => {
+    if (cancelled) return
     const t = Math.min((now - start) / duration, 1)
-    if (!cancelled) scroller.scrollTop = from + distance * easeInOut(t)
-    if (t < 1 && !cancelled) {
-      requestAnimationFrame(step)
-    } else {
-      interrupts.forEach((type) => window.removeEventListener(type, cancel))
-    }
+    scroller.scrollTop = from + distance * easeInOut(t)
+    if (t < 1) requestAnimationFrame(step)
+    else cancel()
   }
   requestAnimationFrame(step)
 }
