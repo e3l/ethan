@@ -1,35 +1,59 @@
+/* Fills the space between the navbar and the footer, centred vertically. */
 .container {
-    width: 100%;
-    padding: 4em;
+    width: min(90%, 56rem);
+    min-height: calc(100vh - var(--navbarheight) - 8rem);
+    padding: 3rem 0;
 
     display: flex;
     flex-direction: column;
-    align-items: center;
+    justify-content: center;
+
+    line-height: 1.6;
 }
 
-.container > * {
-    margin: 1em;
+.container p {
+    margin: 0;
+}
 
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+/* Everything after the intro line is split off by a thin line. */
+.container > * {
+    padding: 1.5rem 0;
+}
+
+.container > * + * {
+    border-top: 1px solid var(--borders);
+}
+
+.lead {
+    font-size: 1.2rem;
+    text-wrap: balance;
 }
 
 .palette {
-    height: 8em;
-
     display: flex;
-    gap: 2em;
-    /* background-color: var(--borders); */
+    gap: 0.75rem;
 }
 
-.palette > div {
-    height: 100%;
-    aspect-ratio: 1.1;
+/* The border keeps the black swatch visible against the black page. */
+.swatch {
+    width: 7.5rem;
+    aspect-ratio: 1;
+    padding: 0.5rem;
 
-    padding: 1em;
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-end;
 
-    border: 4px solid var(--borders);
-    border-radius: 1.25em;
+    font-family: var(--headlines);
+    font-size: 1rem;
+    letter-spacing: 0.05em;
+
+    border: 1px solid var(--borders);
+    border-radius: 0.15rem;
+
+    transition: transform 0.3s;
+}
+
+.swatch:hover {
+    transform: translateY(-4px);
 }
