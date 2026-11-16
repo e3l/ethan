@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from 'react';
 import OverlayScrollbars from 'overlayscrollbars';
+import { useIsPresent } from 'framer-motion';
 
 const PIXELS_PER_SECOND = 150;
 
@@ -74,6 +75,13 @@ export default function useCrawl() {
         playingRef.current = playing;
     }, [playing]);
 
+    // False while the page fades out after you navigate away.
+    const isPresent = useIsPresent();
+    const presentRef = useRef(isPresent);
+    useEffect(() => {
+        presentRef.current = isPresent;
+    }, [isPresent]);
+
     const play = useCallback(() => {
         document.getSelection()?.removeAllRanges();
         setChoice(true);
@@ -113,7 +121,7 @@ export default function useCrawl() {
                 setAtEnd(isAtEnd);
             }
 
-            if (!playingRef.current || held()) {
+            if (!playingRef.current || !presentRef.current || held()) {
                 carry = 0;
                 return;
             }

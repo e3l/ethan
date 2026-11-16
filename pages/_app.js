@@ -50,10 +50,7 @@ function MyApp({ Component, pageProps, router }) {
             initial="hidden"
             animate="show"
             exit="exit"
-            transition={{
-              type: 'linear',
-              duration: 0.5
-            }}>
+            transition={{ duration: 0.3 }}>
             <main
               className="content">
               <Component {...pageProps} key={router.route} />
